@@ -48,7 +48,7 @@
       </tags>
   </entry>
   <entry>
-    <title>fortran-function</title>
+    <title>Fortran语言学习——函数</title>
     <url>/2021/09/13/fortran-function/</url>
     <content><![CDATA[<div class="note note-primary">
             <p>程序中在不同地方常常需要重复使用某一个功能或者某一段程序代码，这个需求可以利用“函数”来实现。函数是“自定义函数”和“子程序”的统称。</p>
