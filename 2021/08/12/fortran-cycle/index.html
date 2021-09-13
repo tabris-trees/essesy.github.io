@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;light&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link rel="icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link type='text/css' rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" media='all'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="tabris的遥远星系">
+  <meta name="author" content="Tabris Trees Severus">
+  <meta name="keywords" content="Python,Machine Learning,物理,数学,地球科学,哲学,生活">
+  
+  <title>Fortran语言学习——循环 - 银海里泛摘天星</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/stackoverflow-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tabirstrees.top","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":"UA-166333226-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>银海里泛摘天星</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-stack-overflow-fill"></i>
+                有趣的东西
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://file.tabirstrees.top">
+                    <i class="icofont-cloud"></i>
+                    藏星星的树
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://trees-1301133429.cos.ap-nanjing.myqcloud.com/blogweb/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Fortran语言学习——循环">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Tabris Trees Severus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-08-12 10:19" pubdate>
+        2021年8月12日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      本文一共1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      阅读大约需要
+      14
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Fortran语言学习——循环</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p><img src="https://file.tabirstrees.top/blogfile/logo-fortran.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="logo-fortran"></p>
+<h1 id="🎉DO结构"><a href="#🎉DO结构" class="headerlink" title="🎉DO结构"></a>🎉DO结构</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210710211357.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="DO结构"></p>
+<p>在我们的程序编写过程中，经常会遇到需要将一部分代码重复很多遍的情况，为了使得代码简单提高可读性，可以用循环结构来进行处理，在Fortran中最常见的循环结构就是如上图所示的DO循环.</p>
+<p>DO循环由计数器（用来决定执行循环次数的变量）的初值，终值以及增量三个部分组成（Fortran 90之后），每进行一次循环，计数器就会累加上前面设置的增量，当计数器超过终值时循环就会结束.</p>
+<p>计数器的各项设定既可以用常量也可以用变量指定.下面是使用DO循环的一个例子（计算2+4+6+8+10）</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> ex0602<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">integer</span>, <span class="hljs-keyword">parameter</span> : : limit=<span class="hljs-number">10</span> <span class="hljs-comment">!计数器的上限</span><br>    <span class="hljs-keyword">integer</span> counter <span class="hljs-comment">!计数器</span><br>    <span class="hljs-keyword">integer</span> :: ans = <span class="hljs-number">0</span> <span class="hljs-comment">!拿来累加使用</span><br>    <span class="hljs-keyword">do</span> counter=<span class="hljs-number">2</span>, limit ,<span class="hljs-number">2</span><br>        ans = ans + counter<br>    <span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">write</span>(*,*) ans<br>    <span class="hljs-keyword">stop</span><br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p>对于Fortran 77及以前版本的代码来说，没有直接使用<code>end do</code>来结束循环的说法（但是仍然有人在使用），而必须要在DO后面写清楚循环到哪一行结束.即<code>do 结束的行代码, 计数器变量初值, 终值, 增量</code>，同时在循环结束的那一行设置好行代码（通常来说这一行的代码不需要可执行的意义，正好可以用我们前一节学习的<code>continue</code>命令.）.</p>
+<p>当结构中的<strong>增量</strong>使用<strong>负数</strong>时，终值需要比初值小，并且终止条件会变成计数器的值比终值小时就会结束循环.</p>
+<p>同时，结构中初值，终值，增量等如果使用变量指定时，只会在循环开始时进行一次读取，在循环过程中改变变量的值对循环是不会产生影响的，例如：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran">s=<span class="hljs-number">1</span><br>e=<span class="hljs-number">10</span><br>inc=<span class="hljs-number">1</span><br><span class="hljs-keyword">do</span> i=s, e, inc<br>    s=<span class="hljs-number">5</span><br>    e=<span class="hljs-number">1</span><br>    inc=-<span class="hljs-number">1</span><br>    <span class="hljs-built_in">write</span>(*,*) i<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span><br></code></pre></div></td></tr></table></figure>
+<h1 id="🎉DO-WHILE-结构"><a href="#🎉DO-WHILE-结构" class="headerlink" title="🎉DO WHILE 结构"></a>🎉DO WHILE 结构</h1><p>某些时候我们会遇到更加复杂的情况，循环变量的增加可能不是线性的，或者需要在循环过程中根据情况特别指定增加方式，这个时候我们可以使用一个逻辑判断来进行循环的指定（当该判断的逻辑值为1时则循环，逻辑值为0时停止循环，即直到不满足条件为止一直循环下去）：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">do</span> whilw (逻辑运算) <span class="hljs-comment">! 逻辑运算成立时,会一直重复执行该循环</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span> <span class="hljs-comment">! 结束循环的命令</span><br></code></pre></div></td></tr></table></figure>
+<p>相对于<code>DO</code>结构的循环而言,该结构最大的优势就是可以在循环过程中改变循环变量的值,这样就适应了更加复杂的情况.</p>
+<h1 id="🎊循环的流程控制"><a href="#🎊循环的流程控制" class="headerlink" title="🎊循环的流程控制"></a>🎊循环的流程控制</h1><p>主要是介绍两个与循环有关的命令:<code>CYCLE</code>,<code>EXIT</code>,类似于Python中的<code>continue</code>以及<code>break</code>.</p>
+<h2 id="🎨CYCLE"><a href="#🎨CYCLE" class="headerlink" title="🎨CYCLE"></a>🎨CYCLE</h2><p><code>CYCLE</code>命令可以直接跳过循环的某一个部分,也就是说<code>CYCLE</code>后面的代码将会不被执行而直接跳入到下一个循环中.比如:</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">do</span> <span class="hljs-built_in">floor</span>=<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,<span class="hljs-number">1</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">floor</span> = <span class="hljs-number">4</span>) <span class="hljs-keyword">cycle</span><br>    <span class="hljs-built_in">write</span>(*,*) <span class="hljs-built_in">floor</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span><br></code></pre></div></td></tr></table></figure>
+<p>执行结构将会列出从1到9的数字(除了4以外),因为当<strong>floor=4</strong>时被<code>cycle</code>语句跳过执行<code>write(*,*) floor</code>.</p>
+<h2 id="🎨EXIT"><a href="#🎨EXIT" class="headerlink" title="🎨EXIT"></a>🎨EXIT</h2><p>使用<code>EXIT</code>命令将跳出整个循环,也就是说当出现<code>EXIT</code>后循环将不再执行,通常出现在你并不知道需要执行多少次循环,于是设置为永久循环的情况:</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">do</span> <span class="hljs-keyword">while</span>( .true. ) <span class="hljs-comment">! 如果没有exit命令程序将永远执行下去</span><br>    <span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&#x27;weight:&#x27;</span><br>    read(*,*) guess<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">abs</span>(guess-weight) &lt; error ) <span class="hljs-keyword">exit</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span> <span class="hljs-comment">!前面已经预先声明好了以上出现的三个变量.</span><br></code></pre></div></td></tr></table></figure>
+<p>以上,当<code>guess</code>与<code>weight</code>的值相差在误差范围内时,循环结束.</p>
+<hr>
+<div class="note note-success">
+            <p>在Fortran中还可以为循环署名,这样可以明确最后的<code>end do</code>命令是对哪一个循环执行的:<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran">outter: <span class="hljs-keyword">do</span> i=<span class="hljs-number">1</span>,<span class="hljs-number">3</span> <span class="hljs-comment">! 该循环署名为outter</span><br>    inner: <span class="hljs-keyword">do</span> j=<span class="hljs-number">1</span>,<span class="hljs-number">3</span> <span class="hljs-comment">! 该循环署名为inner</span><br>        <span class="hljs-built_in">write</span>(*,<span class="hljs-string">&quot;(&#x27;(&#x27;,i2,&#x27;,&#x27;,i2,&#x27;)&#x27;)&quot;</span>) i,j<br>    <span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span> inner <span class="hljs-comment">! 结束内循环inner</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span> outter <span class="hljs-comment">! 结束外循环outter</span><br></code></pre></div></td></tr></table></figure></p>
+          </div>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/Fortran/">Fortran</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Fortran/">Fortran</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BE%AA%E7%8E%AF%E8%AF%AD%E6%B3%95/">循环语法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/13/comment-mail-style/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">comment-mail-style</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/07/fortran-logic-compute/">
+                        <span class="hidden-mobile">Fortran语言学习——流程控制与逻辑运算</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <!-- <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://hexo-comment-phi.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script> -->
+
+
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.4/dist/twikoo.all.min.js"></script>
+  <script>
+  twikoo.init({
+    envId: 'https://hexo-comment-phi.vercel.app/',
+    el: '#tcomment',
+    // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+    // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200509212356.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Power by Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Modified from Fluid</span></a> 
+  </div>
+  <a href="https://travellings.link/" target="blank" title="开往-友链接力"><img src="https://travellings.link/assets/logo.gif" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="开往-友链接力" width="120"></a>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            流星🌠划过 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            异乡来客👽 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+
+  
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("01/15/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "🌟星系🌟已在宇宙中孤独旋转💫&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+  
+  <!-- 备案信息 -->
+  <div class="beian" style="display: block;">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        渝ICP备20006079号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50023402000458"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+          <span class="beian-police-sep">|&nbsp;</span>
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="police-icon"/>
+            
+            <span>渝公网安备 50023402000458号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+    <script>(function (i, s, o, g, r, a, m) {
+        i['DaoVoiceObject'] = r;
+        i[r] = i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          };
+        i[r].l = 1 * new Date();
+        a = s.createElement(o);
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        a.charset = 'utf-8';
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js", 'daovoice');
+      daovoice('init', {
+        app_id: "1f64a5e9",
+      });
+      daovoice('update');
+    </script>
+  
+  
+  
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-166333226-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

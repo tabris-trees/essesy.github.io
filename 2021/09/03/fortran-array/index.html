@@ -1,0 +1,844 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;light&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link rel="icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link type='text/css' rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" media='all'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="tabris的遥远星系">
+  <meta name="author" content="Tabris Trees Severus">
+  <meta name="keywords" content="Python,Machine Learning,物理,数学,地球科学,哲学,生活">
+  
+  <title>Fortran语言学习——数组 - 银海里泛摘天星</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/stackoverflow-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tabirstrees.top","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":"UA-166333226-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>银海里泛摘天星</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-stack-overflow-fill"></i>
+                有趣的东西
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://file.tabirstrees.top">
+                    <i class="icofont-cloud"></i>
+                    藏星星的树
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://trees-1301133429.cos.ap-nanjing.myqcloud.com/blogweb/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Fortran语言学习——数组">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Tabris Trees Severus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-09-03 11:16" pubdate>
+        2021年9月3日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      本文一共2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      阅读大约需要
+      36
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Fortran语言学习——数组</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="1-基本使用🎃"><a href="#1-基本使用🎃" class="headerlink" title="1 基本使用🎃"></a>1 基本使用🎃</h1><h2 id="1-1-一维数组"><a href="#1-1-一维数组" class="headerlink" title="1.1 一维数组"></a>1.1 一维数组</h2><p>所谓数组，实际上是一种使用数据类型的方法，通常用于配合循环使用用以处理大量的数据。简单来说，数组可以一次性申明出一长串的相同数据类型的变量。</p>
+<p>数组的声明方式如下：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran">Datatype    <span class="hljs-keyword">name</span> (<span class="hljs-built_in">size</span>) <br><br><span class="hljs-comment">! Datatype表示数组的类型,除了4种常用的类型(integer,real,complex,logical)以外,也可以用type自定义出新的类型</span><br><span class="hljs-comment">! name表示数组变量的名字</span><br><span class="hljs-comment">! size表示数组变量的大小</span><br></code></pre></div></td></tr></table></figure>
+<p><em>注意: 在声明数组时,数组的大小只能使用常数来赋值, 包括直接填入数字或者使用声明为parameter的常数变量</em></p>
+<p>数组所能够保存的数据大小由<code>size</code>决定, 对于<code>integer :: student(5)</code>这个数组来说, 可以保存5个整数, 取用这5个整数只需要用数组名加上括号内的索引值即可, 如:<code>student(1) = 89</code>的意思是将89赋予<code>student</code>这个数组变量的第一个元素. 数组的索引值不一定要使用常数, 也可以使用一般的变量. </p>
+<div class="note note-danger">
+            <p>使用数组时超出范围是很危险的事情, 在程序编译过程中不会检查数组的使用是否超出了范围, 所以要充分的杜绝这种情况的发生. </p>
+          </div>
+<p>下面演示如何使用type函数自定义数组类型:</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">Type</span> :: person<br>    <span class="hljs-keyword">real</span> :: height,weight<br><span class="hljs-keyword">End</span> <span class="hljs-keyword">Type</span><br><br><span class="hljs-keyword">Type</span>(person) :: a(<span class="hljs-number">10</span>) <span class="hljs-comment">! 使用新定义的person变量做数组声明</span><br>......<br>......<br><br><span class="hljs-comment">! 同样在变量后加上&quot;%&quot;来使用person类型的相关属性</span><br>a(<span class="hljs-number">2</span>)%height = <span class="hljs-number">180.0</span><br>a(<span class="hljs-number">2</span>)%weight = <span class="hljs-number">70.0</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="1-2-二维数组与多维数组"><a href="#1-2-二维数组与多维数组" class="headerlink" title="1.2 二维数组与多维数组"></a>1.2 二维数组与多维数组</h2><p>很多时候涉及到数据的维度会多于一维, 在Fortran中声明数组大小的时候使用多个数字进行声明即可得到一个多维数组变量, 使用该变量则需要给出相应数量的索引值. 以二维数组举例:</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">integer</span> a(<span class="hljs-number">3</span>,<span class="hljs-number">3</span>) <span class="hljs-comment">! 创建一个3×3的数组(类似于矩阵)</span><br>a(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>) = <span class="hljs-number">3</span> <span class="hljs-comment">! 将3赋值到数组a的某一个元素</span><br></code></pre></div></td></tr></table></figure>
+<div class="note note-danger">
+            <p>同样注意不能超出数值所声明的范围!另外, Fortran中最多可以声明7维的数组,使用维度越高的数组, 程序执行时读取数据的速度也就越慢, 这并不意味着不要在程序中使用多维数组, 而是说使用多维数组时需要格外小心. </p>
+          </div>
+<h2 id="1-3-数组声明的奇怪用法"><a href="#1-3-数组声明的奇怪用法" class="headerlink" title="1.3 数组声明的奇怪用法"></a>1.3 数组声明的奇怪用法</h2><p>在Fortran的数组中, 没有特别声明时, 数组的索引总是从1开始的:<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">integer</span> a(<span class="hljs-number">5</span>)<br><span class="hljs-comment">! 这个数组能使用的元素包括a(1),a(2),a(3),a(4),a(5)</span><br></code></pre></div></td></tr></table></figure></p>
+<p>也可以使用一种奇怪的方法改变数组起始的索引值, 即在声明数组变量的大小时指定索引的范围:<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">integer</span> a(<span class="hljs-number">5</span>,<span class="hljs-number">0</span>:<span class="hljs-number">5</span>) <span class="hljs-comment">! a(1~5,0~5)是可以使用的元素</span><br><span class="hljs-keyword">integer</span> b(<span class="hljs-number">2</span>:<span class="hljs-number">3</span>,-<span class="hljs-number">1</span>:<span class="hljs-number">3</span>) <span class="hljs-comment">! b(2~3,-1~3)是可以使用的元素</span><br></code></pre></div></td></tr></table></figure></p>
+<hr>
+<h1 id="2-数组内容的设置🎯"><a href="#2-数组内容的设置🎯" class="headerlink" title="2 数组内容的设置🎯"></a>2 数组内容的设置🎯</h1><h2 id="2-1-赋予初始值"><a href="#2-1-赋予初始值" class="headerlink" title="2.1 赋予初始值"></a>2.1 赋予初始值</h2><p>数组可以类似于一般变量利用<code>DATA</code>来设置数组的初始值:<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">integer</span> a(<span class="hljs-number">5</span>),b(<span class="hljs-number">5</span>)<br><span class="hljs-keyword">data</span>    a   /<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>/<br><span class="hljs-comment">! 这样做数组的初始值设置为:a(1)=1,a(2)=2,a(3)=3,a(4)=4,a(5)=5</span><br><span class="hljs-keyword">data</span>    b   /<span class="hljs-number">3</span>*<span class="hljs-number">5</span>/<br><span class="hljs-comment">! &quot;*&quot;表示重复, 以上就是3重复五遍, 将数组的初始值全部设置为3</span><br></code></pre></div></td></tr></table></figure></p>
+<p>另外有一种带有”隐含式”循环的初始值赋予方式:<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">integer</span> A(<span class="hljs-number">5</span>)<br><span class="hljs-keyword">integer</span> I<br><span class="hljs-keyword">DATA</span>(A(I), I=<span class="hljs-number">2</span>, <span class="hljs-number">4</span>)/<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>/<br><span class="hljs-comment">! 上面这行代码隐含着一个循环, I会从2增加到4, 并依照顺序取后面&quot;//&quot;中的数字, 也就是A(2)=2, A(3)=3, A(4)=4, A(5)和A(1)没有设置.</span><br></code></pre></div></td></tr></table></figure></p>
+<div class="note note-primary">
+            <p>上述的隐含式循环实际上是Fortran语言的一个特色，你可以在程序中正常的使用：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-built_in">write</span>(*,*) (a(i),i=<span class="hljs-number">2</span>,<span class="hljs-number">4</span>)<br><span class="hljs-comment">! 显示a(2),a(3),a(4)的值</span><br></code></pre></div></td></tr></table></figure><br>后面再多加一个数字，可以改变计数器的累加数值，默认情况下为1：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran">(A(I), I=<span class="hljs-number">2</span>,<span class="hljs-number">10</span>,<span class="hljs-number">2</span>)<br><span class="hljs-comment">! 循环执行5次，分别执行到I=2，4，6，8，10</span><br></code></pre></div></td></tr></table></figure><br>当然，隐含式的循环同样支持嵌套使用：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">INTEGER</span> A(<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)<br><span class="hljs-keyword">INTEGER</span> I,J<br><span class="hljs-keyword">DATA</span>((A(I,J), I=<span class="hljs-number">1</span>,<span class="hljs-number">2</span>), J=<span class="hljs-number">1</span>,<span class="hljs-number">2</span>) /<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>/<br><span class="hljs-comment">! 其结果为A(1,1)=1, A(2,1)=2, A(1,2)=3, A(2,2)=4，括号内的循环会先执行</span><br></code></pre></div></td></tr></table></figure><br>Fortran 90中，DATA可以被省略：</p><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">integer</span> :: a(<span class="hljs-number">5</span>) = (/ <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span> /)<br><span class="hljs-comment">! 注意“/”与括号间不能留有空格</span><br><span class="hljs-comment">! 省略DATA时必须要给每一个元素都设置初始值，不能像有DATA时那样用隐含式循环只设置部分元素的初始值。</span><br></code></pre></div></td></tr></table></figure><p>Fortran 90的隐含式循环十分强大，它可以做到其他语言做不到的东西：</p><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">integer</span> ::Ｉ<br><span class="hljs-keyword">integer</span> :: a(<span class="hljs-number">5</span>)=(/(I,I=<span class="hljs-number">1</span>,<span class="hljs-number">5</span>)/)<br><span class="hljs-comment">! 其运行结果为a(n) = n, n=1,2,3,4,5</span><br></code></pre></div></td></tr></table></figure>
+          </div>
+<h2 id="2-2-对整个数组的操作"><a href="#2-2-对整个数组的操作" class="headerlink" title="2.2 对整个数组的操作"></a>2.2 对整个数组的操作</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a=5</td>
+<td style="text-align:center">a中所有元素全部赋值为5</td>
+</tr>
+<tr>
+<td style="text-align:center">a=(/1, 2, 3/)</td>
+<td style="text-align:center">a(1)=1, a(2)=2, a(3)=3</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b</td>
+<td style="text-align:center">将a变成和b一样的数组，前提是a,b是维数、大小一样的数组</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b+c</td>
+<td style="text-align:center">a, b, c是三个维数、大小一样的数组，a中某个位置的元素是b，c中相应位置的元素的和</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b-c</td>
+<td style="text-align:center">类似上一条，只不过变成了b，c对应元素的差</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b*c</td>
+<td style="text-align:center">类似，b，c的乘积</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b/c</td>
+<td style="text-align:center">类似，b，c的商</td>
+</tr>
+<tr>
+<td style="text-align:center">a=sin(b)</td>
+<td style="text-align:center">a(i)=sin(b(i))，只要是内部的函数都可以这么用</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>上述方法都是对整个数组进行操作的，并且涉及到两个元素之间的操作都是对应元素之间进行的，可以结合相应的矩阵运算进行理解。</p>
+<h2 id="2-3-对部分数组的操作"><a href="#2-3-对部分数组的操作" class="headerlink" title="2.3 对部分数组的操作"></a>2.3 对部分数组的操作</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a(3:5)=(/3,4,5/)</td>
+<td style="text-align:center">a(3)=3, a(4)=4, a(5)=5</td>
+</tr>
+<tr>
+<td style="text-align:center">a(1:5:2)=3</td>
+<td style="text-align:center">a(1)=3, a(3)=3, a(5)=3</td>
+</tr>
+<tr>
+<td style="text-align:center">a(3:)=5</td>
+<td style="text-align:center">a(3)以及之后的所有元素赋值为5</td>
+</tr>
+<tr>
+<td style="text-align:center">a(1:3)=b(4:6)</td>
+<td style="text-align:center">类似于这种的要求左右数组元素个数相同</td>
+</tr>
+<tr>
+<td style="text-align:center">a(:)=b(:,2)</td>
+<td style="text-align:center">a(1)=b(1,2), a(2)=b(2,2)，以此类推</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以上相当于利用索引值对数组进行切片，然后赋值，都是比较基础的用法。</p>
+<h2 id="2-4-WHERE"><a href="#2-4-WHERE" class="headerlink" title="2.4 WHERE"></a>2.4 WHERE</h2><p><code>WHERE</code>也是对部分数组的操作，但将上节中的由坐标索引变成了逻辑判断来去除我们需要使用的元素<span class='heimu'>有点像<code>if</code>结构</span>：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">where</span>(a&lt;<span class="hljs-number">3</span>)<br>    b = a<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">where</span><br><span class="hljs-comment">! 这里的where描述会把数组中数值小于3的元素找出来，并把这些元素的值设置给数组b同样位置的元素。</span><br><br><span class="hljs-comment">! 也可以省略‘end where&#x27;，写成：</span><br><span class="hljs-keyword">where</span> (a&lt;<span class="hljs-number">3</span>) b=a<br></code></pre></div></td></tr></table></figure></p>
+<div class="note note-danger">
+            <p>注意：<code>where</code>是用来设置数组的值的，所以它的程序模块中必须出现与设置数组相关的命令，并且在他的整个程序模块中出现的数组的大小和维度必须是一样的。同时类似于<code>if...else if...</code>，你也可以使用<code>ELSEWHERE</code>来处理逻辑处理中的其他情况，同时where语句也是可以支持嵌套使用的，基本上和if语句大同小异。</p>
+          </div>
+<h2 id="2-5-FORALL"><a href="#2-5-FORALL" class="headerlink" title="2.5 FORALL"></a>2.5 FORALL</h2><p>FORALL也可以看成是一种隐含式循环来使用数组的方法：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">integer</span> i<br><span class="hljs-keyword">forall</span> (i=<span class="hljs-number">1</span>:<span class="hljs-number">5</span>)<br>    a(i)=i<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">forall</span><br><span class="hljs-comment">! a(1)=1, a(2)=2, a(3)=3, a(4)=4, a(5)=5</span><br><span class="hljs-comment">! 其详细语法为：</span><br><span class="hljs-keyword">forall</span> (triplet1[, triplet2[, triplet3[, ...]]], mask)<br>    ......<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">forall</span><br><span class="hljs-comment">! tripletn指代数组的坐标索引范围，FORALL中可以赋值好几个triplet，这主要取决于数组的维度。</span><br><span class="hljs-comment">! mask指代条件判断语句，类似于if语句</span><br><span class="hljs-comment">! 下面举个例子：</span><br><span class="hljs-keyword">integer</span> :: a(<span class="hljs-number">10</span>,<span class="hljs-number">5</span>)<br><span class="hljs-keyword">forall</span> (I=<span class="hljs-number">2</span>:<span class="hljs-number">10</span>:<span class="hljs-number">2</span>,J=<span class="hljs-number">1</span>:<span class="hljs-number">5</span>，a(I,J)&lt;<span class="hljs-number">10</span>) <span class="hljs-comment">! 二维数组，只处理数组中范围内值小于10的元素</span><br>    a(I,J)=I+J<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">forall</span><br><span class="hljs-comment">! 和if语句与where语句的情况一样，&#x27;end forall&#x27;也是可以省略的：</span><br><span class="hljs-keyword">forall</span>(I=<span class="hljs-number">1</span>:<span class="hljs-number">5</span>,J=<span class="hljs-number">1</span>:<span class="hljs-number">5</span>,a(I,J)/=<span class="hljs-number">0</span>) a(I,J)=<span class="hljs-number">1</span>/a(I,J)<br></code></pre></div></td></tr></table></figure></p>
+<h1 id="3-数组的保存规则💾"><a href="#3-数组的保存规则💾" class="headerlink" title="3 数组的保存规则💾"></a>3 数组的保存规则💾</h1><p>在Fortran中，数组数据的保存是按照一定规则的，我们可以根据这个规则优化代码，编写出效率较高的程序。</p>
+<p>拿一个二维数组举例：</p>
+<blockquote>
+<p>A(1,1)=&gt;A(2,1)=&gt;A(3,1)=&gt;A(1,2)=&gt;A(2,2)=&gt;A(3,2)=&gt;A(1,3)=&gt;A(2,3)=&gt;A(3,3)</p>
+</blockquote>
+<p>简单来说，最左边的元素会被最先填进内存。在写代码时可以充分利用这一点来提升代码的运行速度，尽量连续的读取数据，避免CPU跳跃式地在内存中读取数据。</p>
+<h1 id="4-可变大小的数组🦐"><a href="#4-可变大小的数组🦐" class="headerlink" title="4 可变大小的数组🦐"></a>4 可变大小的数组🦐</h1><p>在Fortran 90中，提供了一种可以在程序执行后根据实际需求改变数组大小的功能：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">integer</span> :: students<br><span class="hljs-keyword">integer</span> <span class="hljs-keyword">allocatable</span> :: a(:) <span class="hljs-comment">! 声明一个可变大小的数组</span><br><span class="hljs-keyword">integer</span> :: i<br><span class="hljs-keyword">integer</span> :: error<br><br><span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;How many students?&quot;</span><br>read(*,*)students<br><span class="hljs-built_in">allocate</span>(a(students)，stat = error) <span class="hljs-comment">! 配置内存空间，stat用来查看配置内存是否成功：0-&gt;成功，其他-&gt;失败。</span><br>deallocatable(a) <span class="hljs-comment">! 释放a的内存，结合上述代码可以重新定义数组的大小</span><br><span class="hljs-keyword">if</span> (.not. <span class="hljs-built_in">allocated</span>(a)) <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">allocate</span>(a(<span class="hljs-number">5</span>))<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-comment">! 检查数组a是否有配置内存，没有就请求5个元素的内存</span><br></code></pre></div></td></tr></table></figure>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/Fortran/">Fortran</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Fortran/">Fortran</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/09/11/geomagnetic-field-fromation/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">地磁场形成原因文献阅读报告</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/19/plasma-introduction-translate/">
+                        <span class="hidden-mobile">A Short Introduction to Plasma Physics</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <!-- <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://hexo-comment-phi.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script> -->
+
+
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.4/dist/twikoo.all.min.js"></script>
+  <script>
+  twikoo.init({
+    envId: 'https://hexo-comment-phi.vercel.app/',
+    el: '#tcomment',
+    // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+    // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200509212356.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Power by Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Modified from Fluid</span></a> 
+  </div>
+  <a href="https://travellings.link/" target="blank" title="开往-友链接力"><img src="https://travellings.link/assets/logo.gif" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="开往-友链接力" width="120"></a>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            流星🌠划过 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            异乡来客👽 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+
+  
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("01/15/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "🌟星系🌟已在宇宙中孤独旋转💫&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+  
+  <!-- 备案信息 -->
+  <div class="beian" style="display: block;">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        渝ICP备20006079号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50023402000458"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+          <span class="beian-police-sep">|&nbsp;</span>
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="police-icon"/>
+            
+            <span>渝公网安备 50023402000458号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+    <script>(function (i, s, o, g, r, a, m) {
+        i['DaoVoiceObject'] = r;
+        i[r] = i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          };
+        i[r].l = 1 * new Date();
+        a = s.createElement(o);
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        a.charset = 'utf-8';
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js", 'daovoice');
+      daovoice('init', {
+        app_id: "1f64a5e9",
+      });
+      daovoice('update');
+    </script>
+  
+  
+  
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-166333226-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

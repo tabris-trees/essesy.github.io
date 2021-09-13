@@ -1,0 +1,819 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;light&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link rel="icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link type='text/css' rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" media='all'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="tabris的遥远星系">
+  <meta name="author" content="Tabris Trees Severus">
+  <meta name="keywords" content="Python,Machine Learning,物理,数学,地球科学,哲学,生活">
+  
+  <title>Fortran语言学习——流程控制与逻辑运算 - 银海里泛摘天星</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/stackoverflow-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tabirstrees.top","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":"UA-166333226-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>银海里泛摘天星</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-stack-overflow-fill"></i>
+                有趣的东西
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://file.tabirstrees.top">
+                    <i class="icofont-cloud"></i>
+                    藏星星的树
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://trees-1301133429.cos.ap-nanjing.myqcloud.com/blogweb/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Fortran语言学习——流程控制与逻辑运算">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Tabris Trees Severus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-07 22:20" pubdate>
+        2021年7月7日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      本文一共1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      阅读大约需要
+      26
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Fortran语言学习——流程控制与逻辑运算</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210707235432.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="Fortran"></p>
+<div class="note note-primary">
+            <p>我们假设大家都有一定的编程基础，至少知道编程过程中流程控制是什么意思（<span class="heimu">其实也没啥意思，就是条件语句之类的</span>）。另外把实际的例子的代码省去，这样更加精简的作为字典或者文档查询更加方便。</p>
+          </div>
+<h1 id="1-IF语句"><a href="#1-IF语句" class="headerlink" title="1.IF语句"></a>1.IF语句</h1><p>首先第一个我们需要接触的就是if条件语句，在Fortran语言中一般这样写：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">if</span> (逻辑判断式) <span class="hljs-keyword">then</span><br>    ...<br>    ...<br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><br></code></pre></div></td></tr></table></figure><br>举个书上的例子，我们写一个速度超过一百就会发出警报的简单程序：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">if</span>(speed&gt;<span class="hljs-number">100</span>)<span class="hljs-keyword">then</span><br>    <span class="hljs-comment">! speed &gt; 100时才会执行下面的语句</span><br>    <span class="hljs-built_in">write</span>(*,*)<span class="hljs-string">&quot;Slow down.&quot;</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-keyword">stop</span><br></code></pre></div></td></tr></table></figure><br>注意该程序知识一部分而已，前面变量的申明还是要照样做的。另外除此之外还可以简写成如下的形式：<br><figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">if</span> (speed&gt;<span class="hljs-number">100</span>) <span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;Slow down.&quot;</span><br></code></pre></div></td></tr></table></figure></p>
+<h2 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h2><p>除此之外呢，我们可能还需要设置不满足条件时应该执行的语句，或者是有其他很多种情况的分支，这个时候就需要这么写：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">if</span> (条件<span class="hljs-number">1</span>) <span class="hljs-keyword">then</span> <span class="hljs-comment">! 情况1</span><br>    ...<br>    ...<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (条件<span class="hljs-number">2</span>) <span class="hljs-keyword">then</span> <span class="hljs-comment">! 情况2</span><br>    ...<br>    ...<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (条件<span class="hljs-number">3</span>) <span class="hljs-keyword">then</span> <span class="hljs-comment">! 情况3</span><br>    ...<br>    ...<br>...<br><span class="hljs-keyword">else</span> <span class="hljs-comment">! 以上情况都不满足的情况</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="逻辑判断符号以及集合判断符号"><a href="#逻辑判断符号以及集合判断符号" class="headerlink" title="逻辑判断符号以及集合判断符号"></a>逻辑判断符号以及集合判断符号</h2><p>另外补充以下在Fortran中表示逻辑判断以及集合判断的方式:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">表示含义 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"> <code>==</code></td>
+<td style="text-align:center">相等 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>/=</code></td>
+<td style="text-align:center">不等于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&gt;</code></td>
+<td style="text-align:center">大于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&gt;=</code></td>
+<td style="text-align:center">大于等于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&lt;</code></td>
+<td style="text-align:center">小于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&lt;=</code></td>
+<td style="text-align:center">小于等于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.and.</code></td>
+<td style="text-align:center">交集 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.or.</code></td>
+<td style="text-align:center">并集 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.not.</code></td>
+<td style="text-align:center">不成立 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.eqv.</code></td>
+<td style="text-align:center">逻辑运算相等 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.neqv.</code></td>
+<td style="text-align:center">逻辑运算不相等 </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以上，逻辑判断的运算等级高于集合运算的等级，同时出现时先执行逻辑判断（大于小于等于之类的）的语句。</p>
+<h2 id="嵌套使用"><a href="#嵌套使用" class="headerlink" title="嵌套使用"></a>嵌套使用</h2><p>当存在if语句的嵌套使用时，可以这样：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">if</span> (...) <span class="hljs-keyword">then</span> <span class="hljs-comment">! 第一层</span><br>	<span class="hljs-keyword">if</span> (...) <span class="hljs-keyword">then</span> <span class="hljs-comment">! 第二层</span><br>		<span class="hljs-keyword">if</span> (...) <span class="hljs-keyword">then</span> <span class="hljs-comment">! 第三层主条件</span><br>			...<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (...) <span class="hljs-keyword">then</span> <span class="hljs-comment">! 第三层次条件</span><br>			...<br>		<span class="hljs-keyword">else</span> <span class="hljs-comment">! 第三层其余情况</span><br>			...<br>		<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span> <span class="hljs-comment">! 第三层结束</span><br>	<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span> <span class="hljs-comment">! 第二层结束</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span> <span class="hljs-comment">! 第一层结束</span><br></code></pre></div></td></tr></table></figure>
+<h1 id="2-浮点数以及字符的逻辑运算"><a href="#2-浮点数以及字符的逻辑运算" class="headerlink" title="2.浮点数以及字符的逻辑运算"></a>2.浮点数以及字符的逻辑运算</h1><h2 id="浮点数的逻辑判断"><a href="#浮点数的逻辑判断" class="headerlink" title="浮点数的逻辑判断"></a>浮点数的逻辑判断</h2><p>我们知道，由于计算机运行方式以及内存情况的限制，当我们进行浮点数之间的计算时通常是带有误差的，比如：$a=\sqrt{b}^2-b = 0$在实际的运算过程中可能会出现$a$不等于0的情况，这是因为计算机在计算浮点数时的有效位数的问题造成的。举个例子，$\sqrt{3}$在计算时只能采用有限的位数来保存，这个时候就会出现误差，再将这个存在误差的数字作幂次运算，等到的结果必然不会是3，而是一个接近3的数字。</p>
+<p>如果我们需要对类似这样的情况作出判断，（判断$\sqrt{b}^2-b$是否等于0），就需要对我们的结果预留出一些误差的空间。这样，我们可以把上面的过程写成如下的形式：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> example<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>	<span class="hljs-keyword">real</span> :: b = <span class="hljs-number">4.0</span><br>	<span class="hljs-keyword">real</span> :: a<br>	<span class="hljs-keyword">real</span>, <span class="hljs-keyword">parameter</span> :: e = <span class="hljs-number">0.0001</span> <span class="hljs-comment">! 表示误差的范围</span><br>	a = <span class="hljs-built_in">sqrt</span>(b)**<span class="hljs-number">2</span>-b<br>	<br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">abs</span>(a-<span class="hljs-number">0.0</span>) &lt;= e) <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;a等于0！&quot;</span><br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;a不等于0！&quot;</span><br>	<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><br>	<span class="hljs-keyword">stop</span><br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="字符的逻辑判断"><a href="#字符的逻辑判断" class="headerlink" title="字符的逻辑判断"></a>字符的逻辑判断</h2><p>和Python一样，字符甚至字符串之间也是可以用来做逻辑判断的，这实际上使用的字符转换成ASCII码之后的数值进行的逻辑判断。比如说判断<code>&#39;A&#39; &lt; &#39;a&#39;</code>为<code>true</code>是因为a的ASCII码为97，A的ASCII码为65。</p>
+<p>需要注意的是，当字符串作比较时，实际上比较的是第一个字符的ASCII码，如果第一个字符相同就比较第二个字符，依此类推。</p>
+<h1 id="SELECT-CASE语句"><a href="#SELECT-CASE语句" class="headerlink" title="SELECT CASE语句"></a>SELECT CASE语句</h1><p>实际上，在我们需要使用多重判断时，有一种可以代替<code>IF ... ELSE IF ...</code>的语句，那就是SELECT　CASE语句，下面是该语句的用法：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">select</span> <span class="hljs-keyword">case</span>(变量) <span class="hljs-comment">!　这里的变量是指需要进行判断的变量</span><br><span class="hljs-keyword">case</span> (数值<span class="hljs-number">1</span>)<br>...... <span class="hljs-comment">! 当变量的数值等于数值1时，就执行该语句</span><br><span class="hljs-keyword">case</span> (数值<span class="hljs-number">2</span>)<br>...... <span class="hljs-comment">! 变量等于数值2时，执行该语句</span><br>...<br><span class="hljs-keyword">case</span> <span class="hljs-keyword">default</span><br>...... <span class="hljs-comment">! 默认情况下，即变量不等于任何数值时，执行该语句</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">select</span><br></code></pre></div></td></tr></table></figure>
+<p><code>slecet default</code>模块不是必要的，在<code>case</code>里面的数值设置可以设置成范围，即类似<code>2：5</code>表示2~5的数值范围，同时也支持类似<code>1，3，5</code>表示变量值等于三者中的任何一个时都会执行其所属的语句。</p>
+<p>值得注意的是，使用<code>select case</code>语句会有一些限制：</p>
+<ol>
+<li>只能使用整数、字符、以及逻辑变量类型的变量，对于浮点数和复数就只能用<code>if ... else if</code>的结构；</li>
+<li>每一个case中所使用的数值必须是固定的常量，而不能是变量。</li>
+</ol>
+<h1 id="其他控制流程"><a href="#其他控制流程" class="headerlink" title="其他控制流程"></a>其他控制流程</h1><h2 id="GOTO命令"><a href="#GOTO命令" class="headerlink" title="GOTO命令"></a>GOTO命令</h2><p>实际上，GOTO语法是Fortran 77时代；留下来的“旧时代”的语法，一般不建议使用，因为它会破坏代码的结构，导致代码的阅读变得比较困难，但是某些上世纪写的程序中还会留有这样的结构，所以仍然需要了解。</p>
+<p>在Fortran语言中，可以给每一行代码赋予一个特定的编号，利用GOTO命令就可以提供给程序员一个可以使程序任意跳跃到所赋值编号的那一行程序所在位置来执行的能力。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran">	  <span class="hljs-function"><span class="hljs-keyword">PROGRAM</span></span> ex0514<br>	  <span class="hljs-keyword">IMPLICIT</span> <span class="hljs-keyword">NONE</span><br>	  <span class="hljs-keyword">REAL</span> height <span class="hljs-comment">! 记录身高</span><br>	  <span class="hljs-keyword">REAL</span> weight <span class="hljs-comment">! 记录体重</span><br><br>	  <span class="hljs-built_in">WRITE</span>(*,*) <span class="hljs-string">&quot;height:&quot;</span><br>	  READ (*,*)	height <span class="hljs-comment">! 读入身高</span><br>	  <span class="hljs-built_in">WRITE</span>(*,*) <span class="hljs-string">&quot;weight:&quot;</span><br>	  READ (*,*)	weight <span class="hljs-comment">! 读入体重</span><br><br>	  <span class="hljs-keyword">IF</span> ( weight &gt; height-<span class="hljs-number">100</span> ) <span class="hljs-keyword">GOTO</span> <span class="hljs-number">200</span><br>	  <span class="hljs-comment">! 上面不成立，没有跳到200才会执行这里</span><br><span class="hljs-number">100</span>   <span class="hljs-built_in">WRITE</span>(*,*) <span class="hljs-string">&quot;Under control.&quot;</span><br>	  <span class="hljs-keyword">GOTO</span> <span class="hljs-number">300</span> <span class="hljs-comment">! 下一行不能执行所以要跳到300 .</span><br><span class="hljs-number">200</span>	  <span class="hljs-built_in">WRITE</span>(*,*) <span class="hljs-string">&quot;Too fat!&quot;</span><br><br><span class="hljs-number">300</span>   <span class="hljs-keyword">STOP</span><br><span class="hljs-keyword">END</span><br></code></pre></div></td></tr></table></figure>
+<p>如果GOTO结构可以用得比较巧妙，这样的话可以利用<code>IF</code>+<code>GOTO</code>结构来写一个类似循环的过程，或者利用类似<code>GOTO(10,20,30) a</code>（其中a表示变量，用以指代前面括号中的列表的序列切片，即1表示10，2表示20，3表示30）的结构进行有选择的跳转。<span class = "heimu">看不懂也没关系，反正就是不建议使用就对了</span></p>
+<div class="note note-danger">
+            <p>最后再强调一遍，虽然GOTO结构看起来很强大，但是并不建议使用，因为这会使得代码的结构混乱，不便于阅读和维护。</p>
+          </div>
+<h2 id="PAUSE-CONTINUE-STOP"><a href="#PAUSE-CONTINUE-STOP" class="headerlink" title="PAUSE, CONTINUE, STOP"></a>PAUSE, CONTINUE, STOP</h2><p>PAUSE 暂停，表示程序执行到该代码之后会暂停，知道用户按下Enter键之后程序才会继续执行。可以应用到程序需要做很多页的输出时，在每一页设置暂停，直到用户看完每一页的内容之后再按Enter键进行翻页。</p>
+<p>CONTINUE 继续，没什么用，Fortran 90之后就不怎么使用了，基本上可以不管，因为它没有什么实际意义，只是为了方便阅读而已。</p>
+<p>STOP 停止，很明显，执行完该代码程序就停止了，可以用来作为程序得到不合理的输入时将程序终止。</p>
+<hr>
+<p>研究生通知书到了，趁这里没人，独自高兴一波hahaha！<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1625667151163.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="1625667151163"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/Fortran/">Fortran</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Fortran/">Fortran</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/12/fortran-cycle/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Fortran语言学习——循环</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/06/26/last-remenber/">
+                        <span class="hidden-mobile">对高等数学最精简的整理(自己考研最后期间用的)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <!-- <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://hexo-comment-phi.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script> -->
+
+
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.4/dist/twikoo.all.min.js"></script>
+  <script>
+  twikoo.init({
+    envId: 'https://hexo-comment-phi.vercel.app/',
+    el: '#tcomment',
+    // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+    // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200509212356.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Power by Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Modified from Fluid</span></a> 
+  </div>
+  <a href="https://travellings.link/" target="blank" title="开往-友链接力"><img src="https://travellings.link/assets/logo.gif" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="开往-友链接力" width="120"></a>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            流星🌠划过 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            异乡来客👽 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+
+  
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("01/15/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "🌟星系🌟已在宇宙中孤独旋转💫&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+  
+  <!-- 备案信息 -->
+  <div class="beian" style="display: block;">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        渝ICP备20006079号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50023402000458"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+          <span class="beian-police-sep">|&nbsp;</span>
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="police-icon"/>
+            
+            <span>渝公网安备 50023402000458号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+    <script>(function (i, s, o, g, r, a, m) {
+        i['DaoVoiceObject'] = r;
+        i[r] = i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          };
+        i[r].l = 1 * new Date();
+        a = s.createElement(o);
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        a.charset = 'utf-8';
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js", 'daovoice');
+      daovoice('init', {
+        app_id: "1f64a5e9",
+      });
+      daovoice('update');
+    </script>
+  
+  
+  
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-166333226-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

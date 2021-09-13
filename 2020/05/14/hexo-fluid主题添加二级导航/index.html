@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;light&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link rel="icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link type='text/css' rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" media='all'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="tabris的遥远星系">
+  <meta name="author" content="Tabris Trees Severus">
+  <meta name="keywords" content="Python,Machine Learning,物理,数学,地球科学,哲学,生活">
+  
+  <title>hexo+fluid主题添加二级导航 - 银海里泛摘天星</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/stackoverflow-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tabirstrees.top","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":"UA-166333226-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>银海里泛摘天星</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-stack-overflow-fill"></i>
+                有趣的东西
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://file.tabirstrees.top">
+                    <i class="icofont-cloud"></i>
+                    藏星星的树
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://trees-1301133429.cos.ap-nanjing.myqcloud.com/blogweb/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="hexo+fluid主题添加二级导航">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Tabris Trees Severus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-14 15:32" pubdate>
+        2020年5月14日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      本文一共1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      阅读大约需要
+      28
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">hexo+fluid主题添加二级导航</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/6418A1E7501871AF561B89A22AB13D3F.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="6418A1E7501871AF561B89A22AB13D3F"></p>
+<hr>
+<div class="note note-info">
+            <p>使用hexo博客的fluid主题已经有一段时间了，因为打算写的内容很杂，所从很早开始就想要做一个二级导航出来，这段时间一直在折腾这个东西！前几天给网站加上了豆瓣的📕书评和🎦电影栏目，发现这样要是以后再加点什么东西导航栏就放不下了。所以痛定思痛决定开始弄二级导航（<del>鬼知道我为了做这个东西连即将要到来的考试和难到爆炸的课程设计都不管了</del>）</p>
+          </div>
+<h1 id="开始搞事情😄O-∩-∩-O"><a href="#开始搞事情😄O-∩-∩-O" class="headerlink" title="开始搞事情😄O(∩_∩)O"></a>开始搞事情😄O(∩_∩)O</h1><p>emmmmm，首先<del>其实差不多只有这一步啦</del>我们要做的就是更改文章生成的模板，fluid主题的话就打开主题目录下的<code>layout</code>文件夹中的<code>nav.ejs</code>文件，修改为如下的样式（其中注释的位置就是修改的主要位置，也是导航栏内容所在，你也可以按照自己的想法修改这个地方的内容）：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;navbar&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;navbar-brand&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;&lt;%- url_for() %&gt;&quot;</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>&lt;%- theme.navbar.blog_title || config.title %&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;navbar-toggler-btn&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;navbar-toggler&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">data-toggle</span>=<span class="hljs-string">&quot;collapse&quot;</span></span><br><span class="hljs-tag">            <span class="hljs-attr">data-target</span>=<span class="hljs-string">&quot;#navbarSupportedContent&quot;</span></span><br><span class="hljs-tag">            <span class="hljs-attr">aria-controls</span>=<span class="hljs-string">&quot;navbarSupportedContent&quot;</span> <span class="hljs-attr">aria-expanded</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Toggle navigation&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;animated-icon&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Collapsible content --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;collapse navbar-collapse&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;navbarSupportedContent&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;navbar-nav ml-auto text-center&quot;</span>&gt;</span><br>        &lt;% for(const each of theme.navbar.menu) &#123; %&gt;<br>          &lt;% if (!each.link) continue %&gt;<br>          &lt;% var text = each.name || __(each.key + &#x27;.title&#x27;) %&gt;<br>          &lt;% if (text.indexOf(&#x27;.title&#x27;) !== -1) &#123;<br>            text = each.key<br>          &#125; %&gt;<br>          <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;nav-item&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;nav-link&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;&lt;%= url_for(each.link) %&gt;&quot;</span>&gt;</span><br>              &lt;%- each.icon ? &#x27;<span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;&#x27; + each.icon + &#x27;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;<br>              &lt;%- text %&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><span class="hljs-comment">&lt;!--以上的部分是一级导航的部分--&gt;</span><br>              <span class="hljs-comment">&lt;!--这里判断有没有二级菜单，有的话遍历出二级菜单（就是竖着的那部分）--&gt;</span><br>              &lt;% if (each.submenu) &#123; %&gt;<br>                <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;sub-menu&quot;</span>&gt;</span><br>                  <span class="hljs-comment">&lt;!--//遍历出二级菜单（就是竖着的那部分）--&gt;</span><br>                  &lt;% for (const submenu of each.submenu)&#123; %&gt;<br>                    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><br>                      <span class="hljs-comment">&lt;!--//a标签里当然是输出二级菜单的路径咯--&gt;</span><br>                      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;&lt;%- url_for(submenu.link) %&gt;&quot;</span>&gt;</span><br>                        <span class="hljs-comment">&lt;!--//i标签里输出二级菜单的icon的class咯--&gt;</span><br>                        &lt;%- each.icon ? &#x27;<span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;&#x27; + submenu.icon + &#x27;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;<br>                        <span class="hljs-comment">&lt;!--//这里输出二级菜单名咯--&gt;</span><br>                        &lt;%= submenu.key %&gt;<br>                      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>                    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>                  &lt;% &#125; %&gt;<br>                <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><br>              &lt;% &#125; %&gt;<br><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>        &lt;% &#125; %&gt;<br>        &lt;% if(theme.search.enable) &#123; %&gt;<br>          <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;nav-item&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search-btn&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;nav-link&quot;</span> <span class="hljs-attr">data-toggle</span>=<span class="hljs-string">&quot;modal&quot;</span> <span class="hljs-attr">data-target</span>=<span class="hljs-string">&quot;#modalSearch&quot;</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-tag">&lt;<span class="hljs-name">i</span></span><br><span class="hljs-tag">                <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;iconfont icon-search&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>          <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>        &lt;% &#125; %&gt;<br>      <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<h1 id="修改css配置，让它好看点"><a href="#修改css配置，让它好看点" class="headerlink" title="修改css配置，让它好看点"></a>修改css配置，让它好看点</h1><p>如果不修改css配置其实也是可以的，只不过很丑就对了。</p>
+<p>所以我们打开主题目录下<code>source/css/mian.styl</code>，本来应该在子项对应的部分添加，但是考虑到（<del>好吧，╮(╯-╰)╭，其实是我懒</del>）慢慢找实在是太麻烦了，所以我们直接在main文件里添加（这部分你可以先<code>hexo s</code>打开浏览器进行调试到你喜欢的样式，然后再复制相应的样式表到文件中）如下代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.sub-menu</span> &#123;<br>    <span class="hljs-attribute">display</span>: none;<br>    <span class="hljs-attribute">position</span>: relative;<br>    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0px</span> <span class="hljs-number">8px</span> <span class="hljs-number">16px</span> <span class="hljs-number">0px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.2</span>);<br>    <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.2</span>);<br>    <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">10px</span>;<br>    <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">20px</span>;<br>    <span class="hljs-attribute">padding-top</span>: <span class="hljs-number">10px</span>;<br>    <span class="hljs-attribute">padding-bottom</span>: <span class="hljs-number">10px</span>;<br>    <span class="hljs-attribute">width</span>: auto;<br>    <span class="hljs-attribute">height</span>: auto;<br>    <span class="hljs-attribute">box-shadow</span>: -<span class="hljs-number">6px</span> <span class="hljs-number">6px</span> <span class="hljs-number">8px</span> black;<br>&#125;<br>// 以上是控制二级菜单呼出的形式<br><br><span class="hljs-selector-class">.sub-menu</span> <span class="hljs-selector-class">.li</span> &#123;<br>    <span class="hljs-attribute">padding-top</span>: <span class="hljs-number">10px</span>;<br>    <span class="hljs-attribute">padding-bottom</span>: <span class="hljs-number">10px</span>;<br>&#125;<br><br><span class="hljs-selector-class">.nav-item</span><span class="hljs-selector-pseudo">:hover</span> <span class="hljs-selector-class">.sub-menu</span> &#123;<br>    <span class="hljs-attribute">display</span>: block;<br>&#125;<br>// 控制鼠标停留在一级菜单上时呼出二级菜单<br><br><span class="hljs-selector-tag">ul</span> &#123;<br>    <span class="hljs-attribute">list-style</span>: none;<br>&#125;<br><br><span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.nav-item</span> &#123;<br>    <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span> <span class="hljs-number">15px</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这样我们的基本的配置就算是完成了，接下来就是二级菜单的写法！</p>
+<h1 id="配置文件中二级菜单的写法"><a href="#配置文件中二级菜单的写法" class="headerlink" title="配置文件中二级菜单的写法"></a>配置文件中二级菜单的写法</h1><p>打开主题配置文件<code>fluid_config.yml</code>，在菜单部分以“<em>分类</em>”菜单为例我们做如下的改动<br>submenu指定二级菜单，和一级菜单类似，<strong>最后用[]括起来！！！</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">navbar:</span><br>  <span class="hljs-attr">blog_title:</span>  <span class="hljs-comment"># 导航栏左侧的标题，为空则按 hexo config.title 显示</span><br>  <span class="hljs-attr">menu:</span>  <span class="hljs-comment"># 可自行增减，key 用来关联 languages/*.yml，如不存在关联则显示 key 本身的值；icon 是 css class，可以省略；增加 name 可以强制显示指定名称；submenu指定二级菜单，和一级菜单类似，最后用[]括起来！！！</span><br>    <span class="hljs-bullet">-</span> &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;iconfont icon-home-fill&#x27;</span> &#125;<br>    <span class="hljs-bullet">-</span> &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;archive&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;/archives/&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;iconfont icon-archive-fill&#x27;</span> &#125;<br>    <span class="hljs-bullet">-</span> &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;category&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;#&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;iconfont icon-category-fill&#x27;</span>, <span class="hljs-attr">submenu:</span> [<br>      &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;全部&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;/categories/&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;icofont-abc&#x27;</span> &#125;,<br>      &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;生活&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;/categories/生活/&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;icofont-love&#x27;</span> &#125;,<br>      &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;🖊笔记&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;/categories/笔记/&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;icofont-notebook&#x27;</span> &#125;<br>    ]&#125;<br>    <span class="hljs-bullet">-</span> &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;tag&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;/tags/&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;iconfont icon-tags-fill&#x27;</span> &#125;<br>    <span class="hljs-bullet">-</span> &#123; <span class="hljs-attr">key:</span> <span class="hljs-string">&#x27;about&#x27;</span>, <span class="hljs-attr">link:</span> <span class="hljs-string">&#x27;/about/&#x27;</span>, <span class="hljs-attr">icon:</span> <span class="hljs-string">&#x27;iconfont icon-user-fill&#x27;</span> &#125;<br>    <span class="hljs-comment">#- &#123; key: &#x27;links&#x27;, link: &#x27;/links/&#x27;, icon: &#x27;iconfont icon-link-fill&#x27; &#125; # 友链页，把前面#去掉即可展示</span><br></code></pre></div></td></tr></table></figure>
+<p>这样我们就完成了一个主题的二级导航自定义，当然这样其实还是不太好看，可以自己用css进行调整。此外，针对不同的主题配置<code>config.yml</code>的不同写法情况，其实都是大同小异的，<a target="_blank" rel="noopener" href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">可以点我去往某个大佬的空间看看，以作参考！！！&lt;(￣︶￣)↗[GO!]</a>。</p>
+<p>以我的网站为例最终实现就是这样的效果：<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170113.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="20200514170113"><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170146.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="20200514170146"></p>
+<p>哈哈哈哈，我觉得还是可以的！！！😁😁😁<br><div class="note note-success">
+            <p>参考：</p><p>yaml基本语法及实现Hexo二级导航栏功能<a target="_blank" rel="noopener" href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/</a></p><p>为博客网站增加一个二级目录菜单<a target="_blank" rel="noopener" href="https://sunhwee.com/posts/65d7181d.html">https://sunhwee.com/posts/65d7181d.html</a></p><p>如何通过html和css完成下拉菜单的制作？<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/36356940">https://www.zhihu.com/question/36356940</a></p><p>and so on ……</p>
+          </div></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%B5%84%E6%BA%90/">资源</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%B5%84%E6%BA%90/%E6%A8%A1%E6%9D%BF/">模板</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/hexo/">hexo</a>
+                    
+                      <a class="hover-with-bg" href="/tags/web%E6%8A%80%E6%9C%AF/">web技术</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/14/gqj/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">宫崎骏电影合集(持续更新中......)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/28/me/">
+                        <span class="hidden-mobile">something I won't talk at almost time</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <!-- <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://hexo-comment-phi.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script> -->
+
+
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.4/dist/twikoo.all.min.js"></script>
+  <script>
+  twikoo.init({
+    envId: 'https://hexo-comment-phi.vercel.app/',
+    el: '#tcomment',
+    // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+    // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200509212356.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Power by Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Modified from Fluid</span></a> 
+  </div>
+  <a href="https://travellings.link/" target="blank" title="开往-友链接力"><img src="https://travellings.link/assets/logo.gif" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="开往-友链接力" width="120"></a>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            流星🌠划过 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            异乡来客👽 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+
+  
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("01/15/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "🌟星系🌟已在宇宙中孤独旋转💫&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+  
+  <!-- 备案信息 -->
+  <div class="beian" style="display: block;">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        渝ICP备20006079号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50023402000458"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+          <span class="beian-police-sep">|&nbsp;</span>
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="police-icon"/>
+            
+            <span>渝公网安备 50023402000458号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+    <script>(function (i, s, o, g, r, a, m) {
+        i['DaoVoiceObject'] = r;
+        i[r] = i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          };
+        i[r].l = 1 * new Date();
+        a = s.createElement(o);
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        a.charset = 'utf-8';
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js", 'daovoice');
+      daovoice('init', {
+        app_id: "1f64a5e9",
+      });
+      daovoice('update');
+    </script>
+  
+  
+  
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-166333226-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

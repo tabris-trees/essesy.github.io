@@ -1,0 +1,833 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;light&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link rel="icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link type='text/css' rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" media='all'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="tabris的遥远星系">
+  <meta name="author" content="Tabris Trees Severus">
+  <meta name="keywords" content="Python,Machine Learning,物理,数学,地球科学,哲学,生活">
+  
+  <title>fortran-function - 银海里泛摘天星</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/stackoverflow-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tabirstrees.top","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":"UA-166333226-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>银海里泛摘天星</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-stack-overflow-fill"></i>
+                有趣的东西
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://file.tabirstrees.top">
+                    <i class="icofont-cloud"></i>
+                    藏星星的树
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://trees-1301133429.cos.ap-nanjing.myqcloud.com/blogweb/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="fortran-function">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Tabris Trees Severus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-09-13 22:49" pubdate>
+        2021年9月13日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      本文一共4.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      阅读大约需要
+      66
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">fortran-function</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <div class="note note-primary">
+            <p>程序中在不同地方常常需要重复使用某一个功能或者某一段程序代码，这个需求可以利用“函数”来实现。函数是“自定义函数”和“子程序”的统称。</p>
+          </div>
+<h1 id="子程序🎃"><a href="#子程序🎃" class="headerlink" title="子程序🎃"></a>子程序🎃</h1><h2 id="主体结构"><a href="#主体结构" class="headerlink" title="主体结构"></a>主体结构</h2><p>子程序可以用来独立出某一段需要重复使用的代码，供其他地方调用。通常使用关键字<code>CALL</code>来进行调用。通常采用以下的结构写子程序：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br>    ...<br>    ... <span class="hljs-comment">! 主程序代码</span><br>    <span class="hljs-keyword">call</span> sub1() <span class="hljs-comment">! 调用子程序1</span><br>    <span class="hljs-keyword">call</span> sub2() <span class="hljs-comment">! 调用子程序2</span><br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub1()<br>    ...<br>    ... <span class="hljs-comment">! 子程序1代码</span><br>    ...<br>    <span class="hljs-keyword">return</span> <span class="hljs-comment">! return代表子程序的运行停止，类似于主程序的stop，可以省略</span><br><span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub2()<br>    ...<br>    ... <span class="hljs-comment">! 子程序2代码</span><br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span><br></code></pre></div></td></tr></table></figure>
+<p>子程序可以在任何地方被调用，甚至是自己调用自己，这就是所谓的<strong>递归</strong>。</p>
+<h2 id="变量的使用"><a href="#变量的使用" class="headerlink" title="变量的使用"></a>变量的使用</h2><p>变量对于一个程序来说尤为重要，在Fortran中，变量的使用相对于Python这样的新高级语言显得十分的麻烦，所以需要专门花时间讲清楚变量在子程序中的使用。</p>
+<p>基本的结构可以按照以下的形式来进行操作：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br>    ...<br>    <span class="hljs-keyword">integer</span> :: a,b <span class="hljs-comment">! 主程序中作变量声明</span><br>    <span class="hljs-keyword">call</span> sub(a,b) <span class="hljs-comment">! 传递参数</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub(first,second) <span class="hljs-comment">! 设置参数</span><br>    <span class="hljs-keyword">integer</span> :: first,second <span class="hljs-comment">! 子程序中作变量声明</span><br>    ... <span class="hljs-comment">! 子程序操作代码</span><br><span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub<br></code></pre></div></td></tr></table></figure>
+<p>可以看到这个用法和Python有着很大程度的不同，这是因为主程序与子程序之间传递参数的方式在不同的程序语言之间是不同的：Fortran中使用的是<em>传址调用</em>，C语言中使用<em>传值调用</em>，Python中使用的是混合方法，即对于可变对象使用传址调用，对不可变对象使用传值调用。</p>
+<p>我们这里主要关注传址调用，意思是说经过传递的变量之间会使用同一处内存地址，所以我们可以利用传递在子程序中改变主程序的变量（<strong>这个改变在主程序中也会得到反应</strong>）。<span style='background: yellow;'>但是，值得注意的是，子程序和主程序中没有经过调用的变量之间一定是独立的，相互之间改变值是不会有影响的（除非是使用<em>全局变量</em>的形式）。</span></p>
+<hr>
+<h1 id="自定义函数🍉"><a href="#自定义函数🍉" class="headerlink" title="自定义函数🍉"></a>自定义函数🍉</h1><p>自定义函数和子程序大体上是相同的，除了以下两点：</p>
+<ul>
+<li>调用自定义函数前需要先声明</li>
+<li>自定义函数执行后会返回一个值（这一点在子程序中是不一定的，<span calss="heimu">也许我们可以说，Python的函数结构是将这两者合二为一来使用了</span>）</li>
+</ul>
+<p>其主要的结构可以按照如下的形式来使用：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br>    <span class="hljs-keyword">real</span> :: a,b<br>    <span class="hljs-keyword">real</span>,<span class="hljs-keyword">external</span> func1 <span class="hljs-comment">! external是为了声明func1作为一个函数存在</span><br>    <span class="hljs-comment">! 意思是自定义函数要返回一个数值，我们将这个数值的类型声明为某种特殊的变量</span><br>    ... func1(a,b) ... <span class="hljs-comment">! 调用函数的代码部分</span><br>    ...<br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span></span> func1(first,second)<br>    <span class="hljs-keyword">real</span> :: first,second<br>    <span class="hljs-keyword">real</span> :: func1_result <span class="hljs-comment">! 这里是声明函数返回的数值的类型</span><br>    ... <span class="hljs-comment">! 函数的内部代码</span><br>    ...<br>    <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span> <br></code></pre></div></td></tr></table></figure>
+<div class="note note-success">
+            <p>上述过程中已经包括了如何在函数中使用变量。同时还有一个不成文的“规定”：“传递给函数的变量，我们只需要使用或者读取它的数值就好了，不要去改变它的数据。”根据数学上函数的定义，我们传入的是“自变量”，输出的是“应变量”，自变量自然不可以随便改写值的大小。</p>
+          </div>
+<hr>
+<h1 id="全局变量（COMMON）🍎"><a href="#全局变量（COMMON）🍎" class="headerlink" title="全局变量（COMMON）🍎"></a>全局变量（COMMON）🍎</h1><p><code>COMMON</code>是Fortran 77中使用“全局变量”的办法，用来定义一块共享的内存空间，其一般的结构如下：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">integer</span> a,b,c,d,e,f<br>    <span class="hljs-keyword">common</span> a,b,c,d,e,f <span class="hljs-comment">! 将变量放入common空间中，以下类似</span><br>    <span class="hljs-keyword">common</span> /group1/ first <span class="hljs-comment">! 对全局变量进行分组 分组1</span><br>    <span class="hljs-keyword">common</span> /group2/ second <span class="hljs-comment">! 对全局变量进行分组 分组2</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub()<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">integer</span> n1,n2,n3,n4,n5,n6<br>    <span class="hljs-keyword">common</span> n1,n2,n3,n4,n5,n6 <span class="hljs-comment">! 按照顺序分别共享a,b,c,d,e,f的内存地址</span><br>    <span class="hljs-comment">! 这样会有类似于只需要取用第六个变量f的地址，但仍然要在f前设置五个用不着的变量来占位</span><br>    <span class="hljs-comment">! 为了避免上述问题，可以对全局变量进行分组</span><br>    <span class="hljs-keyword">common</span> /group1/ num1 <span class="hljs-comment">! 取用group1中的first进行共享地址</span><br>    <span class="hljs-keyword">common</span> /group2/ num2 <span class="hljs-comment">! 取用group2中的second进行共享地址</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub<br><br><span class="hljs-keyword">block</span> <span class="hljs-keyword">data</span> <span class="hljs-keyword">name</span> <span class="hljs-comment">! name可以省略</span><br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span> <span class="hljs-comment">! 最好不要省略这一行</span><br>    <span class="hljs-keyword">integer</span> ... <span class="hljs-comment">! 声明变量</span><br>    <span class="hljs-keyword">real</span> ...<br><br>    <span class="hljs-keyword">common</span> ... <span class="hljs-comment">! 将变量放入common空间中，并进行赋值</span><br>    <span class="hljs-keyword">common</span> /group1/ ...<br><br>    <span class="hljs-keyword">data</span> var1,var2... <span class="hljs-comment">! 赋予初始值</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">block</span> <span class="hljs-keyword">data</span> <span class="hljs-keyword">name</span> <span class="hljs-comment">! 和此前一样，可以只写end或者end block data</span><br></code></pre></div></td></tr></table></figure>
+<div class="note note-danger">
+            <p>需要注意的是：COMMON变量不能在主程序或者子程序中使用<code>DATA</code>来进行初始值的赋予，而是在<code>BLOCK DATA</code>中使用<code>DATA</code>命令来进行。另外全局变量不能声明常量，因此不能出现<code>PARAMETER</code>命令。</p><p>当然，任何时候都不要忘记变量的类型相互之间是否匹配！！！</p>
+          </div>
+<hr>
+<h1 id="函数中的变量🍑"><a href="#函数中的变量🍑" class="headerlink" title="函数中的变量🍑"></a>函数中的变量🍑</h1><p>这里的函数包括了自定义函数和子程序两种类似的结构，这一节主要是参数传递过程中的注意事项和部分特殊的参数传递过程。所谓注意事项，最重要的一点无非是要注意“<span style="background: yellow;">参数类型是否正确</span>”</p>
+<h2 id="数组参数"><a href="#数组参数" class="headerlink" title="数组参数"></a>数组参数</h2><p><a target="_blank" rel="noopener" href="https://www.tabirstrees.top/2021/09/03/fortran-array/">数组</a>中我们提到，数组类型的变量在内存中占用的是一整块连续空间，但在参数的传递时，实际传递时数组中某一个参数的内存地址，因此我们会有一些比较特殊的用法：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> ex0816<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>  <span class="hljs-keyword">integer</span> :: a(<span class="hljs-number">5</span>) = (/ <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span> /)<br>  <span class="hljs-keyword">call</span> ShowOne(a)   <span class="hljs-comment">! 传入a, 也就是传入数组a第1个元素的内存地址</span><br>  <span class="hljs-keyword">call</span> ShowArray5(a)  <br>  <span class="hljs-keyword">call</span> ShowArray3(a)  <br>  <span class="hljs-keyword">call</span> ShowArray3( a(<span class="hljs-number">2</span>) ) <span class="hljs-comment">! 传入a(2), 也就是传入数组a第2个元素的内存地址</span><br>  <span class="hljs-keyword">call</span> ShowArray2X2(a)  <br>  <span class="hljs-keyword">stop</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> ShowOne(num)<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>  <span class="hljs-keyword">integer</span> :: num(<span class="hljs-number">1</span>) <span class="hljs-comment">! 只取出参数地址中的第1个数字</span><br>  <span class="hljs-built_in">write</span>(*,*) num<br>  <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> ShowArray5(num)<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>  <span class="hljs-keyword">integer</span> :: num(<span class="hljs-number">5</span>) <span class="hljs-comment">! 取出参数地址中的前5个数字,当成数组来使用</span><br>  <span class="hljs-built_in">write</span>(*,*) num<br>  <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> ShowArray3(num)<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>  <span class="hljs-keyword">integer</span> :: num(<span class="hljs-number">3</span>) <span class="hljs-comment">! 取出参数地址中的前3个数字,当成数组来使用</span><br>  <span class="hljs-built_in">write</span>(*,*) num<br>  <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> ShowArray2X2(num)<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>  <span class="hljs-keyword">integer</span> :: num(<span class="hljs-number">2</span>,<span class="hljs-number">2</span>) <span class="hljs-comment">! 取出参数地址中的前4个数字,当成2X2数组来使用</span><br>  <span class="hljs-built_in">write</span>(*,*) num(<span class="hljs-number">2</span>,<span class="hljs-number">1</span>), num(<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)<br>  <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p>执行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs terminal">1<br>1           2           3           4           5<br>1           2           3<br>2           3           4<br>2           4<br></code></pre></div></td></tr></table></figure>
+<p>以上，自行体会。</p>
+<p>另外，我们也有提到，数组变量在声明时需要指定其大小（使用一个常数），但是在函数中，如果数组是用来接收的参数时可以用变量来进行指定，甚至是不指定（用通配符<code>*</code>代替）。<span class="heimu">实际上，我们用来传递的变量早在数组进入子程序之前就已经分配好了内存空间了，因为使用<em>传址调用</em>时，在主程序中我们也需要定义一个使用同一个内存地址的变量。在函数中赋值数组的大小只是方便检查，不会去重新分配内存，所以可以省略。</span>同样的道理，对于任何需要指定大小或者长度的变量都有类似的情况存在。</p>
+<h2 id="变量的生存周期"><a href="#变量的生存周期" class="headerlink" title="变量的生存周期"></a>变量的生存周期</h2><p>函数中的变量只能在函数中存在（与主程序是独立的，且不包含所输入的参数），因此，通常情况下他们所能够存在的时间只有在这个子程序被执行的这一段时间。子程序结束后，他们就“死亡”了，所保存的数据也会跟着被释放掉。</p>
+<p>在声明中加入<code>save</code>命令可以拯救这些变量、增加变量的生存周期、保留数据：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">integer</span>,<span class="hljs-keyword">save</span> :: <span class="hljs-built_in">count</span> = <span class="hljs-number">1</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="传递函数"><a href="#传递函数" class="headerlink" title="传递函数"></a>传递函数</h2><p>函数的参数在传递时，除了可以出传送数字、字符等等数据外，还可以直接传递一个函数名称。这里涉及到前面提到的某个关键字<code>external</code>以及一个新的关键字<code>intrinsic</code>。只有在函数的声明中出现这两个关键字时才能将函数当作参数进行传递：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">real</span>,<span class="hljs-keyword">external</span> :: func <span class="hljs-comment">! 声明一个外接（自定义）函数，一般情况下external可以省略</span><br>    <span class="hljs-keyword">real</span>,<span class="hljs-keyword">intrinsic</span> :: <span class="hljs-built_in">sin</span> <span class="hljs-comment">! 声明一个Fortran内置的函数，一般情况下这一行都可以省略</span><br>    <span class="hljs-keyword">external</span> :: sub <span class="hljs-comment">! 声明一个子程序，一般情况可省略</span><br><br>    <span class="hljs-keyword">call</span> Execfunc(func) <span class="hljs-comment">! 传递一个external函数作为参数</span><br>    <span class="hljs-keyword">call</span> Execfunc(<span class="hljs-built_in">sin</span>) <span class="hljs-comment">! 传递一个intrinsic函数作为参数</span><br>    <span class="hljs-keyword">call</span> Execfunc(sub) <span class="hljs-comment">! 传递一个子程序</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> Execfunc(f)<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">real</span>,<span class="hljs-keyword">external</span> :: f <span class="hljs-comment">! 声明f是一个函数(或子程序)</span><br>    ...<br>    <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub(var1)<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">real</span> :: var1 <span class="hljs-comment">! 正常的参数</span><br>    ...<br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span></span> func(var2)<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">real</span> :: var2 <span class="hljs-comment">! 正常的参数</span><br>    ...<br>    <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<hr>
+<h1 id="参数的特殊使用方法🍇"><a href="#参数的特殊使用方法🍇" class="headerlink" title="参数的特殊使用方法🍇"></a>参数的特殊使用方法🍇</h1><h2 id="参数属性"><a href="#参数属性" class="headerlink" title="参数属性"></a>参数属性</h2><p>某些时候，我们希望我们传递进来的参数可以只读，它的值不能在函数中改变；或者某个参数一定要在函数中被重新设置数值。这种时候我们可以设置参数的属性，如下：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub(var1,var2)<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">real</span>,<span class="hljs-keyword">intent</span>(<span class="hljs-keyword">in</span>) :: var1 <span class="hljs-comment">! 声明（指定）var1参数是只读的</span><br>    <span class="hljs-keyword">real</span>,<span class="hljs-keyword">intent</span>(<span class="hljs-keyword">out</span>) :: var2 <span class="hljs-comment">! 声明var2参数是需要被重写的</span><br>    ...<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="函数的使用接口（INTERFACE）"><a href="#函数的使用接口（INTERFACE）" class="headerlink" title="函数的使用接口（INTERFACE）"></a>函数的使用接口（INTERFACE）</h2><p>INTERFACE是主程序中的一段程序模块，用来清除说明函数所要调用以及返回的参数类型的“使用接口”。一般情况是不需要使用的，但在以下几种情况中是必要的：</p>
+<ul>
+<li>函数返回值是数组时</li>
+<li>指定参数位置来传递参数时</li>
+<li>所调用的函数参数数目不固定时</li>
+<li>输入指标参数时</li>
+<li>函数返回值是指针时</li>
+</ul>
+<p>之后会陆续讲到这几种情况的具体内容，先来看看你<code>INTERFACE</code>模块的基本结构：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">Interface</span><br>    <span class="hljs-function"><span class="hljs-keyword">function</span></span> func_name<br>        <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>        <span class="hljs-keyword">real</span> :: ...<br>        <span class="hljs-keyword">integer</span> :: ... <span class="hljs-comment">! 该处只能说明参数和返回值的类型</span><br>    <span class="hljs-keyword">end</span> [<span class="hljs-function"><span class="hljs-keyword">function</span></span> [func_name]]<br><br>    <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub_name<br>        <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>        <span class="hljs-keyword">integer</span> :: ... <span class="hljs-comment">! 说明参数类型</span><br>    <span class="hljs-keyword">end</span> [<span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> [sub_name]]<br><span class="hljs-keyword">end</span> [<span class="hljs-keyword">interface</span>]<br></code></pre></div></td></tr></table></figure>
+<p>使用函数的“使用接口”是一件很麻烦的事情，如果需要使用的函数很多，整个代码看起来非常烦杂。此外你需要在每一个你会使用到相关函数（涉及到以上五种情况）的子程序或者主程序中写清楚该函数的<code>interface</code>才可以。下一节将会介绍module的使用，其可以较少这个麻烦。</p>
+<h2 id="不定个数的参数传递"><a href="#不定个数的参数传递" class="headerlink" title="不定个数的参数传递"></a>不定个数的参数传递</h2><p>一般来说，函数参数的个数都是由固定数目的，但在Fortran 90中可以使用<code>OPTIONAL</code>命令使某些参数变成可以“省略”的。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">integer</span>,<span class="hljs-keyword">optional</span> :: var<br><span class="hljs-comment">! 在子程序（函数）以及主程序的interface模块中使用</span><br><span class="hljs-comment">! optional命令进行声明表示参数var可以省略不传入</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="改变参数传递位置的方法"><a href="#改变参数传递位置的方法" class="headerlink" title="改变参数传递位置的方法"></a>改变参数传递位置的方法</h2><p>这一点类似Python，当你按照变量的名称进行传递参数时，是可以不按照相应位置进行传入的：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub(var1,var2,var3)<br>    ...<br>    ...<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">! 在调用该子程序时,按照变量名称传递参数</span><br><span class="hljs-keyword">call</span> sub(var3=<span class="hljs-number">3</span>,var2=<span class="hljs-number">2</span>,var1=<span class="hljs-number">1</span>)<br><span class="hljs-comment">! 其等价于：</span><br><span class="hljs-keyword">call</span> sub(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>)<br></code></pre></div></td></tr></table></figure>
+<div class="note note-seccess">
+            <p>也许有时候我们需要设置函数参数的默认值，在Fortran中似乎没有什么好用的命令，但是通过在子程序中设置<code>if</code>结构依然可以做到相关的要求。即：做一个有无输入的逻辑判断，没有外界输入时就程序内部赋予一个默认值。</p>
+          </div>
+<hr>
+<h1 id="特殊的函数类型🍌"><a href="#特殊的函数类型🍌" class="headerlink" title="特殊的函数类型🍌"></a>特殊的函数类型🍌</h1><div class="note note-primary">
+            <p>Fortran 90中，除了一般使用的正常函数之外，还可以特别指定成<code>RECURSIVE</code>、<code>PURE</code>、<code>ELEMENTAL</code>三种类型之一。<code>RECURSIVE</code>是让函数自己调用自己，也就是“递归”；后两者是用来做并行处理以及设置数组时使用的。</p>
+          </div>
+<h2 id="递归（RECURSIVE）"><a href="#递归（RECURSIVE）" class="headerlink" title="递归（RECURSIVE）"></a>递归（<code>RECURSIVE</code>）</h2><p>能够递归的函数需要有一个必要条件，<span style='background: yellow;'>递归函数每次被调用执行时，函数中所声明的局部变量（非传递进来的参数或者没有做<code>save</code>的变量）都会使用不同的内存地址</span>。简单的说就是每次调用函数时变量都是独立存在的。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">recursive</span> <span class="hljs-keyword">integer</span> <span class="hljs-function"><span class="hljs-keyword">function</span></span> func(var) result(ans)<br><span class="hljs-comment">! 用recursive表示该函数可以递归</span><br><span class="hljs-comment">! result（ans）表示该函数的返回值用ans变量代替原来的fact</span><br><span class="hljs-comment">! result对于每一个自定义函数都可以使用，但是递归函数必须要有！</span><br></code></pre></div></td></tr></table></figure>
+<p>在不设置<code>recursive</code>的时候，也可以用一种“间接递归”的方法来完成递归，也就是现在函数中调用另外一个函数，再在这另一个函数中调用自己，但是这种方法在某些编译器环境下会出现错误，因为它会把每次调用函数的局部变量放在同一个内存地址。</p>
+<h2 id="内部函数"><a href="#内部函数" class="headerlink" title="内部函数"></a>内部函数</h2><p>Fortran 90可以定义某些函数只能在特定的函数中被调用，其基本结构为：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main \ <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub \ <span class="hljs-function"><span class="hljs-keyword">function</span></span> func<br>    ...<br>    ...<br>    <span class="hljs-keyword">contains</span> <span class="hljs-comment">! contains后面开始写局部函数</span><br>        <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> localsub <span class="hljs-comment">! 这里的函数只能在包含它的函数中被调用</span><br>            ...<br>            ...<br>        <span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span><br><br>        <span class="hljs-function"><span class="hljs-keyword">function</span></span> localfunc <span class="hljs-comment">! 同样只能在包含它的函数中被调用</span><br>            ...<br>            ...<br>        <span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">function</span></span><br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="PURE函数"><a href="#PURE函数" class="headerlink" title="PURE函数"></a><code>PURE</code>函数</h2><p>在函数声明前加上<code>pure</code>代码即可，但是使用pure函数有诸多限制：</p>
+<ul>
+<li>pure函数的参数必须都是只读<code>intent(in)</code>属性；</li>
+<li>pure子程序的每一个参数都要赋予属性；</li>
+<li>pure函数不能使用<code>save</code>；</li>
+<li>pure函数中所包含的内部函数也必须全都是pure函数</li>
+<li>pure函数中不能使用<code>stop</code> \ <code>print</code>及跟输入输出相关的命令（<code>read</code> \ <code>write</code> \ <code>open</code> \ <code>close</code> \ <code>backspace</code> \ <code>endfile</code> \ <code>rewind</code> \ <code>inquire</code>等等）</li>
+<li>pure函数只能读取不能改变全部变量的值</li>
+</ul>
+<p>上面的这些限制，全部都是为防止在并行计算时出现一些奇怪的结果。比如说，同时执行A、B函数，两者都有在屏幕上输出信息的功能，这个时候就可能出现两个函数的结果混合在一起的错误结果。</p>
+<h2 id="ELEMENTAL函数"><a href="#ELEMENTAL函数" class="headerlink" title="ELEMENTAL函数"></a><code>ELEMENTAL</code>函数</h2><p>使用方法和pure函数相同，也可以用来做并行计算，限制也与pure函数相同，除此之外它还多了一个功能，对数组进行设置（同时也多了一个限制：<span style='background: yellow;'>参数不能是数组</span>。），下面举个栗子🌰：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">integer</span> a(<span class="hljs-number">10</span>)<br>a=func(a)<br><span class="hljs-comment">! 如果func是一个elemental函数，这段程序与下面的循环等价：</span><br><span class="hljs-keyword">do</span> i=<span class="hljs-number">1</span>,<span class="hljs-number">10</span><br>    a(i) = func(a(i))<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">do</span><br></code></pre></div></td></tr></table></figure>
+<hr>
+<h1 id="MODULE🍒"><a href="#MODULE🍒" class="headerlink" title="MODULE🍒"></a>MODULE🍒</h1><h2 id="主要结构"><a href="#主要结构" class="headerlink" title="主要结构"></a>主要结构</h2><p><code>module</code>可以用来封装程序模块，通常用来把程序中具备相关功能的函数和变量封装到一起。其语法如下：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">module</span> module_name <span class="hljs-comment">! 对模块的定义必须放到最前面</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span> [<span class="hljs-keyword">module</span> [module_name]]<br><br><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br>    <span class="hljs-keyword">use</span> module_name <span class="hljs-comment">! 使用前面定义的模块</span><br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub<br>    <span class="hljs-keyword">use</span> module_name<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    ...<br>    ...<br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p>上面的结构是在同一个文件中使用module模块，一般来说我们都是在一个代码文件中定义好所需要使用的函数和子程序，再在另一个文件中使用，这就类似于Python中的<code>import</code>模块的使用，这会在后面讲到。</p>
+<h2 id="MODULE中的函数"><a href="#MODULE中的函数" class="headerlink" title="MODULE中的函数"></a>MODULE中的函数</h2><p>在MODULE中编写函数，其结构如下：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">module</span> module_name<br>    ... <span class="hljs-comment">! 先写声明相关程序代码</span><br>    ...<br><span class="hljs-keyword">contains</span> <span class="hljs-comment">! contains 后开始写函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub_name<br>        ...<br>        ...<br>    <span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> [sub_name] <span class="hljs-comment">! subroutine 不能省</span><br><br>    <span class="hljs-function"><span class="hljs-keyword">function</span></span> func_name<br>        ...<br>        ...<br>    <span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">function</span></span> [func_name] <span class="hljs-comment">! function 不能省</span><br><span class="hljs-keyword">end</span> [<span class="hljs-keyword">module</span>]<br></code></pre></div></td></tr></table></figure>
+<p>还有一个比较方便的一点是：在同一个MODULE中，函数可以直接使用其他地方所声明的变量：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">module</span> tool<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">integer</span> :: a <span class="hljs-comment">! 此处声明了a变量</span><br>    ...<br>    ...<br><span class="hljs-keyword">contains</span><br>    <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> add()<br>        <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>        a = a+<span class="hljs-number">1</span><br>    ...<br>    ......<br></code></pre></div></td></tr></table></figure>
+<h2 id="一些不太常见的功能"><a href="#一些不太常见的功能" class="headerlink" title="一些不太常见的功能"></a>一些不太常见的功能</h2><h3 id="ENTRY"><a href="#ENTRY" class="headerlink" title="ENTRY"></a><code>ENTRY</code></h3><p><code>ENTRY</code>：为函数提供一个新的入口，举个栗子🌰:</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br><br>    <span class="hljs-keyword">call</span> sub<br>    <span class="hljs-keyword">call</span> mid<br><br>    <span class="hljs-keyword">stop</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub()<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br><br>    <span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;hello.&quot;</span><br>    <span class="hljs-built_in">entry</span> mid() <span class="hljs-comment">! 提供另一个入口</span><br>    <span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;Good morning!&quot;</span><br><br>    <span class="hljs-keyword">return</span><br><span class="hljs-keyword">end</span><br></code></pre></div></td></tr></table></figure>
+<p>其输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs terminal">hello.<br>Good morning!<br>Good morning!<br></code></pre></div></td></tr></table></figure>
+<h3 id="RETURN"><a href="#RETURN" class="headerlink" title="RETURN"></a><code>RETURN</code></h3><p>特殊的<code>RETURN</code>：提供额外的折返点，举个栗子🌰：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">program</span></span> main<br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">real</span> num<br><br>    <span class="hljs-built_in">write</span>(*,*)<span class="hljs-string">&quot;please input a number：&quot;</span><br>    read(*,*)num<br>    <span class="hljs-keyword">call</span> sub_return(num,*<span class="hljs-number">1</span>,*<span class="hljs-number">2</span>) <span class="hljs-comment">! 具体的折返点输入形式：‘*’ + 行代码</span><br>    <span class="hljs-built_in">write</span>(*,*)<span class="hljs-string">&quot;Default return&quot;</span><br>    <span class="hljs-keyword">stop</span><br>    <span class="hljs-number">1</span> <span class="hljs-built_in">write</span>(*,*)<span class="hljs-string">&quot;Return 1&quot;</span><br>    <span class="hljs-keyword">stop</span><br>    <span class="hljs-number">2</span> <span class="hljs-built_in">write</span>(*,*)<span class="hljs-string">&quot;Return 2&quot;</span><br>    <span class="hljs-keyword">stop</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> sub_return(num,*,*) <span class="hljs-comment">! 后面的‘*’号表示输入的折返点参数，几个‘*’表示几个折返点</span><br>    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">none</span><br>    <span class="hljs-keyword">real</span> num<br><br>    <span class="hljs-keyword">if</span> (num &gt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">write</span>(*,*)<span class="hljs-string">&quot;&gt;=0&quot;</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-comment">! 返回到默认的折返点</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &lt; -<span class="hljs-number">1</span>) <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;&lt;-1&quot;</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-comment">! 返回到特定的第一个折返点（行代码为1的位置）</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">write</span>(*,*) <span class="hljs-string">&quot;-1&lt;=num&lt;0&quot;</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> <span class="hljs-comment">! 返回到特定的第二个折返点（行代码为2的位置）</span><br>    <span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span><br></code></pre></div></td></tr></table></figure>
+<p>分别运行三次，输入不同的值，其运行结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs terminal">&gt;&gt;&gt;<br> please input a number：<br>2<br> &gt;=0<br> Default return<br>&gt;&gt;&gt;<br> please input a number：<br>-3<br> &lt;-1<br> Return 1<br>&gt;&gt;&gt;<br> please input a number：<br>-0.5<br> -1&lt;=num&lt;0<br> Return 2<br></code></pre></div></td></tr></table></figure>
+<hr>
+<h1 id="使用多个文件🥝"><a href="#使用多个文件🥝" class="headerlink" title="使用多个文件🥝"></a>使用多个文件🥝</h1><div class="note note-primary">
+            <p>通常情况下，我们会把具有相关功能的函数编写到不同的文件中，这样做有以下几个好处：</p><ul><li>独立文件中的函数，可以拿给其他的程序使用；</li><li>减少单个程序中的代码（此时与<code>MODULE</code>类似）；</li><li>可以加快编译速度，修改其中一个文件时，编译器只需要重新编译这一个文件就好了（这一点要和编译器的使用结合起来）。</li></ul>
+          </div>
+<h2 id="INCLUDE"><a href="#INCLUDE" class="headerlink" title="INCLUDE"></a><code>INCLUDE</code></h2><p><code>INCLUDE</code>命令可以在程序代码中插入另一个文件中的内容。现在假如我有两个文件：“mian.f90”以及“sub.f90”，后者中含有前者所需要使用的子程序代码，我们只需要在前者的代码中（<strong>任何位置</strong>）加入：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;sub.f90&#x27;</span><br></code></pre></div></td></tr></table></figure>
+<p>这样结果就相当于两个文件中的代码是写在同一个文件中的。</p>
+<h2 id="函数库"><a href="#函数库" class="headerlink" title="函数库"></a>函数库</h2><p>具有特殊功能的一组函数，可以编译成”<em>.LIB”来给其他人使用。这样的文件经过编译，没有办法读出里面的初始程序代码，但可以通过`use </em>.LIB`的方法来使用其中的各种函数（与Python的函数库类似）。</p>
+<hr>
+<h1 id="写在最后🍈"><a href="#写在最后🍈" class="headerlink" title="写在最后🍈"></a>写在最后🍈</h1><div class="note note-seccess">
+            <p>五百多行，四天时间，这大概是我写的最多的一次了</p><p><img src="https://file.tabirstrees.top/blogfile/EMO-wodingdezhu.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="我顶得住"></p>
+          </div>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/Fortran/">Fortran</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Fortran/">Fortran</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95/">函数语法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/09/11/geomagnetic-field-fromation/">
+                        <span class="hidden-mobile">地磁场形成原因文献阅读报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <!-- <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://hexo-comment-phi.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script> -->
+
+
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.4/dist/twikoo.all.min.js"></script>
+  <script>
+  twikoo.init({
+    envId: 'https://hexo-comment-phi.vercel.app/',
+    el: '#tcomment',
+    // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+    // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200509212356.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Power by Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Modified from Fluid</span></a> 
+  </div>
+  <a href="https://travellings.link/" target="blank" title="开往-友链接力"><img src="https://travellings.link/assets/logo.gif" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="开往-友链接力" width="120"></a>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            流星🌠划过 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            异乡来客👽 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+
+  
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("01/15/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "🌟星系🌟已在宇宙中孤独旋转💫&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+  
+  <!-- 备案信息 -->
+  <div class="beian" style="display: block;">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        渝ICP备20006079号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50023402000458"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+          <span class="beian-police-sep">|&nbsp;</span>
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="police-icon"/>
+            
+            <span>渝公网安备 50023402000458号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+    <script>(function (i, s, o, g, r, a, m) {
+        i['DaoVoiceObject'] = r;
+        i[r] = i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          };
+        i[r].l = 1 * new Date();
+        a = s.createElement(o);
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        a.charset = 'utf-8';
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js", 'daovoice');
+      daovoice('init', {
+        app_id: "1f64a5e9",
+      });
+      daovoice('update');
+    </script>
+  
+  
+  
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-166333226-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

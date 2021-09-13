@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;light&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link rel="icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link type='text/css' rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" media='all'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="tabris的遥远星系">
+  <meta name="author" content="Tabris Trees Severus">
+  <meta name="keywords" content="Python,Machine Learning,物理,数学,地球科学,哲学,生活">
+  
+  <title>放逐者 - 银海里泛摘天星</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/stackoverflow-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tabirstrees.top","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":"UA-166333226-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>银海里泛摘天星</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-stack-overflow-fill"></i>
+                有趣的东西
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://file.tabirstrees.top">
+                    <i class="icofont-cloud"></i>
+                    藏星星的树
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://image.pearvideo.com/cont/20190917/11956977-103331-1.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="放逐者">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Tabris Trees Severus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-14 15:00" pubdate>
+        2020年4月14日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      本文一共2.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      阅读大约需要
+      35
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">放逐者</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <div class="note note-primary">
+            <p>无垠的宇宙仿佛一块巨大的黑色天鹅绒，闪烁的群星变作天鹅绒上美丽的宝石，熠熠生辉的黑暗间一道明亮的轨迹插入！一艘“放逐者”号的小型探索式宇宙飞船在宇宙中已经航行了十年零四个月！</p>
+          </div>
+<p>“你觉得真的有神存在吗？”</p>
+<p> “这话是什么意思？”</p>
+<p> “我最近老是觉得有种被人监视的感觉，可是又找不出来到底是谁在监视！我有点害怕！”</p>
+<p> “你怕是最近忙晕了吧，脑子出问题了？”</p>
+<p> “我没和你开玩笑！我真的有这种感觉，当我一个人独处的时候就尤为强烈！一开始我也没当回事，可是直到最近发生了那件事，我就确定了我的感觉是真的！”</p>
+<p> “什么事？最近到底发生了什么？你可不要乱来我们这是在太空中，就我们两人，出了事可不会有人来救我们的！”</p>
+<p> “我知道！我没干什么，只是……，你知道的！就我那间实验室，我在我们开始这趟旅程的时候在一个培养基里培育了当时的一种新型细菌，就是为我们生产食物的那种！”</p>
+<p> “我知道，有什么问题吗？”</p>
+<p> “就在几天前，我在培养基的外围发现了一些经过变异的细菌，你不觉得奇怪吗？按照道理来说，它们离开了培养基中间的营养物质就基本无法存活的啊！可现在的情况看上去是他们在争先恐后的往外面爬！”</p>
+<p> “嗯？你为什么说‘争先恐后’？”</p>
+<p> “因为一发现这件事后我就清除了外围的细菌，可是第二天我再去看的时候又出现了这种情况，如果说前面一次是偶然，那这一次又算什么？接下来的几天里，我每天都重复地清理，但每天都会有新的细菌在培养基外出现，而且数量还越来越多！再这样下去，我的培养基就快要空了！”</p>
+<p> “呃，是有些奇怪！不过这也说不了什么吧！折和你感觉被人监视有什么关系吗？”</p>
+<p> “问题在于在此之前我的这种感觉都还是极其轻微的，但从那天起，我几乎每天都会梦到同一件事情！”</p>
+<p> “啥玩意儿！梦到同一件什么事情？”</p>
+<p> “我总是梦到自己似乎在一个实验室里。作为观察者观察一个我也说不上来是什么的东西，嗯，等等！气泡！对，那东西就像是气泡！不，应该是类似于气泡的膜！”</p>
+<p> “这有什么奇怪的，你想多了吧！”</p>
+<p> “不，重点在于气泡里面的东西！”</p>
+<p> “哈哈哈，里面有什么不得了的东西吗？连你都会害怕？”</p>
+<p> “你在梦里看见你自己是什么感受？”</p>
+<p> “你什么意思？”</p>
+<p> “我看到的！气泡里面是宇宙，虽然看上去很小，但是你却可以感觉到那种没有边界，无法逃离的无垠感！还有很多好看的闪闪发光的星星，就像是天鹅绒上面的宝石！我们的飞船就这样在天鹅绒上“滑行着”，我还看见了你我的脸！每当此时我都会惊醒！”</p>
+<p> “哈哈哈，你逗我吗？这哪里奇怪了？你是不是这几天太累了，这么多年的航行确实很枯燥啊！你可不要在这个时候出岔子，我看你这几天精神状态很不稳定！要不接下来的几天就由我来做全部的工作吧，你先休息几天？”</p>
+<p> “你什么意思？你觉得我在开玩笑？我精神好得很！你难道没注意到吗？那些细菌！那些到外围的细菌！不就是我们吗？我们向宇宙外围飞了这么久！你没有想过我们为什么要这个方向一直飞？我们到底再找个什么东西？还是说我们只是吃饱了撑的到处转转而已！？”</p>
+<p> “你说什么呢？我们不是为了探索宇宙来的吗？你不是要研究宇宙的形成的吗？这不就是我们的目的吗？你不知道我们在干什么？那这些年我们传回地球的数据是什么？你现在说这些话才是“吃饱了撑的吧”！”</p>
+<p> “很好，我来告诉你那些数据有什么意义！我们的世界，不，应该说是我们的宇宙是由更高维度的生命创造出来研究他们自身演化历程的！他们为了弄清楚自身的存在，构建了‘宇宙’这个模型来观察生命的诞生与进化，就像是我们研究细菌那样，它们准备很多个培养基，也就是宇宙！但仅仅只有少数的宇宙诞生了生命，更少的宇宙中生命诞生了文明！我们是被自然选择出来的幸运儿，然而这仍然改变不来我们存在价值就是被观察，被记录的事实！我们将会是他们最宝贵的研究材料，当你的研究材料想要逃离你给他们的用来观察的器皿时你会怎么做？如果是我，就像我之前做的那样，我的第一反应是清除！决不能让他们破坏了实验材料的稳定，要知道这可是亿万分之一概率才会出现的奇迹，说什么我都不会让机会丢失的！另外，你忘了一件事，我们最重要的使命不是了解宇宙的形成，而是弄清楚宇宙到底是什么样的！我们的航线一开始就是设定好的，从离开地球开始我们就一直朝着一个方向在前进！反正我们对于那些‘掌权者’根本不重要，当时选中我们来做这次航行就是为了不让我们参与地球的事务，亏我们还激动万分的为自己将成为第一批作超过太阳系的星际航行的人而骄傲！他们一开始就是决定好的不让我们回去，而且航线对于宇宙这种每个方向看起来根本就差不多的东西根本没什么意义！所以，我们只是被利用来寻求可能存在的宇宙的边界的！但是你去看看这些年的数据，你没有发现我们所在的这个宇宙越来越像是一个‘膜’了吗？你还记得很多年前的‘膜理论’吗？你再想想所谓的‘分形宇宙’的看法！我绝对不会相信你没有经历过被监视的感受！我们作为实验对象却正在试图逃出这个‘实验器皿’！你觉得我们前面将会遇到什么？嗯？我们就快要被抹除掉了！”</p>
+<p>… …沉默！</p>
+<p> “你疯了！”</p>
+<p> “呵呵！也许吧！我知道你觉得我说的有理，你无法反驳我！你只是不愿意接受人类悲惨的现实，我们在我们所认为的世界里相互争夺，相互欺骗，相互之间勾心斗角，明争暗斗！到头来只是别人的研究材料，只是想想可能性就觉得可悲可笑！呵呵呵~！”</p>
+<p> “你够了，即使你是对的！我们作为人类只是别人的实验材料，但是当我们诞生出智慧，催生出思想的那一刻起，我们就有了存在的价值，有了灵性！从我们文明诞生伊始我们就是和你所说的更高等的生命是平等的！他们有的东西我们同样是拥有的，我们有作为实验品的可能他们也绝不会排除在外！这个世界上，除了你所说的阴暗面也还有着很多美好的东西！为什么你没有看见这些东西？你没有看见爱，看见追求，看见苦难中那些难能可贵，熠熠生辉的品质？我可以这样给你说：无论地球上的那些人是不是想要将我永久的放逐，我都为自己所正在做的事情感到骄傲，因为我是在为整个人类文明存在做出贡献！我知道长期以来无聊的旅程有多么地折磨一个人的意志！我建议你还是休息吧！现在真正危险的是你，你自己心里也清楚的，在这种长期的孤独状态下是很容易疯掉的！我还不想失去你这个我现在唯一可以说话人！所以你最好是赶快给我想清楚！如果有一天你真的疯了，我会毫不犹豫的杀了你，你知道我会的！”</p>
+<p> “… …你就是这样的人，我知道，你会的！我现在累了，想睡一会了。我会考虑你说的话，再见。”</p>
+<p> 他起身。快速的，低着头，回房去了！看不见他脸上的表情，但是你仍可以感觉到他在发抖！</p>
+<p> “唉~！”</p>
+<p> 剩下来的一个人叹气，面无表情！他知道，至少某些人为的既定事实是大家都心知肚明的，只是他不愿意提起！现在，他就这样坐在那里！</p>
+<p> 不一会，他也起身，记录下探测仪上的数据并传回给遥远的地球，他知道地球有和飞船仪器同步的记录设备作为备份，但还是每天会亲自己记录一遍再传回到地球的数据中心，这是他唯一感觉到与那颗遥远星球还存在着联系的时刻，十多年来，地球与这艘飞船的通讯仅仅只有这冰冷的数据，也只有在这时候他的内心才是最平静的。</p>
+<p> 但是最近的数据似乎越来越奇怪了，所有的数据都在显示飞船附近暗物质密度正在随着航行深入急剧增加着，这意味着飞船承受的引力也会随之加大。飞船似乎正在穿越一个临界带。</p>
+<p> 数据传回地球后，他回到了自己的房间，沉沉睡去，睡着前他在想不知道他的梦里会不会也出现自己！</p>
+<p>“放逐者”仍然在天鹅绒上缓缓前行着。天鹅绒的黑色似乎愈发的深厚了，上面流光的宝石也变得越来越少，到最后也许只会剩下那永无止尽的黑色吧！此刻的地球，数据中心的工作人员发现一直正常连接并同步状态的“放逐者”在发出数据的那一刻，就那一瞬间，完完全全的失去了信号！人们再也无法了解到这个伟大的“放逐者”身上到底发生了什么，只知道它失联之前的所有数据都是正常的并且现阶段来说相当具有研究意义的！几天之后，数据中心将其被黑洞吞噬的消息外放，从此它连同它上面的人真正意义上的被放逐。也许多年以后，新的“放逐者”会找到“他们”的残骸！<br><div class="note note-success">
+            <p>——end——</p>
+          </div></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%88%9B%E4%BD%9C/">创作</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%88%9B%E4%BD%9C/%E5%B0%8F%E8%AF%B4/">小说</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%88%9B%E4%BD%9C/%E5%B0%8F%E8%AF%B4/%E7%A7%91%E5%B9%BB/">科幻</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B0%8F%E8%AF%B4/">小说</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84/">自己写的</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/28/me/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">something I won't talk at almost time</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/04/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A021/">
+                        <span class="hidden-mobile">吴恩达机器学习——梯度下降法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <!-- <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://hexo-comment-phi.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script> -->
+
+
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.4/dist/twikoo.all.min.js"></script>
+  <script>
+  twikoo.init({
+    envId: 'https://hexo-comment-phi.vercel.app/',
+    el: '#tcomment',
+    // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+    // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200509212356.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Power by Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Modified from Fluid</span></a> 
+  </div>
+  <a href="https://travellings.link/" target="blank" title="开往-友链接力"><img src="https://travellings.link/assets/logo.gif" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="开往-友链接力" width="120"></a>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            流星🌠划过 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            异乡来客👽 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+
+  
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("01/15/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "🌟星系🌟已在宇宙中孤独旋转💫&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+  
+  <!-- 备案信息 -->
+  <div class="beian" style="display: block;">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        渝ICP备20006079号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50023402000458"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+          <span class="beian-police-sep">|&nbsp;</span>
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="police-icon"/>
+            
+            <span>渝公网安备 50023402000458号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+    <script>(function (i, s, o, g, r, a, m) {
+        i['DaoVoiceObject'] = r;
+        i[r] = i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          };
+        i[r].l = 1 * new Date();
+        a = s.createElement(o);
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        a.charset = 'utf-8';
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js", 'daovoice');
+      daovoice('init', {
+        app_id: "1f64a5e9",
+      });
+      daovoice('update');
+    </script>
+  
+  
+  
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-166333226-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

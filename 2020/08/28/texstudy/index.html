@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;light&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link rel="icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png">
+  <link type='text/css' rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" media='all'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="tabris的遥远星系">
+  <meta name="author" content="Tabris Trees Severus">
+  <meta name="keywords" content="Python,Machine Learning,物理,数学,地球科学,哲学,生活">
+  
+  <title>Latex 论文排版相关学习 - 银海里泛摘天星</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/stackoverflow-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tabirstrees.top","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":"UA-166333226-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>银海里泛摘天星</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-stack-overflow-fill"></i>
+                有趣的东西
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" target="_blank" rel="noopener" href="https://file.tabirstrees.top">
+                    <i class="icofont-cloud"></i>
+                    藏星星的树
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20161123111920_M2RkP.thumb.700_0.jpeg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Latex 论文排版相关学习">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Tabris Trees Severus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-28 10:20" pubdate>
+        2020年8月28日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      本文一共2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      阅读大约需要
+      37
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Latex 论文排版相关学习</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="1-一点点关于Latex的介绍"><a href="#1-一点点关于Latex的介绍" class="headerlink" title="1. 一点点关于Latex的介绍"></a>1. 一点点关于Latex的介绍</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828160435.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="20200828160435"></p>
+<p>Latex是一款排版软件，诸如教材、报纸、书信等纸质印刷相关的排版都是可以做的。一般人使用Latex最多的地方是论文的写作，特别是涉及到大量公式的数学物理方面的科技论文，这方面目前有很多网上流行的模板，我们只需要在了解简单的Latex基础操作的基础上带入模板就好，所以还是非常方便的。</p>
+<blockquote>
+<p>有很多 Geeks 或者 LaTeX’s Fanatical Fans 过分地强调了 LaTeX 的一些并非重点的特性，以至于很多初学者会觉得 LaTeX 很神秘很复杂，从而引发了初学者的畏难情绪甚至是负面情绪。尽管这些 Fans 说得并没有错，我是说在事实上，但是他们的表达方式和内心态度却间接阻碍了 LaTeX 的发展，我想这也是和他们的初衷相悖的。————Liam Huang<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://liam.page/2014/09/08/latex-introduction/
+">[1]</span></a></sup></p>
+</blockquote>
+<h1 id="2-Latex写作的进行"><a href="#2-Latex写作的进行" class="headerlink" title="2. Latex写作的进行"></a>2. Latex写作的进行</h1><h2 id="2-1-准备知识"><a href="#2-1-准备知识" class="headerlink" title="2.1 准备知识"></a>2.1 准备知识</h2><p>Latex中以<code>%</code>作为注释开头，也就是不会输出<code>%</code>后直到行末的所有内容，同时不会影响最终的排版效果，仅供人们在阅读源代码是的注释。至于数学意义上的“%”字符，需要在<code>%</code>之前加上<code>\</code>进行转义（escape）。即：<code>\%</code>。除此之外还有很多特殊字符的使用需要各位注意:</p>
+<blockquote>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828115548.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="20200828115548"></p>
+</blockquote>
+<p>当我们需要对我们的内容做出明确控制时，我们需要调用控制序列来解决问题，类似于其他编程语言中的函数。比如我们需要在第一行指明文档类型，需要使用:<code>\documentclass[]&#123;article&#125;</code>，这就是一个控制序列（命令、标记），以<code>\</code>开头，以第一个<strong>空格或者非字母的字符</strong>结束的一串文字。<code>&#123;&#125;</code>中是这个控制序列的必要参数(此处为‘article’，其作用是调用名为“article”的文档类），部分控制序列还会有方括号<code>[]</code>，表示可选参数。</p>
+<blockquote>
+<p>所谓的文档类，是TeX系统预设或者用户自己给定的一些格式的集合，不同的文档类对应了不同的输出效果。</p>
+</blockquote>
+<p>TeX中的控制序列包括了两种，一种是一个控制序列单独使用，例如<code>\documentclass[]&#123;&#125;</code>等；另一种是需要两个配套的控制序列成对出现，通常是<code>\begin</code>和<code>\end</code>，这两个控制序列以及其中间的内容被称为<em>环境</em>。他们之后的第一个必要参数总是一致的，被称为环境名。<br>只有在<code>document</code><strong>环境</strong>中的内容才能够被输出到文档中去或是作为控制序列对文档产生影响。也就是说，在<code>\end&#123;document&#125;</code>之后插入的内容都是无效的。</p>
+<p>在从<code>\documentclass&#123;article&#125;</code>到<code>\begin&#123;document&#125;</code>之间的部分被称为“导言区(preamble)”，你可以将导言区理解为使用某些特殊的控制序列对整篇文章的格式进行设置的区域，比如我们可以在导言区引用一些额外的宏包以及设置页面大小、页眉页脚、章节标题样式等等<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="http://liuchengxu.org/blog-cn/posts/quick-latex/
+">[2]</span></a></sup>。</p>
+<p>另外，类似于markdown文件，TeX中换行是需要两次换行才能起效（需要一个空行），否则会被处理成一个简单的空格，且命令后面的空格会被忽略，需要使用<code>\</code>进行转义。为了将命令（控制序列）的范围进行限制，需要使用<code>&#123;&#125;</code>将命令内容包括起来<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" aria-label="http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf
+">[3]</span></a></sup>，如：<code>\frac&#123;a&#125;&#123;b&#125;</code>表示：</p>
+<script type="math/tex; mode=display">\frac{a}{b}</script><h2 id="2-2-导言区控制序列"><a href="#2-2-导言区控制序列" class="headerlink" title="2.2 导言区控制序列"></a>2.2 导言区控制序列</h2><ul>
+<li><code>\documentclass[]&#123;&#125;</code>规定了使用的文档模板，是文件必须的命令，可供选择的必要参数有：article、book、report、beamer等TeX自带模板或使用者自己准备的一系列模板；可选参数主要定义打印输出时的编码、纸张等条件。如：<code>\documentclass[UTF8,a4paper]&#123;article&#125;</code></li>
+<li><code>\usepackage&#123;&#125;</code>可以用来引用宏包，常用的有：<code>graphicx</code>——插图；<code>amsmath</code>——一些方便的公式、符号命令等”</li>
+<li>除此之外还涉及到标题、作者以及日期等等分别用以下的控制序列进行控制：<code>\title&#123;&#125;</code>、<code>\author&#123;&#125;</code>、<code>\date&#123;&#125;</code>，这些内容在导言区设置好后可以利用<code>\maketitle</code>控制序列在环境区域内按照特定格式输出</li>
+</ul>
+<p>以下是演示：<br><figure class="highlight taggerscript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs taggerscript"><span class="hljs-symbol">\d</span>ocumentclass[UTF8]&#123;ctexart&#125;<br><span class="hljs-symbol">\t</span>itle&#123;你好，world!&#125;<br><span class="hljs-symbol">\a</span>uthor&#123;Liam&#125;<br><span class="hljs-symbol">\d</span>ate&#123;<span class="hljs-symbol">\t</span>oday&#125;<br><span class="hljs-symbol">\b</span>egin&#123;document&#125;<br><span class="hljs-symbol">\m</span>aketitle<br>你好，world!<br><span class="hljs-symbol">\e</span>nd&#123;document&#125;<br></code></pre></div></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828144122.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="20200828144122"></p>
+<h2 id="2-3-章节和段落"><a href="#2-3-章节和段落" class="headerlink" title="2.3 章节和段落"></a>2.3 章节和段落</h2><p>在文档类 “article/ctexart” 中，定义了五个控制序列来调整行文组织结构。他们分别是</p>
+<ul>
+<li><code>section&#123;&#125;</code></li>
+<li><code>subsection&#123;&#125;</code></li>
+<li><code>subsubsection&#123;&#125;</code></li>
+<li><code>paragraph&#123;&#125;</code></li>
+<li><code>subparagraph&#123;&#125;</code></li>
+</ul>
+<p>在”report/ctexrep”文档类中，还有<code>\chapter&#123;·&#125;</code>；”book/ctexbook”文档类中，还定义了<code>\part&#123;·&#125;</code>。取决于各种文档类（模板）中所定义的章节控制序列。</p>
+<p>以下是演示：<br><figure class="highlight livescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs livescript"><span class="hljs-string">\documentclass[UTF8]&#123;ctexart&#125;</span><br><span class="hljs-string">\title&#123;你好，world!&#125;</span><br><span class="hljs-string">\author&#123;Liam&#125;</span><br><span class="hljs-string">\date&#123;\today&#125;</span><br><span class="hljs-string">\begin&#123;document&#125;</span><br><span class="hljs-string">\maketitle</span><br><span class="hljs-string">\section&#123;你好中国&#125;</span><br>中国在East Asia.<br><span class="hljs-string">\subsection&#123;Hello</span> Beijing&#125;<br>北京是capital <span class="hljs-keyword">of</span> China.<br><span class="hljs-string">\subsubsection&#123;Hello</span> Dongcheng District&#125;<br><span class="hljs-string">\paragraph&#123;Tian&#x27;anmen</span> Square&#125;<br><span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> the center <span class="hljs-keyword">of</span> Beijing<br><span class="hljs-string">\subparagraph&#123;Chairman</span> Mao&#125;<br><span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> the center <span class="hljs-keyword">of</span> 天安门广场。<br><span class="hljs-string">\subsection&#123;Hello</span> 山东&#125;<br><span class="hljs-string">\paragraph&#123;山东大学&#125;</span> <span class="hljs-keyword">is</span> one <span class="hljs-keyword">of</span> the best university <span class="hljs-keyword">in</span> 山东。<br><span class="hljs-string">\end&#123;document&#125;</span><br></code></pre></div></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828145319.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="20200828145319"></p>
+<h2 id="2-4-插入数学公式、图片或表格"><a href="#2-4-插入数学公式、图片或表格" class="headerlink" title="2.4 插入数学公式、图片或表格"></a>2.4 插入数学公式、图片或表格</h2><h3 id="2-4-1-数学公式插入"><a href="#2-4-1-数学公式插入" class="headerlink" title="2.4.1 数学公式插入"></a>2.4.1 数学公式插入</h3><p>LaTex相对于Word最优秀的地方莫过于他对于数学公式的渲染非常出色，不用我们刻意去调整数学公式的排版，只需要我们输入类似于编程语言的伪代码，系统便可以自己将伪代码转化为我们需要的数学表达。同时大部分的数值计算软件或者编程软件都自带了可以将计算结果转化为TeX语言的函数，甚至可以在Latex系统中嵌入Mathematica进行科学计算，不过这都是进阶内容了。目前姑且还用不到。以上这些足以说明Tex在论文排版中的优越地位！</p>
+<p>数学公式或者图片的插入需要在导言区引用之前提到过的宏包，即：<br><figure class="highlight dust"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dust"><span class="xml">\uespackage</span><span class="hljs-template-variable">&#123;amsmath&#125;</span><br></code></pre></div></td></tr></table></figure></p>
+<p>文本中数学公式的引用主要有两种方式：行内模式 (inline) 和行间模式 (display)。前者在正文的行文中，插入数学公式；后者独立排列单独成行，并自动居中。</p>
+<ul>
+<li>行内公式：<ul>
+<li><script type="math/tex; mode=display">...</script></li>
+<li><code>\(...\)</code></li>
+<li><code>\begin&#123;math&#125; ... \end&#123;math&#125;</code></li>
+</ul>
+</li>
+<li>行间公式：<ul>
+<li><code>\[ ... \]</code>     （无编号）</li>
+<li>$$$ … $$$     （无编号，会改变行文的默认行间距，不推荐）</li>
+<li><code>\begin&#123;displaymath&#125; ... \end&#123;displaymath&#125;</code>     （无编号）</li>
+<li><code>\begin&#123;equation*&#125; ... \end&#123;equation*&#125;</code>     （无编号）</li>
+<li><code>\begin&#123;equation&#125;...\end&#123;equation&#125;</code>     （有编号）</li>
+</ul>
+</li>
+</ul>
+<p>至于各种数学符号的表达以及特殊字符的控制序列由于太多，不好整理，可以参看<a target="_blank" rel="noopener" href="https://blog.csdn.net/GarfieldEr007/article/details/51646604">此处</a>或者<a target="_blank" rel="noopener" href="https://blog.csdn.net/lanxuezaipiao/article/details/44341645">这里</a>。</p>
+<h3 id="2-4-2-图片插入"><a href="#2-4-2-图片插入" class="headerlink" title="2.4.2 图片插入"></a>2.4.2 图片插入</h3><p>插入图片的方式比较多，这里推荐上述graphicx宏包中的<code>\includegraphics</code>命令进行操作：</p>
+<figure class="highlight dust"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dust"><span class="xml">\documentclass</span><span class="hljs-template-variable">&#123;article&#125;</span><span class="xml"></span><br><span class="xml">\usepackage</span><span class="hljs-template-variable">&#123;graphicx&#125;</span><span class="xml"></span><br><span class="xml">\begin</span><span class="hljs-template-variable">&#123;document&#125;</span><span class="xml"></span><br><span class="xml">\includegraphics</span><span class="hljs-template-variable">&#123;a.jpg&#125;</span><span class="xml"> % 名为“a.jpg”的文件与TeX源文件同目录</span><br><span class="xml">\end</span><span class="hljs-template-variable">&#123;document&#125;</span><br></code></pre></div></td></tr></table></figure>
+<p>如果图片超过了输出文件的纸张大小，或者效果不太好的时候可以用 <code>\includegraphics</code> 控制序列的可选参数来控制。比如：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css">\includegraphics<span class="hljs-selector-attr">[width = .8\textwidth]</span>&#123;<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.jpg</span>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在<a target="_blank" rel="noopener" href="http://texdoc.net/texmf-dist/doc/latex/graphics/graphicx.pdf">此处</a>可以获取到关于上述宏包的文档。</p>
+<h3 id="2-4-3-表格插入"><a href="#2-4-3-表格插入" class="headerlink" title="2.4.3 表格插入"></a>2.4.3 表格插入</h3><p>tabular 环境提供了最简单的表格功能。它用 \hline 命令表示横线，在列格式中用 | 表示竖线；用 &amp; 来分列，用 \ 来换行；每列可以采用居左、居中、居右等横向对齐方式，分别用 l、c、r 来表示<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="https://liam.page/2014/09/08/latex-introduction/
+">[1]</span></a></sup>。</p>
+<p>以下是演示：<br><figure class="highlight livescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs livescript"><span class="hljs-string">\begin&#123;tabular&#125;&#123;|l|c|r|&#125;</span><br> <span class="hljs-string">\hline</span><br>操作系统&amp; 发行版&amp; 编辑器<span class="hljs-string">\\</span><br> <span class="hljs-string">\hline</span><br>Windows &amp; MikTeX &amp; TexMakerX <span class="hljs-string">\\</span><br> <span class="hljs-string">\hline</span><br>Unix/Linux &amp; teTeX &amp; Kile <span class="hljs-string">\\</span><br> <span class="hljs-string">\hline</span><br>Mac OS &amp; MacTeX &amp; TeXShop <span class="hljs-string">\\</span><br> <span class="hljs-string">\hline</span><br>通用&amp; TeX Live &amp; TeXworks <span class="hljs-string">\\</span><br> <span class="hljs-string">\hline</span><br><span class="hljs-string">\end&#123;tabular&#125;</span><br></code></pre></div></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828153609.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="20200828153609"></p>
+<p>有时候我们会遇到表格或者图片的位置不好确定，这个时候我们可以把它们设置为“浮动体”，具体可以参见<a target="_blank" rel="noopener" href="https://liam.page/2014/09/08/latex-introduction/#%E6%B5%AE%E5%8A%A8%E4%BD%93">此处</a></p>
+<h1 id="3-版面调整"><a href="#3-版面调整" class="headerlink" title="3. 版面调整"></a>3. 版面调整</h1><p>版面设置一般采用各种宏包进行设置，使用较多的包有：<code>geometry</code>（页边距）、<code>fancyhdr</code>（页眉页脚）、<code>indentfirst</code>（首行缩进）以及<code>setspace</code>（行间距）。一些自带的控制序列也可以用来进行版面设置，比如段间距的设置可以用<code>\parskip</code>调整。</p>
+<p>诸如此类的版面调整的命令由于各位大佬做的宏包太多，加上每个人使用系统或者习惯上的区别，整理起来有很大的困难，最好的办法是边用边学，并且逐渐形成自己的习惯。正所谓熟能生巧，在不断运用的过程中就能够找到最适合自己的哪一种办法，这里提供一些可以达到目的的简单方法。另外提供一下相关方面的博客以供参考。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://liam.page/2014/09/08/latex-introduction/#%E7%89%88%E9%9D%A2%E8%AE%BE%E7%BD%AE">一份其实很短的Latex文档——Liam Huang </a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56405574">LaTeX入门(七)——页面设置——勥巭炛</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/da10bc1c497a">17LaTeX学习系列之—-LaTeX的版面设计——张一根</a></li>
+</ul>
+<h1 id="4-参考文献（文档）"><a href="#4-参考文献（文档）" class="headerlink" title="4. 参考文献（文档）"></a>4. 参考文献（文档）</h1><div class="note note-success">
+            <ol><li><a target="_blank" rel="noopener" href="https://liam.page/2014/09/08/latex-introduction/">https://liam.page/2014/09/08/latex-introduction/</a></li><li><a target="_blank" rel="noopener" href="http://liuchengxu.org/blog-cn/posts/quick-latex/">http://liuchengxu.org/blog-cn/posts/quick-latex/</a></li><li><a target="_blank" rel="noopener" href="http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf">http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf</a></li><li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/da10bc1c497a">https://www.jianshu.com/p/da10bc1c497a</a></li><li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56405574">https://zhuanlan.zhihu.com/p/56405574</a></li></ol>
+          </div>
+<h1 id="5-补张图"><a href="#5-补张图" class="headerlink" title="5. 补张图"></a>5. 补张图</h1><p>哈哈哈哈哈O(∩_∩)O😎😎😎</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1598496066545.jpeg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="1598496066545"><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://liam.page/2014/09/08/latex-introduction/">https://liam.page/2014/09/08/latex-introduction/</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="http://liuchengxu.org/blog-cn/posts/quick-latex/">http://liuchengxu.org/blog-cn/posts/quick-latex/</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf">http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/da10bc1c497a">https://www.jianshu.com/p/da10bc1c497a</a>
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjQueDxs73rAhVOqZ4KHSD_BMgQFjACegQIBRAB&amp;url=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F56405574&amp;usg=AOvVaw1j3bECgHAB5XTcdABhOEDL">https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjQueDxs73rAhVOqZ4KHSD_BMgQFjACegQIBRAB&amp;url=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F56405574&amp;usg=AOvVaw1j3bECgHAB5XTcdABhOEDL</a>
+<a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/">编程</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B/LaTex/">LaTex</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Latex/">Latex</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%BA%E6%96%87%E6%8E%92%E7%89%88/">论文排版</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/10/T-PROGS/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">T-PROGS</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/14/gqj/">
+                        <span class="hidden-mobile">宫崎骏电影合集(持续更新中......)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <!-- <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://hexo-comment-phi.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script> -->
+
+
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.4/dist/twikoo.all.min.js"></script>
+  <script>
+  twikoo.init({
+    envId: 'https://hexo-comment-phi.vercel.app/',
+    el: '#tcomment',
+    // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+    // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200509212356.jpg" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Power by Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Modified from Fluid</span></a> 
+  </div>
+  <a href="https://travellings.link/" target="blank" title="开往-友链接力"><img src="https://travellings.link/assets/logo.gif" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="开往-友链接力" width="120"></a>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            流星🌠划过 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            异乡来客👽 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+
+  
+  <div>
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("01/15/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "🌟星系🌟已在宇宙中孤独旋转💫&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+    </script>
+  </div>
+  
+  <!-- 备案信息 -->
+  <div class="beian" style="display: block;">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        渝ICP备20006079号
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50023402000458"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+          <span class="beian-police-sep">|&nbsp;</span>
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/img/police_beian.png" srcset="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/fan.gif" lazyload alt="police-icon"/>
+            
+            <span>渝公网安备 50023402000458号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+    <script>(function (i, s, o, g, r, a, m) {
+        i['DaoVoiceObject'] = r;
+        i[r] = i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          };
+        i[r].l = 1 * new Date();
+        a = s.createElement(o);
+        m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        a.charset = 'utf-8';
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js", 'daovoice');
+      daovoice('init', {
+        app_id: "1f64a5e9",
+      });
+      daovoice('update');
+    </script>
+  
+  
+  
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-166333226-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
