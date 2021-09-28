@@ -48,6 +48,144 @@
       </tags>
   </entry>
   <entry>
+    <title>fortran-file</title>
+    <url>/2021/09/28/fortran-file/</url>
+    <content><![CDATA[<div class="note note-primary">
+            <p>计算机有两项功能，一项是计算、处理数据；一项是保存数据。前面的内容都是在讨论如何处理数据，现在来讨论如何保存数据。</p><p>数据的保存主要是依赖于文件，程序将数据写入文件，就可以将这些数据长久的保存，直到文件被更改或者销毁。</p>
+          </div>
+<h1 id="文件读取的概念🍉"><a href="#文件读取的概念🍉" class="headerlink" title="文件读取的概念🍉"></a>文件读取的概念🍉</h1><p>Fortran中文件读取有“顺序读取”和“直接读取”两种：</p>
+<ol>
+<li>顺序读取：指的是读取文件时按照文件中数据的顺序从头开始，依次往下读取，如同听录音带一样。这是最简单的方法，足以应付绝大多数情况；</li>
+<li>直接读取：指读取文件时可以任意跳到文件的任何一个位置开始读写，类似于DVD，可以直接欣赏某一个部分。</li>
+</ol>
+<p>保存文件同样可以有两种方法：</p>
+<ol>
+<li>文本文件：所有的数据都是容易阅读的字符或者符号，可以使用文本编辑器打开；</li>
+<li>二进制文件：数据被保存为二进制代码（全是数字0和1组成），需要专门的软件打开。</li>
+</ol>
+<p>相对来说，二进制的文件读取速度更快，它的保存格式与数据在内存中的格式是一致的，不像文本格式需要经过转换；其次，二进制的文件更加省空间，很简单，计算机底层的结构就是二进制，自然具有各方面的优势。</p>
+<hr>
+<h1 id="文件的操作🍈"><a href="#文件的操作🍈" class="headerlink" title="文件的操作🍈"></a>文件的操作🍈</h1><div class="note note-primary">
+            <p>该部分的内容很多，只需要记住常见命令即可，很多命令基本不会用到。</p>
+          </div>
+<h2 id="OPEN的使用"><a href="#OPEN的使用" class="headerlink" title="OPEN的使用"></a><code>OPEN</code>的使用</h2><p><code>open</code>的使用与<code>write(*,*)</code>以及<code>read(*,*)</code>中的第一个*号（输入\输出的位置，默认是键盘\屏幕）有关：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran">open(<span class="hljs-keyword">unit</span>=<span class="hljs-number">10</span>,<span class="hljs-keyword">file</span>=<span class="hljs-string">&#x27;hello.txt&#x27;</span>)<br><span class="hljs-comment">! unit=N用来给后面的文件指定一个代码（N），file则表示打开的文件</span><br><span class="hljs-comment">! 文件不存在时则创建一个新文件</span><br><span class="hljs-built_in">write</span>(<span class="hljs-number">10</span>,*) <span class="hljs-string">&quot;hello,World!&quot;</span><br><span class="hljs-comment">! 如此一来，&quot;hello,World!&quot;这个字符串就被保存到文件hello.txt中了</span><br></code></pre></div></td></tr></table></figure>
+<p><code>open</code>的详细参数非常之多，这里列出比较常见的：</p>
+<ol>
+<li>unit=number，number必须是一个正整数，可以是变量，尽量不要用1，2，5，6（<span style='background: yellow;'>1，5是默认输入的位置，即键盘；2，6是默认输出的位置，即屏幕</span>）；</li>
+<li>file=’filename’，很简单，文件名，注意要符合操作系统的文件命名习惯；</li>
+<li>form=’formatted’（ <strong>‘文本格式’</strong> 保存）\’unformatted’（ <strong>‘二进制格式’</strong> 保存）,默认’<strong>文本格式</strong>‘；</li>
+<li>status=’new’（打开新文件）\’old’（打开旧文件）\’replace’（文件若已经存在，则替换原文件，不存在则新建）\’scratch’（暂时文件，此时不用指定文件名，程序结束文件会被自动删除）\’unkown’（由编译器自定义，一般相当于’replace’），默认’unkown’；</li>
+<li>access=’sequential’（ <strong>‘顺序读取’</strong> 文件）\’direct’（ <strong>‘直接读取’</strong> 文件），默认 <strong>‘顺序读取’</strong> ；</li>
+<li>err=label，文件打开错误时，程序会跳转到label所指的行代码继续执行；</li>
+<li><p>iostat=var，将文件打开的状态赋值给var变量（这意味着要对其进行声明）：</p>
+<div class="hljs code-wrapper"><pre><code>var &gt; 0 : 读取操作发生错误；
+var &lt; 0 : 文件终了；
+var = 0 : 文件读取正常。
+</code></pre></div></li>
+<li><p>action=’read’（<strong>只读</strong>）\’write’（<strong>只写</strong>）\’readwrite’（<strong>读写皆可</strong>，默认）。</p>
+</li>
+</ol>
+<h2 id="WRITE，READ的使用"><a href="#WRITE，READ的使用" class="headerlink" title="WRITE，READ的使用"></a><code>WRITE</code>，<code>READ</code>的使用</h2><p><code>read</code>和<code>write</code>的详细是类似的，所以放到一起介绍：</p>
+<ol>
+<li>unit=number，和<code>open</code>的<code>unit</code>联系起来，用来指定输出\输入的位置；</li>
+<li>fmt=format，指定输入输出的格式；</li>
+<li>nml=namelist，指定读写某个namelist的内容（namelist的含义需要到后面介绍）；</li>
+<li>rec=record，在直接读取文件中，设置索要读写的文件模块的位置；</li>
+<li>iostat\err\end，用法和<code>open</code>一样；</li>
+<li>advance=yes（默认状态，每读写一次会向下移动一行）\no（暂停自动换行）。</li>
+</ol>
+<h2 id="查询文件的状态INQUIRE"><a href="#查询文件的状态INQUIRE" class="headerlink" title="查询文件的状态INQUIRE"></a>查询文件的状态<code>INQUIRE</code></h2><p><code>inquire</code>命令主要用来查询文件此时的状态，其同样支持很多参数：</p>
+<ol>
+<li>UNIT=number，文件代号；</li>
+<li>FILE=filename，文件名；</li>
+<li><p>IOSTAT=stat，查询文件读取情况，会设置一个整数给后面的变量：</p>
+<div class="hljs code-wrapper"><pre><code>stat&gt;0   文件读取操作错误
+stat=0   文件读取操作正常
+stat&lt;0   文件终了
+</code></pre></div></li>
+<li><p>ERR=errlabel，发生错误时会转移到复制的代码行继续执行程序；</p>
+</li>
+<li>EXIST=exist，检查文件是否存在，返回布尔变量，真表示存在，假值表示不存在；</li>
+<li>OPEND=opened，检查文件是否用已经用open打开，返回布尔变量，真表示已经打开，假表示尚未打开；</li>
+<li>NUMBER=number，用文件名来查询这个文件所给定的代码；</li>
+<li>NAMED=named，查询文件是否取了名字，也就是检查文件是否为临时保存盘，返回值为逻辑数；</li>
+<li>ACCESS=access，检查文件的读取格式，返回一个字符串；</li>
+<li>SEQUENTIAL=sequential，查看文件是否使用顺序格式，会返回一个字符串；</li>
+<li>DIRECT＝direct，查看文件是否使用直接格式，会返回一个字符串；</li>
+<li>FORM=form，查看文件的保存方法，返回字符串；</li>
+<li>FORMATTED=fmt，查看文件是否是文本文件，返回字符串；</li>
+<li>UNFORMATTED=fmt，查看文件是否是二进制文件，返回字符串；</li>
+<li>RECL=length，返回open文件时recl栏的设置值</li>
+<li>NEXTREC=nr，返回下一次文件读写的位置；</li>
+<li>BLANK=blank，返回值是字符串，用来查看open文件时的blank参数所给定的字符串值；</li>
+</ol>
+<p><strong>以下是fortran 90的添加功能：</strong></p>
+<ol>
+<li>POSITION=position，返回打开文件时position字段所给定的字符串, 可能是’REWIND’,’APPEND’,’ASIS’, ‘UNDEFINED’</li>
+<li>ACTION=action，返回打开文件时action 字段所赋值的字符串，可能是’READ’, ‘WRITE’,’READWRITE’。</li>
+<li>READ=read,返回字符串，检查文件是否为只读文件；</li>
+<li>WRITE=write，返回一个字符串，检查文件是否可写入；</li>
+<li>READWRITE=readwrite 返回一个字符串，检查文件是否可以同时读及写；</li>
+<li>DELIM=delim，返回打开文件时，DELIM字段所设置的字符串，返回值可以是：’APOSTROPHE’, ‘QUOTE’, ‘NONE’, ‘UNDEFINED’；</li>
+<li>PAD=pad，返回打开文件时PAD字段所设置的字符串，返回值可以是：’YES’, ‘NO’。</li>
+</ol>
+<p><strong>其他文件运行命令：</strong></p>
+<ol>
+<li>BACKSPACE(UNIT=number, ERR=errlabel, IOSTAT=iostat)，把文件读写位置退回一步；</li>
+<li>ENDFILE(UNNIT=number, ERR=errlabel, IOSTAT=iostat)，使用这个命令会把目前文件的读写位置变成文件的结尾；</li>
+<li>REWIND(UNIT=number, ERR=errlabel, IOSTAT=iostat)，把文件的读写位置倒回到文件开头；</li>
+<li><p>CLOSE(UNIT=number, STATUS=string, ERR=errlabel, IOSTAT=)，把文件关闭，不要进行读写操作；</p>
+<div class="hljs code-wrapper"><pre><code>STAT=&#39;KEEP&#39;      会在文件关闭后，保留这个文件。是默认状态。
+STAT=&#39;DELETE&#39;    在文件关闭后，消除这个文件。
+</code></pre></div></li>
+</ol>
+<div class="note note-danger">
+            <ul><li>程序结束时候会自动关闭文件，不过最好要养成自己关闭文件的习惯。</li><li>在读文件的时候要懂得略掉一些没有必要的数据，如文件中的注释行。</li><li>自由格式的数据文件读取（可以先读入前面的判断字符，结合select case或其他方法判断读入的数据）在open,read,write时使用不同的unit值，就可以打开多个文件。最好不要同时打开很多个文件。</li></ul>
+          </div>
+<hr>
+<h1 id="读取文件方式的操作🍇"><a href="#读取文件方式的操作🍇" class="headerlink" title="读取文件方式的操作🍇"></a>读取文件方式的操作🍇</h1><p>顺序文件在读写时，只能从头开始一步一步向下进行。改变文件读写位置时，只能一步一步地进退，或者直接移回文件开头。</p>
+<p>直接读取文件的意思是把文件的空间、内容事先分区成好几个同样大小的小模块，这些模块会自动按照顺序编号，读取文件时，要先赋值文件读写位置在第几个模块（<code>read</code>命令中的<code>rec</code>参数）</p>
+<hr>
+<h1 id="二进制文件的操作🍒"><a href="#二进制文件的操作🍒" class="headerlink" title="二进制文件的操作🍒"></a>二进制文件的操作🍒</h1><p>二进制文件由于是按照计算机内存保存数据的方式对数据进行保存的，所以会存在和文本文件字符数不一致的问题：也就是<code>open</code>命令中<code>recl</code>（表示输出长度）所设置的整数 n 的值所代表的大小会因为编辑器的不同而不同，不过都是可以经过设置而改变的。</p>
+<p>另外，二进制文件通常是一串紧密的数字，也就没有必要为了增加可读性而在数据之间使用区分符号，因为二进制文件没有可读性可言。</p>
+<div class="note note-success">
+            <p>二进制文件相对于文本文件来说不会存在数据损失的情况（主要是在保存数字时），所以当需要存放“<strong>精确</strong>”且“<strong>大量</strong>”的数据时建议使用二进制进行保存</p>
+          </div>
+<hr>
+<h1 id="Internal-File（内部文件）🥥"><a href="#Internal-File（内部文件）🥥" class="headerlink" title="Internal File（内部文件）🥥"></a>Internal File（内部文件）🥥</h1><p>所谓内部文件就是<span style='background: yellow;'>使用写入文件的方法，把数据写到一个字符串变量中</span>。举个栗子🌰：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran">a=<span class="hljs-number">2</span><br>b=<span class="hljs-number">3</span><br><span class="hljs-keyword">character</span> (len=<span class="hljs-number">20</span>) :: string<br><span class="hljs-built_in">write</span> (<span class="hljs-keyword">unit</span>=string, <span class="hljs-keyword">fmt</span>=<span class="hljs-string">&quot;(I2,&#x27;+&#x27;,I2,&#x27;=&#x27;,I2)&quot;</span>) a, b, a+b <span class="hljs-comment">!把字符串变量当作输出的目的。</span><br><span class="hljs-built_in">write</span>(*, *) string<br></code></pre></div></td></tr></table></figure>
+<p>结果是: </p>
+<div class="hljs code-wrapper"><pre><code>  2+ 3= 5
+</code></pre></div><p>还可以经过<code>read</code>命令从字符串读入数据：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">integer</span> :: a<br><span class="hljs-keyword">character</span> (len=<span class="hljs-number">20</span>) :: string=<span class="hljs-string">&quot;123&quot;</span><br>read(string, *) a<br><span class="hljs-built_in">write</span>(*, *) a<br></code></pre></div></td></tr></table></figure>
+<p>在某些情况下使用内部文件来设置数据有十分必要的好处：</p>
+<p>使用<code>read</code>命令从键盘输入数据时，如果用户输入错误的数据，会导致死机。比如如需要输入整数时却输入英文字母，就可能会死机。比较好的处理办法是，程序先暂时把数据当作字符串读入，检查字符串中是否含有不合理的字符，如果字符串中都是0～9的数字字符，就把字符串转成整数，不然就请用户在输入一次。</p>
+<p>另外，内部文件还可应用在动态改变输出格式，输出格式可以事先存放在字符串中，程序进行时，动态改变字符串内容就可以改变输出格式。</p>
+<hr>
+<h1 id="NAMELIST🍓"><a href="#NAMELIST🍓" class="headerlink" title="NAMELIST🍓"></a><code>NAMELIST</code>🍓</h1><p><code>NAMELIST</code>是一种特殊的输入输出方法，可以把一组相关变量封装到一起，输入/输出变量时是需要在<code>read</code>/<code>write</code>的<code>nml</code>字段中设置需要使用哪一个 namelist 即可。其使用方法类似于变量，需要做声明：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Fortran"><span class="hljs-keyword">namelist</span> /nl_name/ var1,var2,...<br><span class="hljs-comment">! 使用namelist必须要对其取一个名字</span><br><span class="hljs-built_in">write</span>(*,<span class="hljs-keyword">nml</span>=nl_name) <span class="hljs-comment">! 输出nl_name这个 namelist</span><br></code></pre></div></td></tr></table></figure>
+<p>输出 namelist 时不能带有格式，因为其格式在编译器中已经设置好了，由编译器决定，一般来说是：</p>
+<div class="hljs code-wrapper"><pre><code>  &amp;nl_name （&amp;符号 + namelist的名字）
+  A       =           1,  （输出变量的名称、等号、内容）
+  B       =           2,  （变量之间用逗号或者空格进行分隔）
+  C       =           3
+  /  （最后用除号结束）
+</code></pre></div><p>输入时也要按照类似的格式进行输入：</p>
+<div class="hljs code-wrapper"><pre><code>  &amp;nl_name a=1 b=2 c=3 /
+</code></pre></div><p>输入时可以不输入所有的变量，也可以不按照顺序输入变量，甚至可以重复输入变量的值（以最后一次输入的值为准）。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>编程</category>
+        <category>Fortran</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>Fortran</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Fortran语言学习——函数</title>
     <url>/2021/09/13/fortran-function/</url>
     <content><![CDATA[<div class="note note-primary">
