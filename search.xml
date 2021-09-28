@@ -48,7 +48,7 @@
       </tags>
   </entry>
   <entry>
-    <title>fortran-file</title>
+    <title>Fortran语言学习——文件</title>
     <url>/2021/09/28/fortran-file/</url>
     <content><![CDATA[<div class="note note-primary">
             <p>计算机有两项功能，一项是计算、处理数据；一项是保存数据。前面的内容都是在讨论如何处理数据，现在来讨论如何保存数据。</p><p>数据的保存主要是依赖于文件，程序将数据写入文件，就可以将这些数据长久的保存，直到文件被更改或者销毁。</p>
