@@ -142,14 +142,14 @@
   </url>
   
   <url>
-    <loc>http://tabirstrees.top/links/index.html</loc>
+    <loc>http://tabirstrees.top/messageboard/index.html</loc>
     
     <lastmod>2021-09-11</lastmod>
     
   </url>
   
   <url>
-    <loc>http://tabirstrees.top/messageboard/index.html</loc>
+    <loc>http://tabirstrees.top/links/index.html</loc>
     
     <lastmod>2021-09-11</lastmod>
     
@@ -242,13 +242,6 @@
   </url>
   
   <url>
-    <loc>http://tabirstrees.top/tags/%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95/</loc>
-    <lastmod>2021-10-02</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://tabirstrees.top/tags/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/</loc>
     <lastmod>2021-10-02</lastmod>
     <changefreq>daily</changefreq>
@@ -264,6 +257,13 @@
   
   <url>
     <loc>http://tabirstrees.top/tags/%E8%A1%8C%E6%98%9F%E5%BD%A2%E6%88%90%E4%B8%8E%E6%BC%94%E5%8C%96/</loc>
+    <lastmod>2021-10-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://tabirstrees.top/tags/%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95/</loc>
     <lastmod>2021-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -326,6 +326,13 @@
   </url>
   
   <url>
+    <loc>http://tabirstrees.top/tags/%E8%87%AA%E6%88%91/</loc>
+    <lastmod>2021-10-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://tabirstrees.top/tags/%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E7%89%A9%E7%90%86/</loc>
     <lastmod>2021-10-02</lastmod>
     <changefreq>daily</changefreq>
@@ -348,13 +355,6 @@
   
   <url>
     <loc>http://tabirstrees.top/tags/%E6%96%87%E7%8C%AE%E7%BF%BB%E8%AF%91/</loc>
-    <lastmod>2021-10-02</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://tabirstrees.top/tags/%E8%87%AA%E6%88%91/</loc>
     <lastmod>2021-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -482,14 +482,14 @@
   </url>
   
   <url>
-    <loc>http://tabirstrees.top/categories/%E7%AC%94%E8%AE%B0/%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E7%89%A9%E7%90%86/</loc>
+    <loc>http://tabirstrees.top/categories/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2021-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://tabirstrees.top/categories/%E7%94%9F%E6%B4%BB/</loc>
+    <loc>http://tabirstrees.top/categories/%E7%AC%94%E8%AE%B0/%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E7%89%A9%E7%90%86/</loc>
     <lastmod>2021-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
