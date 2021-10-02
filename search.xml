@@ -1,435 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>T-PROGS</title>
-    <url>/2021/01/10/T-PROGS/</url>
-    <content><![CDATA[<h1 id="关于T-PROGS的简单介绍"><a href="#关于T-PROGS的简单介绍" class="headerlink" title="关于T-PROGS的简单介绍"></a>关于T-PROGS的简单介绍</h1><p>T-PROGS是一个可以模拟地质岩性在三维空间中的随机分布的成熟软件，它原本是基于Fortran语言的开源软件包，现在的地下水模拟软件GMS软件系统中已经包含了该模块，可以直接在GMS中直接使用。本文的目的在于记录该软件模块的使用学习和过程记录。</p>
-<h1 id="为什么要使用T-PROGS"><a href="#为什么要使用T-PROGS" class="headerlink" title="为什么要使用T-PROGS"></a>为什么要使用T-PROGS</h1><p>在地下水数值模拟的过程中，由于地下水系统属于巨复杂系统，将其复杂的运移过程简单的用一个微分方程的计算结果代替必然会产生大量的不确定性；另外模拟所需要的参数在获取过程中同样会带来各种各样的不确定性。目前的地下水数值模拟逐渐将目光集中到地下水模拟的不确定性分析上，在各种非确定分析方法中使用广泛的随机模拟方法最为常见。</p>
-<h2 id="随机模拟方法"><a href="#随机模拟方法" class="headerlink" title="随机模拟方法"></a>随机模拟方法</h2><p>地下水随机模拟主要有矩方程法和Monte Carlo法。矩方程法通过求解随机微分方程直接求取模拟结果的各阶统计矩；Monte-Carlo方法则是通过随机场生成器实现大量的确定模型，对这些实现的模拟结果进行统计分析得到模拟的统计特征。</p>
-<p>在Monte-Carlo方法过程中涉及到随机参数场的生成。对<strong>渗透性</strong>这一参数而言，为了分析其在模拟过程中的不确定性大小，对其进行参数随机模拟，于是需要生成大量的渗透系数随机场。一般来说，渗透系数的自然分布满足<strong>对数正态分布</strong>的关系，在已知水文地质参数信息的帮助下通过各种条件模拟方法便可以模拟出未知点处的渗透系数概率分布情况，并基于此概率生成大量的确定参数场进行地下水数值模拟。</p>
-<h2 id="建模过程"><a href="#建模过程" class="headerlink" title="建模过程"></a>建模过程</h2><p>此处涉及到水文地质概念模型建模过程的问题：1. 直接建模，在建立水文地质概念模型时直接输入所需要的各种边界条件，源汇项以及水文地质参数；2. 间接建模，在水文地质参数的建立过程中，并不是直接划分参数分区并给定相应的参数，而是先通过三维地质建模建立研究区的三维地质模型，再根据地质介质与水文地质参数之间的相互联系间接地建立水文地质参数场。间接建模的好处是考虑了自然情况下的物理因素（一般来说，误差范围内的水文地质参数就是由地质结构以及地层介质来决定的），减少了由于人为的参数分区而带来不确定性。</p>
-<p>在此基础上，我们可以说实际上T-PROGS是一种基于马尔科夫链的“转移概率地统计（_Transition Probability Geostatistical_）”模型，用于生成地层岩性的三维随机分布。他主要处理的是类似钻孔信息的<strong>分类</strong>地质参数（指示地统计方法）。通过间接建模的方法利用T-PROGS便可以直接由钻孔数据得到渗透系数等水文地质参数的随机分布场，相对于其他方法更加占据优势，在国内外也得到了大量的应用。<del>举例就不要举例了，又不是写论文……</del></p>
-<hr>
-<h1 id="理论与方法"><a href="#理论与方法" class="headerlink" title="理论与方法"></a>理论与方法</h1><h2 id="地统计方法简单介绍"><a href="#地统计方法简单介绍" class="headerlink" title="地统计方法简单介绍"></a>地统计方法简单介绍</h2><p>地质统计学的核心以及基础是”变差(变异)函数”:</p>
-<blockquote>
-<p>空间中一点$x$与其相邻一点$x+h$的某一相关变量$Z(x)$方差的差值,称为$Z(x)$在$x$方向上的变异函数,记为$\gamma(x,h)$:  </p>
-<script type="math/tex; mode=display">
-\gamma(x, h)=\frac{1}{2} \operatorname{Var}[Z(x)-Z(x+h)]</script></blockquote>
-<p>上式是在以为情况下成立的,高维情况都是以一维情况为基础,在二阶平稳场(简单来说就是$\gamma(x,h)$只与$h$有关,任何一点相同距离内的变差函数的均值都是一样的)中有:</p>
-<blockquote>
-<script type="math/tex; mode=display">
-\gamma(h)=\frac{1}{2} E\left[(Z(x)-Z(x+h))^{2}\right]-\frac{1}{2}(E[Z(x)-Z(x+h)])^{2}</script></blockquote>
-<p>如此一来,变异函数就被简化为一个单变量函数,并且在$x$方向上任取两点$x_i,x_i+h$对应的变异函数都是以$h$为自变量的随即变量的一个统计样本,其所有取值构成了一次统计。</p>
-<p>对于<strong>克里金方法(Kriging Method)</strong>来说,空间中一点处某一参数$z$的估计值为:</p>
-<script type="math/tex; mode=display">
-\hat z_o = \sum_{i=1}^n\lambda_iz_i</script><p>其中$\hat{z_o}$是点处的估计值，即$z_o=z(x_o,y_o)$,$λ_i$是权重系数。克里金方法是用空间上所有已知点的数据加权求和来估计未知点的值。此处的权重是能够满足点 $(x_o,y_o)$处的估计值$\hat{z_o}$与真实值$z_o$的差最小的一套最优系数，即</p>
-<script type="math/tex; mode=display">
-\min_{\lambda_i} Var(\hat{z_o}-z_o)</script><p>同时满足无偏估计的条件:</p>
-<script type="math/tex; mode=display">
-E(\hat{z_o}-z_o)=0</script><p>求解简化（拉格朗日乘数法）之后可以得到下面的一组控制方程:</p>
-<script type="math/tex; mode=display">
-\left\{
-    \begin{aligned}
-        \sum_{i=1}^n\lambda_i\gamma((x_i,y_i),(x_j,y_j))+\mu &=\overline\gamma((x_o,y_o),V) \\
-        \sum_{i=1}^n\lambda_i &= 1
-    \end{aligned}
-\right.</script><p>在上式中唯一未知的便是我们先前所提到的变差函数（或称变异函数,半方差函数；此处的$\overline\gamma(x_o,V)$表示以$(x_o,y_o)$为中心的一个空间范围$V$内所有的变差函数的均值）。事实上，根据地理学第一定律：距离越近空间相关性越强，我们可以简单地做出假设：</p>
-<blockquote>
-<p>两点的变差函数与其距离之间存在某种函数关系，这种函数关系可以是线性、二次函数、指数、对数关系。</p>
+    <title>宫崎骏电影合集(持续更新中......)</title>
+    <url>/2020/07/14/gqj/</url>
+    <content><![CDATA[<h1 id="充满幻想的作品中热爱的幸福"><a href="#充满幻想的作品中热爱的幸福" class="headerlink" title="充满幻想的作品中热爱的幸福"></a>充满幻想的作品中热爱的幸福</h1><blockquote>
+<div class="note info flat"><blockquote>
+<p> “创作一部动画也就是创造一个虚拟的世界，这个世界慰藉着那些失去勇气的、与残忍现实搏斗的灵魂。”    ——宫崎骏</p>
 </blockquote>
-<p>通过对数据集进行分析，从而寻找到一个最优的拟合曲线拟合距离$d$与变差函数$\gamma$的关系，得到函数关系式$\gamma = \gamma(d)$那么对于任意两点$(x_i,y_i)$，$(x_j,y_j)$，先计算他们之间的距离$d_{ij}$然后根据得到的函数关系就可以得到这两点的变差函数，进一步的解决空间中一点的参数估计问题。</p>
-<hr>
-<h2 id="马尔科夫链与转移概率地统计"><a href="#马尔科夫链与转移概率地统计" class="headerlink" title="马尔科夫链与转移概率地统计"></a>马尔科夫链与转移概率地统计</h2><p>转移概率是马尔科夫链的一个重要概念，马尔科夫过程假设事物后一时刻的状态至于前一时刻的状态相关。换句话说：今天的事情由昨天完全决定，明天的事情由今天完全决定，并且与此前的每一天都没有直接关系。在此基础上所谓转移概率就是从一种状态转变为另一种状态的概率，在地统计学中有如下的表达：</p>
-<script type="math/tex; mode=display">
-t_{jk}(h) = Pr(k\ occurs\ at\ (x+h)\ |\ j\ occurs\ at\ x)</script><p>它表示已知$x$处的岩性为$j$，$(x+h)$处岩性为$k$的概率。</p>
-<p>利用指示地统计中指示变量的形式（$I_j(x)$）我们可以将变差函数转为下面的形式（协变差函数）：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    \gamma_{jk}(h) &= \frac{1}{2}E{[I_j(x)-I_j(x+h)][I_k(x)-I_k(x+h)]} \\
-    I_j(x) &=\left\{
-        \begin{aligned}
-            1\ &,if\ occurs\ at\ x\\
-            0\ &,otherwise
-        \end{aligned}
-    \right.
-\end{aligned}</script><p>同时，将转移概率用指示变量表示：</p>
-<script type="math/tex; mode=display">
-t_{jk}(h) = \frac{E[(I_j(x)I_k(x+h))]}{E[I_j(x)]}</script><blockquote>
-<p>PS:这里使用均值是一个统计过程，实际过程过我们不可能知道概率的实际大小，所以利用统计得到的两个事件各自在多个统计点发生的平均数之比来代替概率之比。事实上，在指示地统计中均值和概率是等价的。</p>
+</div>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/吉卜力动画背景.jpg" alt="吉卜力动画背景"></p>
 </blockquote>
-<p>紧接着,我们可以将转移概率和所谓协变差函数结合起来,找出它们的关系式:</p>
-<p>作如下的假设:</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    P_j(x) &= E[E[I_j(x)]]\\
-    P_{jk}(h) &= E[E[I_j(x)I_k(x+h)]]
-\end{aligned}</script><p>特别的,我们有:$P_{jk}(0) = P_j(x)P_k(x)$，如此一来，协变差函数以及转移概率就变成了如下的形式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    \gamma_{jk}(h) &= P_{jk}(0)-\frac{1}{2}(P_{jk}(h)+P_{jk}(-h))\\
-    t_{jk}(h) &= \frac{P_{jk}(h)}{P_j(x)}\\
-    \Rightarrow\ \ \ \gamma_{jk}(h) &= P_j(x){t_{jk}(0)-\frac{1}{2}[t_{jk}(h)+t_{jk}(-h)]}
-\end{aligned}</script><p>最后，结合克里金方法与转移概率，用转移概率矩阵表达上述普通克里金方程：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{cccc}
-t_{i j}\left(x_{1}-x_{1}\right) & \cdots & t_{i j}\left(x_{N}-x_{1}\right) & 1 \\
-\vdots & \ddots & \vdots & \vdots \\
-t_{i j}\left(x_{1}-x_{N}\right) & \cdots & t_{i j}\left(x_{N}-x_{N}\right) & 1 \\
-1 & \cdots & 1 & 0
-\end{array}\right]\left[\begin{array}{c}
-\lambda_{j, 1} \\
-\vdots \\
-\lambda_{j, n} \\
-\mu
-\end{array}\right]=\left[\begin{array}{c}
-t_{i j}\left(x-x_{1}\right) \\
-\vdots \\
-t_{i j}\left(x-x_{N}\right) \\
-1
-\end{array}\right]</script><p>这样，通过转移概率利用克里金进行空间插值就得到了实现。</p>
-<hr>
-<div class="note primary flat"><p>参考文献:<br>克里金(Kriging)插值的原理与公式推导:<a href="https://xg1990.com/blog/archives/222">https://xg1990.com/blog/archives/222</a></p>
-<p>董英, 基于随机水文地质结构的华北平原地下水流模拟研究, 2006, 中国地质大学（北京）. </p>
+<p>在日本动漫界无数动画创作者中，有很多优秀的，带有自己强烈的个人色彩的导演，比如庵野秀明、汤浅政明、久米田康治以及新房昭之等等。他们有的作品画风诡异，内涵深刻，有的人作品明嘲暗讽，针砭时政，有的人被称为“爱的战士”，家里的刀片为今后退出动漫界开五金店铺平了道路。然而，在动漫发展到今天，这些风格我们已经见怪不怪了，甚至感到了一些审美疲劳。</p>
+<p>但是有一个人的作品，无论你在什么时候看，都会给人一种强烈的感动，浓浓的温馨，出动人们心底最原始的悸动。童年开始便伴随我们成长（<span class="heimu" >还记得当初上高一的时候找同学借的手机回家，半夜爬起来偷偷蹲在角落蹭楼下的WiFi看电影的那种激动感 </span>），长大之后更教会我们热爱生活，这个世界上除他之外再也找不出第二个人能创作出如此美好的动画。每个人都不得不承认宫崎骏是这个世界上最能抓住我们内心最柔软地方的人，看他的作品的时候是平静的，但是这种平静中还蕴含着对生命，对生活的热爱，让人感到这世界上的一切都是那么的自然，相较起来那些黑暗绝望的角落在这份自然面前倒显得无所谓了。</p>
+<p>为了重温那些可能已经淡忘的感动，在女朋友的提醒下，我决定在浩如烟海的网络中找到宫崎骏老爷子所有的电影，并放到自己的网盘上。希望自己还有满怀希望的所有人都可以保持看完电影的之后感受到的老爷子传达给我们的，<strong>对于我们所生活的世界的希望和幸福感</strong>！</p>
+<h1 id="1-借东西的小人阿埃丽缇"><a href="#1-借东西的小人阿埃丽缇" class="headerlink" title="1.借东西的小人阿埃丽缇"></a>1.借东西的小人阿埃丽缇</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/艾莉缇.jpg" alt="艾莉缇"></p>
+<div class="note light flat"><p>这是宫崎骏作品里面我女朋友最喜欢的一部（<span class="heimu">应该是这样的吧hahaha，不知道是千与千寻多一点还是这个多一点。</span>）。对我来讲当初看完之后感慨万千，片尾艾莉缇他们离开那么漂亮温馨的家（那个房子真的爱了爱了！❤😍）准备去其他的新的地方生存，站在茶壶中回望曾经生活的地方和男主告别时，让我有种长大离开家乡去很远很远的地方，以往那些快乐美好的日子全部成为了有可能被淡忘记忆的伤感。也让我联想到《猫武士》（英国儿童文学作品，非常推荐！）中那个猫离开故土去新月山谷经过山坡时候的场景，那是我第一次对世界之外产生强烈憧憬，又对故土产生无限眷恋的时刻。另外男主和艾莉缇不能在一起（虽然知道不可能，但还是好难受）我真的意难平！—— _”Tabris Trees Severus”_</p>
 </div>
-]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>地下水数值模拟</category>
-      </categories>
-      <tags>
-        <tag>GMS</tag>
-        <tag>地下水溶质运移模型</tag>
-        <tag>地统计</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>comment-mail-style</title>
-    <url>/2021/08/13/comment-mail-style/</url>
-    <content><![CDATA[<div class="note primary flat"><p>最近更换了评论系统为<a href="https://twikoo.js.org/">Twikoo</a>（很好用，推荐大家使用）。完了之后感觉它的评论邮件通知样式有点不太好看，于是自己折腾了一个<span class='heimu'>也不是很好看的</span>自己弄的样式，分享出来<span class='heimu'>接受批斗</span>！</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/艾莉缇的房子.jpg" alt="艾莉缇的房子"></p>
+<h1 id="2-天空之城"><a href="#2-天空之城" class="headerlink" title="2.天空之城"></a>2.天空之城</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/希达.gif" alt="希达"></p>
+<div class="note light flat"><p>异世界的故事总是让我兴趣盎然，宫崎骏的很多动漫都有这种设定，这也是我喜欢他的一部分原因。天空之城就好像一个童话故事，希达是天空之城遗落的公主，巴斯就是是勇敢的骑士，他们一起寻找天空之城并打败了坏人，最后幸福的生活在一起（童话故事标准结局(≧ω≦)/）。</p>
+<p>希达扎着两根长长的辫子，蓝色的长裙子，看起来好温柔好舒服，里面惊险的战斗场景也是宫崎骏动漫里面难得的场面，天空之城安静的像世外桃源，自然美丽的环境，还有许多远古生物，和激烈的战斗形成鲜明对比。最后为了阻止了更惨烈战争的爆发，希达毁灭了天空之城，这样一个美好的世界就这样消失了……但是，这警示我们要珍惜现在美丽的地球，千万不要让它被战争毁灭了！宫崎骏真的很热爱和平呢！哈哈（∩△∩）❤永远喜欢❤！  —— _”艾莉缇”_</p>
 </div>
-<hr>
-<p>首先上代码：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nui-fClear sR0&quot;</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">table</span> <span class="attr">style</span>=<span class="string">&quot;margin: auto; width: 340px; height: 500px;&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">&quot;background: #f5f7f6;padding: 10px;border-radius: 5px;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">    display: -webkit-box;</span></span></span><br><span class="line"><span class="string"><span class="tag">    -webkit-box-pack: center;</span></span></span><br><span class="line"><span class="string"><span class="tag">&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://file.tabirstrees.top/blogfile/piano%20xun.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;haokan&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color:rgb(255, 233, 233);background-position: center;border-left: 3px solid #414040;box-shadow:0 1px 3px #AAAAAA;line-height:180%;padding:0 15px 12px;width:500px;color:#030303;font-family:&#x27;Century Gothic&#x27;,&#x27;Trebuchet MS&#x27;,&#x27;Hiragino Sans GB&#x27;,微软雅黑,&#x27;Microsoft Yahei&#x27;,Tahoma,Helvetica,Arial,&#x27;SimSun&#x27;,sans-serif;font-size:12px;margin: auto;&quot;</span>&gt;</span> </span><br><span class="line">       </span><br><span class="line">       <span class="tag">&lt;<span class="name">h2</span> <span class="attr">style</span>=<span class="string">&quot;border-bottom:1px solid rgb(0, 0, 0);font-size:14px;font-weight:normal;padding:13px 0 10px 8px;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color: #f59200;font-weight: bold;&quot;</span>&gt;</span><span class="symbol">&amp;gt;</span> <span class="tag">&lt;/<span class="name">span</span>&gt;</span>您在 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none;color: #f59200;&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span> 博客上的留言有回复啦！<span class="tag">&lt;/<span class="name">h2</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color: rgb(208, 212, 247); padding:5px 12px 5px 12px;margin-top:18px;border-radius: 3px;&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;PARENT_NICK&#125; 同学，您曾在<span class="tag">&lt;<span class="name">strong</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>上发表评论:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;PARENT_COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;NICK&#125; 给您的回复如下:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>您可以点击 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;POST_URL&#125;&quot;</span>&gt;</span>查看回复的完整內容 <span class="tag">&lt;/<span class="name">a</span>&gt;</span>，欢迎再次光临 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span>。<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">table</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">   <span class="selector-class">.comment</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border</span>: <span class="number">0px</span> solid <span class="number">#DDD</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">15px</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">margin</span>:<span class="number">18px</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span></span><br><span class="line"><span class="css">   &#125;</span></span><br><span class="line"><span class="css"> </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<hr>
-<p>然后是效果图:</p>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/comment-mail-style评论邮件通知.jpg" alt="comment-mail-style评论邮件通知"></p>
-<hr>
-<div class="note success flat"><p>感觉还是太丑了,还是html和css的基础不太好,有时间得再好好学一学。大家有好看的模板也可以推荐给我啊😂！</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/QQ图片20200715092901.jpg" alt="QQ图片20200715092901"></p>
+<h1 id="3-悬崖上的金鱼姬"><a href="#3-悬崖上的金鱼姬" class="headerlink" title="3.悬崖上的金鱼姬"></a>3.悬崖上的金鱼姬</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/89B14785A06910E5ECB8A46B32E5DD91.png" alt="89B14785A06910E5ECB8A46B32E5DD91"></p>
+<div class="note light flat"><p>之前我听过很多宫崎骏的电影，我却只看过《哈尔的移动城堡》，实际上我这个人不太喜欢看动漫，很需要机缘，所以看《悬崖上的金鱼姬》的机缘是因为高三的音乐课，宫崎骏和久石让的合作有很多，金鱼姬的电影里就有很多好听的音乐【原谅我比较俗，只能用简单的“好听”来形容音乐】，所以老师就上课的时候放给我们看了。一节课45分钟，看了三个礼拜吧，高中除了学习之外的事情还真不多，反而这音乐课放的电影让我印象颇深。</p>
+<p>《悬崖上的金鱼姬》画面真的很美，宫崎骏的每一个动漫画面都美，最令我印象深刻的就是里面的食物了，看着就太香啦~【原谅我是个吃货，太生动形象了】</p>
+<p> “波妞，喜欢宗介。”这句话虽然被抖音玩烂了，但是里面包含了小孩子之间很纯粹的喜欢，每次听到都会莞尔，毕竟这种喜欢对于不再是孩提的我，还是很珍贵的。剧里的每一位角色都很善良，那位看起来是反派的老爸也很善良，初心是为了保护波妞呀【妥妥女儿奴了】。这真是一部很美好的电影。电影结局很美好，但这部动漫更深层的含义就是呼吁人们保护海洋了，确实应该人人有责，很多循环后遭殃的还是人类。那就写到这里吧，宫崎骏的电影很值得看。——_”微封”_</p>
+</div>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/CE6198FAB518A44FFC426E88C7F3A38E.png" alt="CE6198FAB518A44FFC426E88C7F3A38E"></p>
+<h1 id="4-侧耳倾听"><a href="#4-侧耳倾听" class="headerlink" title="4.侧耳倾听"></a>4.侧耳倾听</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/3b9b918e7d601606cea47dec3059a495.gif" alt="3b9b918e7d601606cea47dec3059a495"></p>
+<div class="note light flat"><p>相比保卫蓝天 守护家园 拯救世界 有时候生活中的小美好反而让我更为感动<br>侧耳倾听 在看完整部电影之后 我觉得这个名字好美啊 它的内容其实更加的贴近生活话 描述的是男女主角互相勉励互相学习 为各自的理想而奋斗 然后男女主相爱的故事 听起来很像偶像剧 但是它却没有那种俗气</p>
+<p>“我早就想好了，要这样载着你，翻山越岭”</p>
+<p>“我不要成为你的包袱，我也早就想好了，要在背后支持你”</p>
+<p>这部电影里我最爱的两句话<br>之前和朋友聊起这部电影，记得自己说过：哈这么小就谈恋爱啊 不太好吧<br>有时候看一部电影最怕的就是真的将自己代入进去  高三好像自己喜欢上一个女孩子 自己也没想到会在那么不合宜的时间有不合适的想法 脑子里一直在打消那些念头 可是上课偶尔还是想回头望望 就好像自己一直在等她一样 她是班上新来的复读生 自己一有什么东西就想和她分享 一个解题思路 或者自己认识的一个有趣的单词<br>自己总会有无限的热情去找她 站在那里等她<br>可是其实好像她并不喜欢这样子 忘记发生了什么事 在我转头回去找她的时候 她突然凶着对我说了一句：我没有这么多时间可以浪费 也许你轻而易举就能碰的东西 我要努力好久<br>好像其实那一刻自己有一点明白侧耳倾听描述的是什么 又好像突然一切也不符合我自己<br>现在看侧耳倾听其实多的是带了自己心中的那份遗憾去欣赏一个特别特别美妙的故事<br>也许一直不会发生<br>虽然有时候觉得这个电影和这件事没多大关系 但是自己一提到这部电影就会想起这件事<br>也许自己那份遗憾在这部电影中得以满足</p>
+<p>可是这么美好的一部电影也会因为一句台词毁掉<br>所以请不要看最后一点 也不要听那句<br>你将来愿意嫁给我吗？<br>可能我提会不到这句话的浪漫。——_“初见”_</p>
+</div>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/5409b8cd83d8222544dd29a63c96f734.png" alt="5409b8cd83d8222544dd29a63c96f734"></p>
+<h1 id="电影下载地址"><a href="#电影下载地址" class="headerlink" title="电影下载地址"></a>电影下载地址</h1><p>可在线播放,但是由于网速限制等问题,建议下载之后播放,用云盘中软件文件夹下的potplayer播放器就不存在字幕的问题。(云盘服务器到期没续费，文件全部丢到了，没办法，估计是看不到了。)</p>
+<div class="note success flat"><p><a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E5%80%9F%E4%B8%9C%E8%A5%BF%E7%9A%84%E5%B0%8F%E4%BA%BA%E8%89%BE%E8%8E%89%E7%BC%87" 
+  title="借东西的小人阿埃丽缇"><i class="点击我去往放电影的地方！"></i><span>借东西的小人阿埃丽缇</span></a> <a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E5%A4%A9%E7%A9%BA%E4%B9%8B%E5%9F%8E" 
+  title="天空之城"><i class="点击我去往放电影的地方"></i><span>天空之城</span></a> <a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E6%82%AC%E5%B4%96%E4%B8%8A%E7%9A%84%E9%87%91%E9%B1%BC%E5%A7%AC" 
+  title="悬崖上的金鱼姬"><i class="点击我去往放电影的地方"></i><span>悬崖上的金鱼姬</span></a> <a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E4%BE%A7%E8%80%B3%E5%80%BE%E5%90%AC" 
+  title="侧耳倾听"><i class="点击我去往放电影的地方"></i><span>侧耳倾听</span></a></p>
 </div>]]></content>
       <categories>
         <category>资源</category>
-        <category>模板</category>
+        <category>动漫</category>
+        <category>宫崎骏</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
-        <tag>web技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Description of Approaches in T-PROGS</title>
-    <url>/2021/05/19/fangfamiaoshu-of-T-PROGS/</url>
-    <content><![CDATA[<div class="note primary flat"><p>在T-PROGS中提供了五种方法方便我们构建马尔科夫链的转移概率矩阵，这五种方法各自适用于不同的情况，并且在操作上有着比较大的区别，现在通过对T-PROGS操作手册的翻译来大致介绍一下每一种方法的情况。测试</p>
-</div>
-<h1 id="T-PROGS中各种方法的具体描述"><a href="#T-PROGS中各种方法的具体描述" class="headerlink" title="T-PROGS中各种方法的具体描述"></a>T-PROGS中各种方法的具体描述</h1><hr>
-<h2 id="转移率方法"><a href="#转移率方法" class="headerlink" title="转移率方法"></a>转移率方法</h2><p>所谓转移率就是计算连续转移概率矩阵的方程所提到的转移率矩阵$R_\phi$的输入元素。转移率可以被解释为转移概率在滞后距离为零时的斜率。因此，一个建立转移率矩阵的方法需要估计转移概率数据的斜率：$\frac{\partial t_{jk}(h \rightarrow 0)}{\partial h_\phi}$ ，对于一个四分类的例子来说（debris flow, floodplain, levee, channel）转移率矩阵可以被建立为:</p>
-<script type="math/tex; mode=display">
-\mathbf{R}_{z}=\left[\begin{array}{cccc}
--0.87 & * & 0.10 & 0.066 \\
-* & * & * & * \\
-0.030 & * & -1.23 & 0.12 \\
-0.039 & * & 0.79 & -0.82
-\end{array}\right] \mathrm{m}^{-1}</script><p>其中非背景分类的部分是可以改变的，但是需要遵守一定的概率原则；含有背景分类的部分不能改变，程序会自动调整以满足前述概率原则。值得注意的是，对角线元素是负数，非对角线元素是非负的（这是和自转移以及协转移相关的，自己转移到自己的概率随着滞后距离的增加必定是减小的，而两个不同分类之间的转移随着滞后距离的增加自然是增加的，而转移率实际上就是转移概率的斜率，自然会满足上面的条件）。</p>
-<hr>
-<h2 id="使用某一特定滞后距离转移概率数据的离散滞后距离方法"><a href="#使用某一特定滞后距离转移概率数据的离散滞后距离方法" class="headerlink" title="使用某一特定滞后距离转移概率数据的离散滞后距离方法"></a>使用某一特定滞后距离转移概率数据的离散滞后距离方法</h2><p>MCMOD使用特征分析的方法来从特殊滞后距离的转移概率数据中建立转移率矩阵，其中$\Delta h_\phi$将在两者(两种岩性)相关的距离内选取，例如下面这个垂向的转移概率矩阵：</p>
-<script type="math/tex; mode=display">
-\mathbf{T}\left(\Delta h_{z}=0.6 \mathrm{~m}\right)=\left[\begin{array}{llll}
-0.6182 & 0.2892 & 0.0529 & 0.0397 \\
-0.0325 & 0.8061 & 0.0787 & 0.0826 \\
-0.0192 & 0.3817 & 0.5258 & 0.0727 \\
-0.0168 & 0.0995 & 0.2359 & 0.6478
-\end{array}\right]</script><p>通过这个特定距离的转移概率（离散）计算出转移率，再通过转移率计算出连续的转移概率。</p>
-<hr>
-<h2 id="内嵌马尔科夫链分析的转移概率方法"><a href="#内嵌马尔科夫链分析的转移概率方法" class="headerlink" title="内嵌马尔科夫链分析的转移概率方法"></a>内嵌马尔科夫链分析的转移概率方法</h2><p>内嵌马尔可夫链分析是估计分离的地质单元事件发生在临近的另一个地质单元特定方向上的条件概率（通俗一点说就是某一个方向上，A分类出现在B分类之后的条件概率）。举个例子，对于上述的四分类系统中，内嵌转移概率$\pi_{jk,\phi}$在垂直方向$(z)$上被定义为：</p>
-<script type="math/tex; mode=display">
-\pi_{43,\phi} = Pr\{levee \ occurs \ above \ | \ channel\  occurs\ below \}</script><p>因此内嵌转移概率矩阵$\boldsymbol{\Pi}_{z}$可以被构建为：</p>
-<script type="math/tex; mode=display">
-\boldsymbol{\Pi}_{z}=\left[\begin{array}{cccc}
-- & 0.803 & 0.124 & 0.073 \\
-0.176 & - & 0.390 & 0.434 \\
-0.026 & 0.846 & - & 0.128 \\
-0.045 & 0.058 & 0.896 & -
-\end{array}\right]</script><p>注意，对角线上的自转移被视为无法观测到的，因此，对角线上的输入元素是空着的。从解释的观点来说，(4)式中$\pi_{43,z} &gt;&gt; \pi_{41,z}$以及$\pi_{43,z} &gt;&gt; \pi_{42,z}$意味着levee相对来说趋向于出现在channel的上面。</p>
-<p>如果有岩层更进一步的平均长度$\overline{L}_{j,z}$的信息，那么内嵌转移概率（通过频率来估计的）可以通过下式转化为转移率矩阵：</p>
-<script type="math/tex; mode=display">
-r_{jk,z} = \frac{\pi_{jk,z}}{\overline{L}_{j,z}}\\
-r_{jj,z} = - \frac{1}{\overline{L}_{j,z}}</script><p>因此，开发转移率矩阵的方法步骤是：</p>
-<ol>
-<li>根据并置趋势的地质解释或者数据建立内嵌转移概率矩阵；</li>
-<li>建立平均长度；</li>
-<li>根据(5)式将内嵌转移概率转化为转移率。</li>
-</ol>
-<p>注意非对角线元素需要满足:</p>
-<script type="math/tex; mode=display">
-\sum^K_{k = 1}\pi_{jk,z} = 1</script><p>如果设定了背景类别，矩阵中包含了背景类别的行列元素就不需要精确规定（可以将它们设置为零），这样根据内嵌转移概率以及平均长度改进后的转移率矩阵$R_z$为：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{cccc}
-\bar{L}_{1, z}=1.15 & * & 0.12 & 0.075 \\
-* & * & * & * \\
-0.025 & * & \bar{L}_{3, z}=0.82 & 0.10 \\
-0.04 & * & 0.96 & \bar{L}_{4, z}=1.24
-\end{array}\right]</script><p>其中第2各分类被设置为背景类别，这就是为什么含有该类别的元素被设定成了任意值，由此建立的马尔科夫链如下图所示：</p>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210518114127.png" alt="image-20210518114127505"></p>
-<p>可以看到，由内嵌转移概率方法对测量转移概率的拟合相对初试模型（最大熵因子法）来说稍稍更好一点。</p>
-<hr>
-<h2 id="内嵌马尔科夫链分析的转移频率方法"><a href="#内嵌马尔科夫链分析的转移频率方法" class="headerlink" title="内嵌马尔科夫链分析的转移频率方法"></a>内嵌马尔科夫链分析的转移频率方法</h2><p>所谓内嵌转移频率（垂直方向上）被定义为：</p>
-<script type="math/tex; mode=display">
-f_{43,z} = Pr\{ levee\ occurs\ above\ {\bf and} \ channel\ occurs\ below\}</script><p>于是内嵌转移频率矩阵$F_z$可以被表示为：</p>
-<script type="math/tex; mode=display">
-\mathbf{F}_{z}=\left[\begin{array}{llll}
-(0.0841) & 0.0677 & 0.0101 & 0.0063 \\
-0.0672 & (0.3468) & 0.1264 & 0.1713 \\
-0.0085 & 0.2971 & (0.3395) & 0.0340 \\
-0.0085 & 0.0000 & 0.2031 & (0.2115)
-\end{array}\right]</script><p>其中对角线元素（插入的部分）是对应$j$类别嵌入事件的边缘频率$f_{j,z}$的行列之和：</p>
-<script type="math/tex; mode=display">
-f_{j,z} = \sum^K_{k \not= j}f_{jk,z} = \sum^K_{j \not= k}f_{kj,z}</script><p>再加上平均长度$\overline{L}_{j,z}$的信息，转移频率可以转化为转移率通过：</p>
-<script type="math/tex; mode=display">
-r_{jk,z} = \frac{f_{jk,z}}{f_{j,z} \overline{L}_{j,z}} \quad \forall k \neq j</script><p>类似内嵌转移概率，MCMOD同样可以由转移频率构建出转移率矩阵的非对角线部分的元素：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{cccc}
-\bar{L}_{1, z}=1.15 & * & 0.0101 & 0.0063 \\
-* & \bar{L}_{1, z}=2.27 . & * & * \\
-0.0085 & * & \bar{L}_{3, z}=0.82 & 0.0340 \\
-0.0085 & * & 0.2031 & \bar{L}_{4, z}=1.24
-\end{array}\right]</script><p>尽管非对角线元素并不需要额外的设定，但是这个方法需要背景类别的平均长度，因为边缘频率依赖于各个类别的比例以及平均长度。</p>
-<hr>
-<h2 id="“独立性”或者“最大熵因子（无序）”转移频率方法"><a href="#“独立性”或者“最大熵因子（无序）”转移频率方法" class="headerlink" title="“独立性”或者“最大熵因子（无序）”转移频率方法"></a>“独立性”或者“最大熵因子（无序）”转移频率方法</h2><p>地质系统的并置趋势反映了地层序列的有序或者无序的程度，地层之间转移频率$f_{jk,\phi}$（某一种地层紧挨着其他地层的概率）的熵因子$S_{\phi}$可以量化某一特殊方向$\phi$上的并置趋势的无序性，其中熵因子定义（参考“熵分析方法”）为：</p>
-<script type="math/tex; mode=display">
-S_{\phi} = - \sum_j \sum_k f_{jk,\phi} \ln{f_{jk,\phi}}</script><p>考虑一个问题，“最大程度无序的系统来说，地层应该是什么样的呢？”。从我们所参考的状态来说，其中一个答案可能是能够判断出观察到的地层序列显示非随机的并置趋势或者说是一定程度上的有序。</p>
-<p>在应用内嵌马尔科夫链分析时，地质学家将兴趣放在量化他们对用地质相连续性的解释上，尤其是在垂直方向上。四种类别岩性连续性的“随机”或者独立的转移频率为：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{llll}
-f_{1} f_{1} & f_{1} f_{2} & f_{1} f_{3} & f_{1} f_{4} \\
-f_{2} f_{1} & f_{2} f_{2} & f_{2} f_{3} & f_{1} f_{4} \\
-f_{3} f_{1} & f_{3} f_{2} & f_{3} f_{3} & f_{3} f_{4} \\
-f_{4} f_{1} & f_{4} f_{2} & f_{4} f_{3} & f_{4} f_{4}
-\end{array}\right]</script><p>其中$f_i$代表连续出现$i$类别的“边缘”频率，但在实际操作中这个问题并不简单。通常来说，自转移的情况是无法观察到的（尤其是对于钻孔数据来说），所以不仅仅是对角线上的转移频率，就连边缘频率也是没有办法直接估计的。而非对角线上的转移_计数_是可以被精确估计的，因为协转移（不同类别之间的转移）是可以观察到的。</p>
-<p>假设自转移观察不到，一个更加实际的问题就被暴露出来了。于是，取而代之的是，非对角转移频率$\eta_{jk}$的观测值，被定义为转移计数除以所有非对角转移计数的总和：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{llll}
-- & \eta_{12} & \eta_{13} & \eta_{14} \\
-\eta_{21} & - & \eta_{23} & \eta_{24} \\
-\eta_{31} & \eta_{32} & - & \eta_{34} \\
-\eta_{41} & \eta_{42} & \eta_{43} & -
-\end{array}\right]</script><p>其中，自转移无法观察到，所以留为空白。</p>
-<p>独立转移频率的目标是找到满足以下条件的$f_i$：</p>
-<script type="math/tex; mode=display">
-\frac{1}{T} \sum^K_{j \neq i} f_i f_j = \sum_{j \neq i}^K \eta_{ij} \quad \forall i = 1,...,K\\
-T = \sum^K_{i = 1}\sum^K_{i \neq j} f_i f_j</script><p>上式的非线性系统可以通过IPF（iterative proportion fitting)方法解决。生成的独立模型将显示嵌入事件$\eta_i$的相同边缘频率：</p>
-<script type="math/tex; mode=display">
-\eta_{i}=\sum_{j \neq i}^{K} \eta_{i j} \quad \forall i=1, \ldots, K</script><p>以上，与$f_i$对应的非对角线转移频率将会是独立的。通过将$\eta_i$与比例$p_i$除以平均长度$\bar{L}_i$成比例，可以将连续滞后马尔可夫链模型与该独立性模型联系起来：</p>
-<script type="math/tex; mode=display">
-\frac{p_{i}}{L_{i}} \propto \eta_{i} \quad \forall i=1, \ldots, K</script><p>因此，给定比例和平均长度的设定，就可以得到一个包含独立转移频率的连续滞后马尔科夫链。</p>
-<p>因此一个特殊的问题出现了，“对于给定的比例和平均长度，什么是使得熵最大的转移频率矩阵呢？”巧合的是统计独立性的概念正好与最大熵的结果是一致的。在先前的例子中，比例和平均长度对应的独立或者最大熵转移频率矩阵$F_z^{(S\ max)}$为</p>
-<script type="math/tex; mode=display">
-\mathbf{F}_{z}^{(S \max )}=\left[\begin{array}{cccc}
-(0.0841) & 0.0377 & 0.0311 & 0.0152 \\
-0.0377 & (0.3671) & 0.2196 & 0.1075 \\
-0.0311 & 0.2196 & (0.3396) & 0.0888 \\
-0.0152 & 0.1075 & 0.0888 & (0.2115)
-\end{array}\right]</script><p>其中对角线元素代表某一行或者某一列的边缘频率的总和。这个矩阵可以用来作为解释在相同比例和平均长度的情况下与最大无序程度的地层连续性相关的并置趋势的基础。例如，如果观测到的转移频率$f_{43,z}$比$f_{z}^{(S\ max)}$更大，一个可能的推断是此处_levee_出现在_channel_的上方是具有统计趋势的.</p>
-<p>综上所述，开发转移率矩阵有以下的步骤：</p>
-<ol>
-<li>建立各类别的比例和平均长度；</li>
-<li>计算最大熵因子转移频率矩阵$F_{z}^{(S\ max)}$以及相应的转移率；</li>
-<li>解释相对于最大熵因子转移率的非对角转移率。</li>
-</ol>
-<p>举个例子里说，根据（11），最大熵因子转化率$r_{jk,z}^{(S\ max)}$可以通过下式计算：</p>
-<script type="math/tex; mode=display">
-r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq j} f_{j k, z}^{(S \max )}}</script><p>最大熵转移率对应的垂向转移率矩阵表示为：</p>
-<script type="math/tex; mode=display">
-\mathbf{R}_{z}^{(S \max )}=\left[\begin{array}{llll}
-\frac{-1}{\bar{L}_{1, z}=1.15 \mathrm{~m}} & 1.80 r_{12, z}^{(S \max )} & 0.32 r_{13, z}^{(S \max )} & 0.41 r_{14, z}^{(S \max )} \\
-1.78 r_{21, z}^{(S \text { max })} & \frac{-1}{\bar{L}_{2, z}=2.27 \mathrm{~m}} & 0.58 r_{23, z}^{(S \max )} & 1.59 r_{24, z}^{(S \max )} \\
-0.27 r_{31, z}^{(S \max )} & 1.35 r_{32, z}^{(S \max )} & \frac{-1}{\bar{L}_{3, z}=0.82 \mathrm{~m}} & 0.45 r_{34, z}^{(S \max )} \\
-0.56 r_{41, z}^{(S \max )} & 0.00 r_{42, z}^{(S \max )} & 2.29 r_{43, z}^{(S \max )} & \frac{-1}{\bar{L}_{4, z}=1.24 \mathrm{~m}}
-\end{array}\right]</script><p>这样计算出来的非对角线上的元素通过系数乘以$r_{jk,z}^{(S\ max)}$得到，如果比1小则表示两个类别具有并置趋势（在某个方向上某一分类通常紧挨着另一分类出现）小于1时则不具有并置趋势。</p>
-<p>最大熵的概念在解释已存在的马尔科夫链模型的并置趋势时是非常有用的。举个例子，你可以通过比例和平均长度建立一个已存在的模型，比如说（11），然后生成一个马尔科夫链，它有着最大程度的无序的并置趋势。再与转移概率方法进行比较，从而解释地层是否展现出了一定程度的有序并置趋势。在这过程中必须要给定全部类别的平均长度，包括背景类别。</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>地下水数值模拟</category>
-      </categories>
-      <tags>
-        <tag>GMS</tag>
-        <tag>地统计</tag>
-        <tag>转移概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Fortran语言学习——数组</title>
-    <url>/2021/09/03/fortran-array/</url>
-    <content><![CDATA[<h1 id="1-基本使用🎃"><a href="#1-基本使用🎃" class="headerlink" title="1 基本使用🎃"></a>1 基本使用🎃</h1><h2 id="1-1-一维数组"><a href="#1-1-一维数组" class="headerlink" title="1.1 一维数组"></a>1.1 一维数组</h2><p>所谓数组，实际上是一种使用数据类型的方法，通常用于配合循环使用用以处理大量的数据。简单来说，数组可以一次性申明出一长串的相同数据类型的变量。</p>
-<p>数组的声明方式如下：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">Datatype    <span class="keyword">name</span> (<span class="built_in">size</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment">! Datatype表示数组的类型,除了4种常用的类型(integer,real,complex,logical)以外,也可以用type自定义出新的类型</span></span><br><span class="line"><span class="comment">! name表示数组变量的名字</span></span><br><span class="line"><span class="comment">! size表示数组变量的大小</span></span><br></pre></td></tr></table></figure>
-<p><em>注意: 在声明数组时,数组的大小只能使用常数来赋值, 包括直接填入数字或者使用声明为parameter的常数变量</em></p>
-<p>数组所能够保存的数据大小由<code>size</code>决定, 对于<code>integer :: student(5)</code>这个数组来说, 可以保存5个整数, 取用这5个整数只需要用数组名加上括号内的索引值即可, 如:<code>student(1) = 89</code>的意思是将89赋予<code>student</code>这个数组变量的第一个元素. 数组的索引值不一定要使用常数, 也可以使用一般的变量. </p>
-<div class="note danger flat"><p>使用数组时超出范围是很危险的事情, 在程序编译过程中不会检查数组的使用是否超出了范围, 所以要充分的杜绝这种情况的发生. </p>
-</div>
-<p>下面演示如何使用type函数自定义数组类型:</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Type</span> :: person</span><br><span class="line">    <span class="keyword">real</span> :: height,weight</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Type</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Type</span>(person) :: a(<span class="number">10</span>) <span class="comment">! 使用新定义的person变量做数组声明</span></span><br><span class="line">......</span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="comment">! 同样在变量后加上&quot;%&quot;来使用person类型的相关属性</span></span><br><span class="line">a(<span class="number">2</span>)%height = <span class="number">180.0</span></span><br><span class="line">a(<span class="number">2</span>)%weight = <span class="number">70.0</span></span><br></pre></td></tr></table></figure>
-<h2 id="1-2-二维数组与多维数组"><a href="#1-2-二维数组与多维数组" class="headerlink" title="1.2 二维数组与多维数组"></a>1.2 二维数组与多维数组</h2><p>很多时候涉及到数据的维度会多于一维, 在Fortran中声明数组大小的时候使用多个数字进行声明即可得到一个多维数组变量, 使用该变量则需要给出相应数量的索引值. 以二维数组举例:</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">3</span>,<span class="number">3</span>) <span class="comment">! 创建一个3×3的数组(类似于矩阵)</span></span><br><span class="line">a(<span class="number">1</span>,<span class="number">1</span>) = <span class="number">3</span> <span class="comment">! 将3赋值到数组a的某一个元素</span></span><br></pre></td></tr></table></figure>
-<div class="note danger flat"><p>同样注意不能超出数值所声明的范围!另外, Fortran中最多可以声明7维的数组,使用维度越高的数组, 程序执行时读取数据的速度也就越慢, 这并不意味着不要在程序中使用多维数组, 而是说使用多维数组时需要格外小心. </p>
-</div>
-<h2 id="1-3-数组声明的奇怪用法"><a href="#1-3-数组声明的奇怪用法" class="headerlink" title="1.3 数组声明的奇怪用法"></a>1.3 数组声明的奇怪用法</h2><p>在Fortran的数组中, 没有特别声明时, 数组的索引总是从1开始的:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">5</span>)</span><br><span class="line"><span class="comment">! 这个数组能使用的元素包括a(1),a(2),a(3),a(4),a(5)</span></span><br></pre></td></tr></table></figure></p>
-<p>也可以使用一种奇怪的方法改变数组起始的索引值, 即在声明数组变量的大小时指定索引的范围:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">5</span>,<span class="number">0</span>:<span class="number">5</span>) <span class="comment">! a(1~5,0~5)是可以使用的元素</span></span><br><span class="line"><span class="keyword">integer</span> b(<span class="number">2</span>:<span class="number">3</span>,-<span class="number">1</span>:<span class="number">3</span>) <span class="comment">! b(2~3,-1~3)是可以使用的元素</span></span><br></pre></td></tr></table></figure></p>
-<hr>
-<h1 id="2-数组内容的设置🎯"><a href="#2-数组内容的设置🎯" class="headerlink" title="2 数组内容的设置🎯"></a>2 数组内容的设置🎯</h1><h2 id="2-1-赋予初始值"><a href="#2-1-赋予初始值" class="headerlink" title="2.1 赋予初始值"></a>2.1 赋予初始值</h2><p>数组可以类似于一般变量利用<code>DATA</code>来设置数组的初始值:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">5</span>),b(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">data</span>    a   /<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>/</span><br><span class="line"><span class="comment">! 这样做数组的初始值设置为:a(1)=1,a(2)=2,a(3)=3,a(4)=4,a(5)=5</span></span><br><span class="line"><span class="keyword">data</span>    b   /<span class="number">3</span>*<span class="number">5</span>/</span><br><span class="line"><span class="comment">! &quot;*&quot;表示重复, 以上就是3重复五遍, 将数组的初始值全部设置为3</span></span><br></pre></td></tr></table></figure></p>
-<p>另外有一种带有”隐含式”循环的初始值赋予方式:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> A(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">integer</span> I</span><br><span class="line"><span class="keyword">DATA</span>(A(I), I=<span class="number">2</span>, <span class="number">4</span>)/<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>/</span><br><span class="line"><span class="comment">! 上面这行代码隐含着一个循环, I会从2增加到4, 并依照顺序取后面&quot;//&quot;中的数字, 也就是A(2)=2, A(3)=3, A(4)=4, A(5)和A(1)没有设置.</span></span><br></pre></td></tr></table></figure></p>
-<div class="note primary flat"><p>上述的隐含式循环实际上是Fortran语言的一个特色，你可以在程序中正常的使用：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="built_in">write</span>(*,*) (a(i),i=<span class="number">2</span>,<span class="number">4</span>)</span><br><span class="line"><span class="comment">! 显示a(2),a(3),a(4)的值</span></span><br></pre></td></tr></table></figure><br>后面再多加一个数字，可以改变计数器的累加数值，默认情况下为1：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">(A(I), I=<span class="number">2</span>,<span class="number">10</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment">! 循环执行5次，分别执行到I=2，4，6，8，10</span></span><br></pre></td></tr></table></figure><br>当然，隐含式的循环同样支持嵌套使用：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INTEGER</span> A(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line"><span class="keyword">INTEGER</span> I,J</span><br><span class="line"><span class="keyword">DATA</span>((A(I,J), I=<span class="number">1</span>,<span class="number">2</span>), J=<span class="number">1</span>,<span class="number">2</span>) /<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>/</span><br><span class="line"><span class="comment">! 其结果为A(1,1)=1, A(2,1)=2, A(1,2)=3, A(2,2)=4，括号内的循环会先执行</span></span><br></pre></td></tr></table></figure><br>Fortran 90中，DATA可以被省略：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> :: a(<span class="number">5</span>) = (/ <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span> /)</span><br><span class="line"><span class="comment">! 注意“/”与括号间不能留有空格</span></span><br><span class="line"><span class="comment">! 省略DATA时必须要给每一个元素都设置初始值，不能像有DATA时那样用隐含式循环只设置部分元素的初始值。</span></span><br></pre></td></tr></table></figure>
-<p>Fortran 90的隐含式循环十分强大，它可以做到其他语言做不到的东西：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> ::Ｉ</span><br><span class="line"><span class="keyword">integer</span> :: a(<span class="number">5</span>)=(/(I,I=<span class="number">1</span>,<span class="number">5</span>)/)</span><br><span class="line"><span class="comment">! 其运行结果为a(n) = n, n=1,2,3,4,5</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="2-2-对整个数组的操作"><a href="#2-2-对整个数组的操作" class="headerlink" title="2.2 对整个数组的操作"></a>2.2 对整个数组的操作</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">代码</th>
-<th style="text-align:center">操作</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">a=5</td>
-<td style="text-align:center">a中所有元素全部赋值为5</td>
-</tr>
-<tr>
-<td style="text-align:center">a=(/1, 2, 3/)</td>
-<td style="text-align:center">a(1)=1, a(2)=2, a(3)=3</td>
-</tr>
-<tr>
-<td style="text-align:center">a=b</td>
-<td style="text-align:center">将a变成和b一样的数组，前提是a,b是维数、大小一样的数组</td>
-</tr>
-<tr>
-<td style="text-align:center">a=b+c</td>
-<td style="text-align:center">a, b, c是三个维数、大小一样的数组，a中某个位置的元素是b，c中相应位置的元素的和</td>
-</tr>
-<tr>
-<td style="text-align:center">a=b-c</td>
-<td style="text-align:center">类似上一条，只不过变成了b，c对应元素的差</td>
-</tr>
-<tr>
-<td style="text-align:center">a=b*c</td>
-<td style="text-align:center">类似，b，c的乘积</td>
-</tr>
-<tr>
-<td style="text-align:center">a=b/c</td>
-<td style="text-align:center">类似，b，c的商</td>
-</tr>
-<tr>
-<td style="text-align:center">a=sin(b)</td>
-<td style="text-align:center">a(i)=sin(b(i))，只要是内部的函数都可以这么用</td>
-</tr>
-<tr>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>上述方法都是对整个数组进行操作的，并且涉及到两个元素之间的操作都是对应元素之间进行的，可以结合相应的矩阵运算进行理解。</p>
-<h2 id="2-3-对部分数组的操作"><a href="#2-3-对部分数组的操作" class="headerlink" title="2.3 对部分数组的操作"></a>2.3 对部分数组的操作</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">代码</th>
-<th style="text-align:center">操作</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">a(3:5)=(/3,4,5/)</td>
-<td style="text-align:center">a(3)=3, a(4)=4, a(5)=5</td>
-</tr>
-<tr>
-<td style="text-align:center">a(1:5:2)=3</td>
-<td style="text-align:center">a(1)=3, a(3)=3, a(5)=3</td>
-</tr>
-<tr>
-<td style="text-align:center">a(3:)=5</td>
-<td style="text-align:center">a(3)以及之后的所有元素赋值为5</td>
-</tr>
-<tr>
-<td style="text-align:center">a(1:3)=b(4:6)</td>
-<td style="text-align:center">类似于这种的要求左右数组元素个数相同</td>
-</tr>
-<tr>
-<td style="text-align:center">a(:)=b(:,2)</td>
-<td style="text-align:center">a(1)=b(1,2), a(2)=b(2,2)，以此类推</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>以上相当于利用索引值对数组进行切片，然后赋值，都是比较基础的用法。</p>
-<h2 id="2-4-WHERE"><a href="#2-4-WHERE" class="headerlink" title="2.4 WHERE"></a>2.4 WHERE</h2><p><code>WHERE</code>也是对部分数组的操作，但将上节中的由坐标索引变成了逻辑判断来去除我们需要使用的元素<span class='heimu'>有点像<code>if</code>结构</span>：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">where</span>(a&lt;<span class="number">3</span>)</span><br><span class="line">    b = a</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">where</span></span><br><span class="line"><span class="comment">! 这里的where描述会把数组中数值小于3的元素找出来，并把这些元素的值设置给数组b同样位置的元素。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">! 也可以省略‘end where&#x27;，写成：</span></span><br><span class="line"><span class="keyword">where</span> (a&lt;<span class="number">3</span>) b=a</span><br></pre></td></tr></table></figure></p>
-<div class="note danger flat"><p>注意：<code>where</code>是用来设置数组的值的，所以它的程序模块中必须出现与设置数组相关的命令，并且在他的整个程序模块中出现的数组的大小和维度必须是一样的。同时类似于<code>if...else if...</code>，你也可以使用<code>ELSEWHERE</code>来处理逻辑处理中的其他情况，同时where语句也是可以支持嵌套使用的，基本上和if语句大同小异。</p>
-</div>
-<h2 id="2-5-FORALL"><a href="#2-5-FORALL" class="headerlink" title="2.5 FORALL"></a>2.5 FORALL</h2><p>FORALL也可以看成是一种隐含式循环来使用数组的方法：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> i</span><br><span class="line"><span class="keyword">forall</span> (i=<span class="number">1</span>:<span class="number">5</span>)</span><br><span class="line">    a(i)=i</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">forall</span></span><br><span class="line"><span class="comment">! a(1)=1, a(2)=2, a(3)=3, a(4)=4, a(5)=5</span></span><br><span class="line"><span class="comment">! 其详细语法为：</span></span><br><span class="line"><span class="keyword">forall</span> (triplet1[, triplet2[, triplet3[, ...]]], mask)</span><br><span class="line">    ......</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">forall</span></span><br><span class="line"><span class="comment">! tripletn指代数组的坐标索引范围，FORALL中可以赋值好几个triplet，这主要取决于数组的维度。</span></span><br><span class="line"><span class="comment">! mask指代条件判断语句，类似于if语句</span></span><br><span class="line"><span class="comment">! 下面举个例子：</span></span><br><span class="line"><span class="keyword">integer</span> :: a(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="keyword">forall</span> (I=<span class="number">2</span>:<span class="number">10</span>:<span class="number">2</span>,J=<span class="number">1</span>:<span class="number">5</span>，a(I,J)&lt;<span class="number">10</span>) <span class="comment">! 二维数组，只处理数组中范围内值小于10的元素</span></span><br><span class="line">    a(I,J)=I+J</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">forall</span></span><br><span class="line"><span class="comment">! 和if语句与where语句的情况一样，&#x27;end forall&#x27;也是可以省略的：</span></span><br><span class="line"><span class="keyword">forall</span>(I=<span class="number">1</span>:<span class="number">5</span>,J=<span class="number">1</span>:<span class="number">5</span>,a(I,J)/=<span class="number">0</span>) a(I,J)=<span class="number">1</span>/a(I,J)</span><br></pre></td></tr></table></figure></p>
-<h1 id="3-数组的保存规则💾"><a href="#3-数组的保存规则💾" class="headerlink" title="3 数组的保存规则💾"></a>3 数组的保存规则💾</h1><p>在Fortran中，数组数据的保存是按照一定规则的，我们可以根据这个规则优化代码，编写出效率较高的程序。</p>
-<p>拿一个二维数组举例：</p>
-<blockquote>
-<p>A(1,1)=&gt;A(2,1)=&gt;A(3,1)=&gt;A(1,2)=&gt;A(2,2)=&gt;A(3,2)=&gt;A(1,3)=&gt;A(2,3)=&gt;A(3,3)</p>
-</blockquote>
-<p>简单来说，最左边的元素会被最先填进内存。在写代码时可以充分利用这一点来提升代码的运行速度，尽量连续的读取数据，避免CPU跳跃式地在内存中读取数据。</p>
-<h1 id="4-可变大小的数组🦐"><a href="#4-可变大小的数组🦐" class="headerlink" title="4 可变大小的数组🦐"></a>4 可变大小的数组🦐</h1><p>在Fortran 90中，提供了一种可以在程序执行后根据实际需求改变数组大小的功能：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> :: students</span><br><span class="line"><span class="keyword">integer</span> <span class="keyword">allocatable</span> :: a(:) <span class="comment">! 声明一个可变大小的数组</span></span><br><span class="line"><span class="keyword">integer</span> :: i</span><br><span class="line"><span class="keyword">integer</span> :: error</span><br><span class="line"></span><br><span class="line"><span class="built_in">write</span>(*,*) <span class="string">&quot;How many students?&quot;</span></span><br><span class="line">read(*,*)students</span><br><span class="line"><span class="built_in">allocate</span>(a(students)，stat = error) <span class="comment">! 配置内存空间，stat用来查看配置内存是否成功：0-&gt;成功，其他-&gt;失败。</span></span><br><span class="line">deallocatable(a) <span class="comment">! 释放a的内存，结合上述代码可以重新定义数组的大小</span></span><br><span class="line"><span class="keyword">if</span> (.not. <span class="built_in">allocated</span>(a)) <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">allocate</span>(a(<span class="number">5</span>))</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"><span class="comment">! 检查数组a是否有配置内存，没有就请求5个元素的内存</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>编程</category>
-        <category>Fortran</category>
-      </categories>
-      <tags>
-        <tag>编程</tag>
-        <tag>Fortran</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Fortran语言学习——循环</title>
-    <url>/2021/08/12/fortran-cycle/</url>
-    <content><![CDATA[<p><img src="https://file.tabirstrees.top/blogfile/logo-fortran.png" alt="logo-fortran"></p>
-<h1 id="🎉DO结构"><a href="#🎉DO结构" class="headerlink" title="🎉DO结构"></a>🎉DO结构</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210710211357.png" alt="DO结构"></p>
-<p>在我们的程序编写过程中，经常会遇到需要将一部分代码重复很多遍的情况，为了使得代码简单提高可读性，可以用循环结构来进行处理，在Fortran中最常见的循环结构就是如上图所示的DO循环.</p>
-<p>DO循环由计数器（用来决定执行循环次数的变量）的初值，终值以及增量三个部分组成（Fortran 90之后），每进行一次循环，计数器就会累加上前面设置的增量，当计数器超过终值时循环就会结束.</p>
-<p>计数器的各项设定既可以用常量也可以用变量指定.下面是使用DO循环的一个例子（计算2+4+6+8+10）</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">program</span></span> ex0602</span><br><span class="line"><span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line">    <span class="keyword">integer</span>, <span class="keyword">parameter</span> : : limit=<span class="number">10</span> <span class="comment">!计数器的上限</span></span><br><span class="line">    <span class="keyword">integer</span> counter <span class="comment">!计数器</span></span><br><span class="line">    <span class="keyword">integer</span> :: ans = <span class="number">0</span> <span class="comment">!拿来累加使用</span></span><br><span class="line">    <span class="keyword">do</span> counter=<span class="number">2</span>, limit ,<span class="number">2</span></span><br><span class="line">        ans = ans + counter</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) ans</span><br><span class="line">    <span class="keyword">stop</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>对于Fortran 77及以前版本的代码来说，没有直接使用<code>end do</code>来结束循环的说法（但是仍然有人在使用），而必须要在DO后面写清楚循环到哪一行结束.即<code>do 结束的行代码, 计数器变量初值, 终值, 增量</code>，同时在循环结束的那一行设置好行代码（通常来说这一行的代码不需要可执行的意义，正好可以用我们前一节学习的<code>continue</code>命令.）.</p>
-<p>当结构中的<strong>增量</strong>使用<strong>负数</strong>时，终值需要比初值小，并且终止条件会变成计数器的值比终值小时就会结束循环.</p>
-<p>同时，结构中初值，终值，增量等如果使用变量指定时，只会在循环开始时进行一次读取，在循环过程中改变变量的值对循环是不会产生影响的，例如：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">s=<span class="number">1</span></span><br><span class="line">e=<span class="number">10</span></span><br><span class="line">inc=<span class="number">1</span></span><br><span class="line"><span class="keyword">do</span> i=s, e, inc</span><br><span class="line">    s=<span class="number">5</span></span><br><span class="line">    e=<span class="number">1</span></span><br><span class="line">    inc=-<span class="number">1</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) i</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
-<h1 id="🎉DO-WHILE-结构"><a href="#🎉DO-WHILE-结构" class="headerlink" title="🎉DO WHILE 结构"></a>🎉DO WHILE 结构</h1><p>某些时候我们会遇到更加复杂的情况，循环变量的增加可能不是线性的，或者需要在循环过程中根据情况特别指定增加方式，这个时候我们可以使用一个逻辑判断来进行循环的指定（当该判断的逻辑值为1时则循环，逻辑值为0时停止循环，即直到不满足条件为止一直循环下去）：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> whilw (逻辑运算) <span class="comment">! 逻辑运算成立时,会一直重复执行该循环</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">! 结束循环的命令</span></span><br></pre></td></tr></table></figure>
-<p>相对于<code>DO</code>结构的循环而言,该结构最大的优势就是可以在循环过程中改变循环变量的值,这样就适应了更加复杂的情况.</p>
-<h1 id="🎊循环的流程控制"><a href="#🎊循环的流程控制" class="headerlink" title="🎊循环的流程控制"></a>🎊循环的流程控制</h1><p>主要是介绍两个与循环有关的命令:<code>CYCLE</code>,<code>EXIT</code>,类似于Python中的<code>continue</code>以及<code>break</code>.</p>
-<h2 id="🎨CYCLE"><a href="#🎨CYCLE" class="headerlink" title="🎨CYCLE"></a>🎨CYCLE</h2><p><code>CYCLE</code>命令可以直接跳过循环的某一个部分,也就是说<code>CYCLE</code>后面的代码将会不被执行而直接跳入到下一个循环中.比如:</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="built_in">floor</span>=<span class="number">1</span>,<span class="number">9</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">floor</span> = <span class="number">4</span>) <span class="keyword">cycle</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="built_in">floor</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
-<p>执行结构将会列出从1到9的数字(除了4以外),因为当<strong>floor=4</strong>时被<code>cycle</code>语句跳过执行<code>write(*,*) floor</code>.</p>
-<h2 id="🎨EXIT"><a href="#🎨EXIT" class="headerlink" title="🎨EXIT"></a>🎨EXIT</h2><p>使用<code>EXIT</code>命令将跳出整个循环,也就是说当出现<code>EXIT</code>后循环将不再执行,通常出现在你并不知道需要执行多少次循环,于是设置为永久循环的情况:</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="keyword">while</span>( .true. ) <span class="comment">! 如果没有exit命令程序将永远执行下去</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="string">&#x27;weight:&#x27;</span></span><br><span class="line">    read(*,*) guess</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">abs</span>(guess-weight) &lt; error ) <span class="keyword">exit</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">!前面已经预先声明好了以上出现的三个变量.</span></span><br></pre></td></tr></table></figure>
-<p>以上,当<code>guess</code>与<code>weight</code>的值相差在误差范围内时,循环结束.</p>
-<hr>
-<div class="note success flat"><p>在Fortran中还可以为循环署名,这样可以明确最后的<code>end do</code>命令是对哪一个循环执行的:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">outter: <span class="keyword">do</span> i=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为outter</span></span><br><span class="line">    inner: <span class="keyword">do</span> j=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为inner</span></span><br><span class="line">        <span class="built_in">write</span>(*,<span class="string">&quot;(&#x27;(&#x27;,i2,&#x27;,&#x27;,i2,&#x27;)&#x27;)&quot;</span>) i,j</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span> inner <span class="comment">! 结束内循环inner</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> outter <span class="comment">! 结束外循环outter</span></span><br></pre></td></tr></table></figure></p>
-</div>]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>编程</category>
-        <category>Fortran</category>
-      </categories>
-      <tags>
-        <tag>编程</tag>
-        <tag>Fortran</tag>
-        <tag>循环语法</tag>
+        <tag>动漫</tag>
+        <tag>童话</tag>
+        <tag>宫崎骏</tag>
       </tags>
   </entry>
   <entry>
@@ -699,6 +321,279 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
       </tags>
   </entry>
   <entry>
+    <title>地磁场形成原因文献阅读报告</title>
+    <url>/2021/09/11/geomagnetic-field-fromation/</url>
+    <content><![CDATA[<p>地球磁场的成因曾经被科学大师爱因斯坦列为理论物理学的三大未解决的难题之一也是迄今未得到合理解释的地球科学的理论难题<sup><a href="#fn_1" id="reffn_1">1</a></sup>。磁性是地球的基本属性之一，人类早就认识了地球的磁性。自从人类认识了地球的磁性以后就希望能探秘地球磁性的形成原因。为解释地磁的成因人们提出了多种假说至今仍在继续探索和研究。一般通过应用经典电磁理论定性地分析地轴参考系中地球上电荷间洛仑兹力的特点和电荷的运动规律并据此阐述地球磁场的形成机理同时说明地球不仅具有自身的磁场而且具有自身的电场，地球电场和地球磁场是不可分割的统一体<sup><a href="#fn_2" id="reffn_2">2</a></sup>。目前普遍接受的是地磁场的发电机理论，即地球电场和地球磁场源自于地球的自转和地球上正负电荷的非对等分布。地球自转带动地球上的静电荷(相对于在不停地自转的地球静止的电荷)相对于地轴做匀速圆周运动就产生磁场。在地轴参考系中（即选地轴作为参考系）视地球为真空中的理想均质固体导体球分析地球电场和地球磁场的形成机理。地球磁场按场源电荷的运动形式分类可分为主磁场和偏磁场按场源电荷的汇集点在地球上所处的位置分类可分为中心磁场和极地磁场<sup><a href="#fn_3" id="reffn_3">3</a></sup>。地球上任意一点的磁场都是由该点的主磁场和偏磁场叠加而成主磁场又是由中心磁场和极地磁场叠加而成<sup><a href="#fn_3" id="reffn_3">3</a></sup>。该理论在观测、实验、理论和研究上得到较多证实也能较好的解释地磁反转现象地球发电机理论认为地球内核有流动的熔融态铁形成导电的“汪洋”，导电流体依据电流的磁效应必然会产生磁场，因此这便是地磁场的由来。包括地球在内的大部分太阳系行星以及包括太阳在内的所有恒星都会因导电流体的运动而产生磁场<sup><a href="#fn_4" id="reffn_4">4</a></sup>。</p>
+<p><img src="https://file.tabirstrees.top/blogfile/dicixingcheng/%E7%A3%81%E5%9C%BA%E5%9B%BE.gif" alt="磁场作图"></p>
+<p>地球的磁场源于半径为3400公里（地球半径为6370公里）、由铁合金组成的地核。地核分为半径为1220公里的固态内核和液态外核。内核（温度约为6000K，573°C，10340F））的热量向核幔边界（温度约为3800K，353°C，6380F））传导时会推动液态外核的流动。内核的高温来自于行星分异期间较重物质下沉时释放的引力势能以及核内放射性元素衰变时释放的热能。外核流动的形状与地球的自转及固态的内核有关。地球产生磁场的原理称为发电机理论。电流及其所产生的磁场之间存在一种反馈作用：电流回路产生磁场（安培定律）磁场的变化产生电场（法拉第定律）磁场和电场又反过来对电流中的电荷施力（洛伦兹力）。综合起来可用一条称为“磁感应方程”的偏微分方程来描述如此形成的磁场：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \mathbf{B}}{\partial t}=\eta \nabla^{2} \mathbf{B}+\nabla \times(\mathbf{u} \times \mathbf{B})</script><p>其中u为流体的速度B为磁场η=1/σμ为磁扩散率（与电导率σ和磁导率μ之积成反比）。∂B/∂t是磁场的时间导数，∇2是拉普拉斯算子，∇×是旋度算子<sup><a href="#fn_5,6" id="reffn_5,6">5,6</a></sup>。</p>
+<p><img src="https://file.tabirstrees.top/blogfile/dicixingcheng/%E5%9C%B0%E7%90%83%E7%BB%93%E6%9E%84.jpg" alt="地球圈层"></p>
+<p>磁感应方程右边的第一项描述的是扩散。在静止不动的流体当中磁场会减弱聚集的磁场也会扩散开来。一旦地球发电机在某天停止运动地磁场的偶极分量就会在几万年内慢慢消失。在一个完美电导体（σ=∞）里不可能发生扩散。根据楞次定律磁场的任何变动会产生抵抗这一改变的电流因此进出一个给定体积流体的磁通量不会改变。流体在移动时磁场会与其一同移动。这一现象称为“磁冻结定理”。就算流体不是完美电导体其流动时也会拉长磁场线并产生新的磁场。若不是因为磁场在加强时会抵抗流体的运动这一过程会无止境地产生新磁场。浮力所致的对流使得外核流体可以持续运动。在地球内部越往深处温度越高。越高温温度越高。越高温的流体浮力越大。另外，所谓的“成分对流”现象有加强浮力的作用：当地核冷却时，其中一些熔融铁会凝固并沉积在内核表面，流体中留下较轻的元素，因此密度降低。地球自转所产生的科里奥利效应会使流体的运动形成南北轴向的卷状物。发电机可以加强磁场，但整个过程最开始的时候需有初始磁场。地球的初始磁场可能来自地球以外：地球的初始磁场可能来自地球以外：太阳在其形成初期曾经经历过一个金牛T星阶段，此时的太阳风所致磁场可能比今天强几个数量级。但是，一大部分来自太阳的磁场可能会被地幔阻挡。初始磁场也有可能来自核幔边界上的化学反应界上的化学反应，或来自导热性和导电性的变化。根据计算，地球外核的平均磁场强度为25高斯，是地表强度的50倍<sup><a href="#fn_7" id="reffn_7">7</a></sup>。</p>
+<p><img src="https://file.tabirstrees.top/blogfile/dicixingcheng/%E5%9C%B0%E7%90%83%E7%A3%81%E5%B1%82%E7%9A%84%E5%BD%A2%E6%88%90.gif" alt="太阳风作用下地磁层的形成"></p>
+<p>但是，有研究指出：地球的外核不能产生稳定的偶极磁场，发电机理论对偶极磁场是无效的<sup><a href="#fn_7" id="reffn_7">7</a></sup>。首先从磁源深度的研究结果来看偶极磁场的磁源已位于固态内核中。若这一结论能确认是正确的，偶极磁场肯定不是发电机效应产生的。由于我们对地球内部的了解太少这一结论需留有余地。为此我们又从外核流体运动的可能形态探讨发电机效应产生偶极磁场的可能发现在外核流体中找不到能激发稳定偶极磁场的流场。此外又对外核流体运动的状态进行了推测发现外核中不存在引起较大区域流速变化的动力源外核流体的运动应相对平稳的绕地轴旋转这一点不利于发电机效应的产生。这几面都说明地球的偶极磁场不是或很难是发电机效应产生的。由于地球偶极磁场占地球磁场的是地球磁场最主要、最基本的部分，地磁发电机理论的主导地位应受到质疑。将地磁研究的希望完全寄托于地磁发电机理论是需要斟酌的。</p>
+<p>另外俞光明还探究了初始弱外场的成因<sup><a href="#fn_4" id="reffn_4">4</a></sup>。初始磁场的产生与地球的起源有着密切的关系它是地球起源时期形成的物理特性的痕迹标志。在原始的行星星云中由于没有足够的能量湍流和涡流无法得以长久地维持由于引力的不稳定。原始的行星星云瓦解着一系列大的气休球(原行星)。从原行星到地球的形成大致经历四个阶段即原行星阶段、自引力收缩阶段、地球固化和地核‘液化’阶段、及大规模对流运动的出现、地球内部圈层的分化和差速自转的稳定阶段。上述各阶段的磁场特征都有较大差异，第一阶段，维系地球磁场的机制是在原始星云磁场作用下的湍流运动和行星尺度的“气体”发电机机制，它们使原始磁场逐渐增强并达到相对稳定。第二阶段，原始磁场可用“固核”发电机机制予以维系，由于固核的存在气体的运动受到一定的限制，因而磁场强度相对于前一阶段逐渐减小。第三阶段，地球固化使湍流磁场效应和涡流运动行星尺度气休发电机机制均消失地球磁场依靠物质的磁化作用得以保存。由于地球内部温度升高地球内部出现了消磁效应，从内到外磁性逐渐开始消失，原始磁场强度迅速减小，磁性仅保留在地球的壳层与此同时。地球内部温度的增加使地核“液化”，微弱的差异自转和内部对流的萌发驱动了最初的地磁发电机。第四阶段,地球内部强烈的对流运动和差速自转启动了地磁发电机从而维系和增强了地球的基本磁场。</p>
+<div class="note info flat"><p>参考文献<br><sup><a href="#fn_1" id="reffn_1">1</a></sup>张世红,李海燕.地磁学、古地磁学和环境磁学的研究新进展——第32届国际地质大会学科总结和评述[J].现代地质,2004(04):415-422.<br><sup><a href="#fn_2" id="reffn_2">2</a></sup>黄金钟.论地球磁场的成因和自反转机制:中国科协2000年学术年会,2000[C].<br><sup><a href="#fn_3" id="reffn_3">3</a></sup>邹润莉.地球电场与地球磁场的形成机理[J].地球物理学进展,2008,23(4):1071-1084.<br><sup><a href="#fn_4" id="reffn_4">4</a></sup>喻光明.地磁场起源机理的探讨:中国地球物理学会1990年度综合学术讨论会,武汉,1990[C].<br><sup><a href="#fn_5" id="reffn_5">5</a></sup>WeissN.Dynamosinplanets,starsandgalaxies[J].Astronomy&amp;Geophysics:TheJournaloftheRoyalAstronomicalSociety,2002,43(3):3-9.<br><sup><a href="#fn_6" id="reffn_6">6</a></sup>董超,张怀,石耀霖.地磁场发电机数值模拟综述[J].中国科学院大学学报,<br>2019,36(02):145-154.<br><sup><a href="#fn_7" id="reffn_7">7</a></sup>李安生,李国栋.对地磁发电机理论的反思与天体磁场研究展望[J].地球物理学进展,2010,25(3):809-816.</p>
+</div>]]></content>
+      <categories>
+        <category>文献阅读</category>
+      </categories>
+      <tags>
+        <tag>文献阅读</tag>
+        <tag>地磁场</tag>
+        <tag>行星形成与演化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Fortran语言学习——数组</title>
+    <url>/2021/09/03/fortran-array/</url>
+    <content><![CDATA[<h1 id="1-基本使用🎃"><a href="#1-基本使用🎃" class="headerlink" title="1 基本使用🎃"></a>1 基本使用🎃</h1><h2 id="1-1-一维数组"><a href="#1-1-一维数组" class="headerlink" title="1.1 一维数组"></a>1.1 一维数组</h2><p>所谓数组，实际上是一种使用数据类型的方法，通常用于配合循环使用用以处理大量的数据。简单来说，数组可以一次性申明出一长串的相同数据类型的变量。</p>
+<p>数组的声明方式如下：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">Datatype    <span class="keyword">name</span> (<span class="built_in">size</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment">! Datatype表示数组的类型,除了4种常用的类型(integer,real,complex,logical)以外,也可以用type自定义出新的类型</span></span><br><span class="line"><span class="comment">! name表示数组变量的名字</span></span><br><span class="line"><span class="comment">! size表示数组变量的大小</span></span><br></pre></td></tr></table></figure>
+<p><em>注意: 在声明数组时,数组的大小只能使用常数来赋值, 包括直接填入数字或者使用声明为parameter的常数变量</em></p>
+<p>数组所能够保存的数据大小由<code>size</code>决定, 对于<code>integer :: student(5)</code>这个数组来说, 可以保存5个整数, 取用这5个整数只需要用数组名加上括号内的索引值即可, 如:<code>student(1) = 89</code>的意思是将89赋予<code>student</code>这个数组变量的第一个元素. 数组的索引值不一定要使用常数, 也可以使用一般的变量. </p>
+<div class="note danger flat"><p>使用数组时超出范围是很危险的事情, 在程序编译过程中不会检查数组的使用是否超出了范围, 所以要充分的杜绝这种情况的发生. </p>
+</div>
+<p>下面演示如何使用type函数自定义数组类型:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Type</span> :: person</span><br><span class="line">    <span class="keyword">real</span> :: height,weight</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Type</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Type</span>(person) :: a(<span class="number">10</span>) <span class="comment">! 使用新定义的person变量做数组声明</span></span><br><span class="line">......</span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="comment">! 同样在变量后加上&quot;%&quot;来使用person类型的相关属性</span></span><br><span class="line">a(<span class="number">2</span>)%height = <span class="number">180.0</span></span><br><span class="line">a(<span class="number">2</span>)%weight = <span class="number">70.0</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-2-二维数组与多维数组"><a href="#1-2-二维数组与多维数组" class="headerlink" title="1.2 二维数组与多维数组"></a>1.2 二维数组与多维数组</h2><p>很多时候涉及到数据的维度会多于一维, 在Fortran中声明数组大小的时候使用多个数字进行声明即可得到一个多维数组变量, 使用该变量则需要给出相应数量的索引值. 以二维数组举例:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">3</span>,<span class="number">3</span>) <span class="comment">! 创建一个3×3的数组(类似于矩阵)</span></span><br><span class="line">a(<span class="number">1</span>,<span class="number">1</span>) = <span class="number">3</span> <span class="comment">! 将3赋值到数组a的某一个元素</span></span><br></pre></td></tr></table></figure>
+<div class="note danger flat"><p>同样注意不能超出数值所声明的范围!另外, Fortran中最多可以声明7维的数组,使用维度越高的数组, 程序执行时读取数据的速度也就越慢, 这并不意味着不要在程序中使用多维数组, 而是说使用多维数组时需要格外小心. </p>
+</div>
+<h2 id="1-3-数组声明的奇怪用法"><a href="#1-3-数组声明的奇怪用法" class="headerlink" title="1.3 数组声明的奇怪用法"></a>1.3 数组声明的奇怪用法</h2><p>在Fortran的数组中, 没有特别声明时, 数组的索引总是从1开始的:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">5</span>)</span><br><span class="line"><span class="comment">! 这个数组能使用的元素包括a(1),a(2),a(3),a(4),a(5)</span></span><br></pre></td></tr></table></figure></p>
+<p>也可以使用一种奇怪的方法改变数组起始的索引值, 即在声明数组变量的大小时指定索引的范围:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">5</span>,<span class="number">0</span>:<span class="number">5</span>) <span class="comment">! a(1~5,0~5)是可以使用的元素</span></span><br><span class="line"><span class="keyword">integer</span> b(<span class="number">2</span>:<span class="number">3</span>,-<span class="number">1</span>:<span class="number">3</span>) <span class="comment">! b(2~3,-1~3)是可以使用的元素</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="2-数组内容的设置🎯"><a href="#2-数组内容的设置🎯" class="headerlink" title="2 数组内容的设置🎯"></a>2 数组内容的设置🎯</h1><h2 id="2-1-赋予初始值"><a href="#2-1-赋予初始值" class="headerlink" title="2.1 赋予初始值"></a>2.1 赋予初始值</h2><p>数组可以类似于一般变量利用<code>DATA</code>来设置数组的初始值:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> a(<span class="number">5</span>),b(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">data</span>    a   /<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>/</span><br><span class="line"><span class="comment">! 这样做数组的初始值设置为:a(1)=1,a(2)=2,a(3)=3,a(4)=4,a(5)=5</span></span><br><span class="line"><span class="keyword">data</span>    b   /<span class="number">3</span>*<span class="number">5</span>/</span><br><span class="line"><span class="comment">! &quot;*&quot;表示重复, 以上就是3重复五遍, 将数组的初始值全部设置为3</span></span><br></pre></td></tr></table></figure></p>
+<p>另外有一种带有”隐含式”循环的初始值赋予方式:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> A(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">integer</span> I</span><br><span class="line"><span class="keyword">DATA</span>(A(I), I=<span class="number">2</span>, <span class="number">4</span>)/<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>/</span><br><span class="line"><span class="comment">! 上面这行代码隐含着一个循环, I会从2增加到4, 并依照顺序取后面&quot;//&quot;中的数字, 也就是A(2)=2, A(3)=3, A(4)=4, A(5)和A(1)没有设置.</span></span><br></pre></td></tr></table></figure></p>
+<div class="note primary flat"><p>上述的隐含式循环实际上是Fortran语言的一个特色，你可以在程序中正常的使用：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="built_in">write</span>(*,*) (a(i),i=<span class="number">2</span>,<span class="number">4</span>)</span><br><span class="line"><span class="comment">! 显示a(2),a(3),a(4)的值</span></span><br></pre></td></tr></table></figure><br>后面再多加一个数字，可以改变计数器的累加数值，默认情况下为1：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">(A(I), I=<span class="number">2</span>,<span class="number">10</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment">! 循环执行5次，分别执行到I=2，4，6，8，10</span></span><br></pre></td></tr></table></figure><br>当然，隐含式的循环同样支持嵌套使用：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INTEGER</span> A(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line"><span class="keyword">INTEGER</span> I,J</span><br><span class="line"><span class="keyword">DATA</span>((A(I,J), I=<span class="number">1</span>,<span class="number">2</span>), J=<span class="number">1</span>,<span class="number">2</span>) /<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>/</span><br><span class="line"><span class="comment">! 其结果为A(1,1)=1, A(2,1)=2, A(1,2)=3, A(2,2)=4，括号内的循环会先执行</span></span><br></pre></td></tr></table></figure><br>Fortran 90中，DATA可以被省略：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> :: a(<span class="number">5</span>) = (/ <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span> /)</span><br><span class="line"><span class="comment">! 注意“/”与括号间不能留有空格</span></span><br><span class="line"><span class="comment">! 省略DATA时必须要给每一个元素都设置初始值，不能像有DATA时那样用隐含式循环只设置部分元素的初始值。</span></span><br></pre></td></tr></table></figure>
+<p>Fortran 90的隐含式循环十分强大，它可以做到其他语言做不到的东西：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> ::Ｉ</span><br><span class="line"><span class="keyword">integer</span> :: a(<span class="number">5</span>)=(/(I,I=<span class="number">1</span>,<span class="number">5</span>)/)</span><br><span class="line"><span class="comment">! 其运行结果为a(n) = n, n=1,2,3,4,5</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="2-2-对整个数组的操作"><a href="#2-2-对整个数组的操作" class="headerlink" title="2.2 对整个数组的操作"></a>2.2 对整个数组的操作</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a=5</td>
+<td style="text-align:center">a中所有元素全部赋值为5</td>
+</tr>
+<tr>
+<td style="text-align:center">a=(/1, 2, 3/)</td>
+<td style="text-align:center">a(1)=1, a(2)=2, a(3)=3</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b</td>
+<td style="text-align:center">将a变成和b一样的数组，前提是a,b是维数、大小一样的数组</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b+c</td>
+<td style="text-align:center">a, b, c是三个维数、大小一样的数组，a中某个位置的元素是b，c中相应位置的元素的和</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b-c</td>
+<td style="text-align:center">类似上一条，只不过变成了b，c对应元素的差</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b*c</td>
+<td style="text-align:center">类似，b，c的乘积</td>
+</tr>
+<tr>
+<td style="text-align:center">a=b/c</td>
+<td style="text-align:center">类似，b，c的商</td>
+</tr>
+<tr>
+<td style="text-align:center">a=sin(b)</td>
+<td style="text-align:center">a(i)=sin(b(i))，只要是内部的函数都可以这么用</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>上述方法都是对整个数组进行操作的，并且涉及到两个元素之间的操作都是对应元素之间进行的，可以结合相应的矩阵运算进行理解。</p>
+<h2 id="2-3-对部分数组的操作"><a href="#2-3-对部分数组的操作" class="headerlink" title="2.3 对部分数组的操作"></a>2.3 对部分数组的操作</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a(3:5)=(/3,4,5/)</td>
+<td style="text-align:center">a(3)=3, a(4)=4, a(5)=5</td>
+</tr>
+<tr>
+<td style="text-align:center">a(1:5:2)=3</td>
+<td style="text-align:center">a(1)=3, a(3)=3, a(5)=3</td>
+</tr>
+<tr>
+<td style="text-align:center">a(3:)=5</td>
+<td style="text-align:center">a(3)以及之后的所有元素赋值为5</td>
+</tr>
+<tr>
+<td style="text-align:center">a(1:3)=b(4:6)</td>
+<td style="text-align:center">类似于这种的要求左右数组元素个数相同</td>
+</tr>
+<tr>
+<td style="text-align:center">a(:)=b(:,2)</td>
+<td style="text-align:center">a(1)=b(1,2), a(2)=b(2,2)，以此类推</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以上相当于利用索引值对数组进行切片，然后赋值，都是比较基础的用法。</p>
+<h2 id="2-4-WHERE"><a href="#2-4-WHERE" class="headerlink" title="2.4 WHERE"></a>2.4 WHERE</h2><p><code>WHERE</code>也是对部分数组的操作，但将上节中的由坐标索引变成了逻辑判断来去除我们需要使用的元素<span class='heimu'>有点像<code>if</code>结构</span>：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">where</span>(a&lt;<span class="number">3</span>)</span><br><span class="line">    b = a</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">where</span></span><br><span class="line"><span class="comment">! 这里的where描述会把数组中数值小于3的元素找出来，并把这些元素的值设置给数组b同样位置的元素。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">! 也可以省略‘end where&#x27;，写成：</span></span><br><span class="line"><span class="keyword">where</span> (a&lt;<span class="number">3</span>) b=a</span><br></pre></td></tr></table></figure></p>
+<div class="note danger flat"><p>注意：<code>where</code>是用来设置数组的值的，所以它的程序模块中必须出现与设置数组相关的命令，并且在他的整个程序模块中出现的数组的大小和维度必须是一样的。同时类似于<code>if...else if...</code>，你也可以使用<code>ELSEWHERE</code>来处理逻辑处理中的其他情况，同时where语句也是可以支持嵌套使用的，基本上和if语句大同小异。</p>
+</div>
+<h2 id="2-5-FORALL"><a href="#2-5-FORALL" class="headerlink" title="2.5 FORALL"></a>2.5 FORALL</h2><p>FORALL也可以看成是一种隐含式循环来使用数组的方法：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> i</span><br><span class="line"><span class="keyword">forall</span> (i=<span class="number">1</span>:<span class="number">5</span>)</span><br><span class="line">    a(i)=i</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">forall</span></span><br><span class="line"><span class="comment">! a(1)=1, a(2)=2, a(3)=3, a(4)=4, a(5)=5</span></span><br><span class="line"><span class="comment">! 其详细语法为：</span></span><br><span class="line"><span class="keyword">forall</span> (triplet1[, triplet2[, triplet3[, ...]]], mask)</span><br><span class="line">    ......</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">forall</span></span><br><span class="line"><span class="comment">! tripletn指代数组的坐标索引范围，FORALL中可以赋值好几个triplet，这主要取决于数组的维度。</span></span><br><span class="line"><span class="comment">! mask指代条件判断语句，类似于if语句</span></span><br><span class="line"><span class="comment">! 下面举个例子：</span></span><br><span class="line"><span class="keyword">integer</span> :: a(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="keyword">forall</span> (I=<span class="number">2</span>:<span class="number">10</span>:<span class="number">2</span>,J=<span class="number">1</span>:<span class="number">5</span>，a(I,J)&lt;<span class="number">10</span>) <span class="comment">! 二维数组，只处理数组中范围内值小于10的元素</span></span><br><span class="line">    a(I,J)=I+J</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">forall</span></span><br><span class="line"><span class="comment">! 和if语句与where语句的情况一样，&#x27;end forall&#x27;也是可以省略的：</span></span><br><span class="line"><span class="keyword">forall</span>(I=<span class="number">1</span>:<span class="number">5</span>,J=<span class="number">1</span>:<span class="number">5</span>,a(I,J)/=<span class="number">0</span>) a(I,J)=<span class="number">1</span>/a(I,J)</span><br></pre></td></tr></table></figure></p>
+<h1 id="3-数组的保存规则💾"><a href="#3-数组的保存规则💾" class="headerlink" title="3 数组的保存规则💾"></a>3 数组的保存规则💾</h1><p>在Fortran中，数组数据的保存是按照一定规则的，我们可以根据这个规则优化代码，编写出效率较高的程序。</p>
+<p>拿一个二维数组举例：</p>
+<blockquote>
+<p>A(1,1)=&gt;A(2,1)=&gt;A(3,1)=&gt;A(1,2)=&gt;A(2,2)=&gt;A(3,2)=&gt;A(1,3)=&gt;A(2,3)=&gt;A(3,3)</p>
+</blockquote>
+<p>简单来说，最左边的元素会被最先填进内存。在写代码时可以充分利用这一点来提升代码的运行速度，尽量连续的读取数据，避免CPU跳跃式地在内存中读取数据。</p>
+<h1 id="4-可变大小的数组🦐"><a href="#4-可变大小的数组🦐" class="headerlink" title="4 可变大小的数组🦐"></a>4 可变大小的数组🦐</h1><p>在Fortran 90中，提供了一种可以在程序执行后根据实际需求改变数组大小的功能：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">integer</span> :: students</span><br><span class="line"><span class="keyword">integer</span> <span class="keyword">allocatable</span> :: a(:) <span class="comment">! 声明一个可变大小的数组</span></span><br><span class="line"><span class="keyword">integer</span> :: i</span><br><span class="line"><span class="keyword">integer</span> :: error</span><br><span class="line"></span><br><span class="line"><span class="built_in">write</span>(*,*) <span class="string">&quot;How many students?&quot;</span></span><br><span class="line">read(*,*)students</span><br><span class="line"><span class="built_in">allocate</span>(a(students)，stat = error) <span class="comment">! 配置内存空间，stat用来查看配置内存是否成功：0-&gt;成功，其他-&gt;失败。</span></span><br><span class="line">deallocatable(a) <span class="comment">! 释放a的内存，结合上述代码可以重新定义数组的大小</span></span><br><span class="line"><span class="keyword">if</span> (.not. <span class="built_in">allocated</span>(a)) <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">allocate</span>(a(<span class="number">5</span>))</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"><span class="comment">! 检查数组a是否有配置内存，没有就请求5个元素的内存</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>编程</category>
+        <category>Fortran</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>Fortran</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>A Short Introduction to Plasma Physics</title>
+    <url>/2021/08/19/plasma-introduction-translate/</url>
+    <content><![CDATA[<div class="note primary flat"><h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文包括了对等离子体现象的某些物理基础的讨论。在第二部分我们介绍了等离子体的关键特性，例如准中性、屏蔽（拜德屏蔽？）、粒子输运过程以及等离子体鞘的形成。在第三部分中我们描述了最简单的等离子体模型：从单粒子轨迹和等离子体流体动力学的基本原理推导出的集体现象（漂移）。最后讨论了均匀无界的冷等离子体的波动现象。</p>
+</div>
+<hr>
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p>​        等离子体在自然界中以很多种形式存在，并在科技生产中有着广泛的应用。它是有以下几种物质组成的特殊电离气体：</p>
+<ul>
+<li>带正电荷的离子（正离子）</li>
+<li>电子</li>
+<li>中性粒子（原子，分子以及自由基）</li>
+</ul>
+<p>（在特殊条件下，等离子体也可能包含负离子，但我们之后不会讨论这种情况，因此之后的离子普遍代表“正离子”。）我们将呈现_准中性_，并且其特性由电磁力控制的电离气体称为“等离子体”。</p>
+<p>​        由于自由离子的存在，使用等离子体作为离子源是很自然的事情，对于这种特殊情况，等离子体是通过适当形式的低压气体放电产生的，由此产生的等离子体通常被称作“低温等离子体”。尽管电子可能达到数万卡尔文的高温（比太阳表面的温度更高），而离子和中性气体的或多或少只能算是温暖，但是由于电子的质量很低，无法将它们的热能传递给更重的等离子体部分（离子或者中性气体部分）或者enclosing walls（<span class="heimu"> 这个不知道是什么意思，翻译不出来… </span>）。因此，这种类型的冷等离子体不会向其周围的环境传递太多热量，因此可以更准确地将其描述为“低熵-等离子体”。</p>
+<h1 id="2-关键的等离子体性质"><a href="#2-关键的等离子体性质" class="headerlink" title="2. 关键的等离子体性质"></a>2. 关键的等离子体性质</h1><h2 id="2-1-粒子密度"><a href="#2-1-粒子密度" class="headerlink" title="2.1 粒子密度"></a>2.1 粒子密度</h2><p>​        由于自由运动电荷的存在，等离子体会对电磁场响应，传导电流，并具有明确定义的空间势。</p>
+<p>​        正离子可能带有单个电荷或者多个电荷。对于包含单个电荷的离子，离子群可以被离子密度$n_i$充分描述，</p>
+<script type="math/tex; mode=display">
+n_{\mathrm{i}}=\frac{\text { number of particles(粒子数量) }}{\text { volume(体积) }}, \quad\left[n_{\mathrm{i}}\right]=\mathrm{cm}^{-3} \text { or }\left[n_{\mathrm{i}}\right]=\mathrm{m}^{-3} \text { . }</script><p>除了离子密度，我们还可以通过电子密度$n_e$以及中性气体部分的密度$n_a$描述等离子体。</p>
+<h2 id="2-2-电离度，准中性"><a href="#2-2-电离度，准中性" class="headerlink" title="2.2 电离度，准中性"></a>2.2 电离度，准中性</h2><p>​        等离子体的准中性意味着正负电荷的密度（几乎）相等。在单电荷离子的例子中，表示为：</p>
+<script type="math/tex; mode=display">
+n_{\mathrm{i}} \approx n_{\mathrm{e}}</script><p>在多电荷离子的情况下，我们需要修改这个关系式。如果$z$表示正电荷离子的电荷数，$n_z$表示具有z个电荷的离子的密度，电中性的条件表示为：</p>
+<script type="math/tex; mode=display">
+n_{\mathrm{e}} \approx \sum_{z} z \cdot n_{z}</script><p>电离度用粒子密度而不是电荷密度来定义。然而，这里有两种不同的定义来使用：</p>
+<script type="math/tex; mode=display">
+\eta_{\mathrm{i}}=\frac{\sum_{z} n_{z}}{n_{\mathrm{a}}+\sum_{z} n_{2}} \quad \text { and } \quad \eta_{\mathrm{i}}^{\prime}=\frac{\sum_{z} n_{z}}{n_{\mathrm{a}}}</script><p>严格来说，通常情况下$\eta_{\mathrm{i}}^{\prime}$是对$\eta_i &lt;&lt;1$时的$\eta_i$的估计。离子源等离子体$\eta_i$的典型值在$10^{-5}$到$10^{-3}$之间，完全电离的等离子体$\eta_i = 1$（在这种情况下$\eta_i^{\prime} \rightarrow \infty$）。</p>
+<p><img src="https://file.tabirstrees.top/blogfile/ITP/Charge%20separation%2C%20schematic.jpg" alt="电离过程示意"></p>
+<center>图一 电荷分离过程示意</center>
+
+<p>为了进一步研究电中性，我们假设等离子体中的电子云移动到了一个确定的区域内，形成了一个负电荷区域。类似的离子云在$L = \delta x$的距离内不存在电子，形成一个正电荷区域（见图一）。因此，我们可以在这些电荷空间的共同边界处得到一个最大值的电场$\overline{E_{max}}$。并且可以通过泊松方程得到这个最大电场的估计值：</p>
+<script type="math/tex; mode=display">
+E_{\max }=\frac{e \cdot n_{\mathrm{i}} \cdot \delta x}{\varepsilon_{0}}</script><p>$E$的的方向取决于电场力使得两团粒子云趋向于相互重叠。这里$e$是基本正电荷，$\varepsilon_0$是真空中的介电常数。</p>
+<p>为了进一步讨论，我们计算了带电粒子通过空间电荷层移动$\delta x$后的势能增量（电场力做功）$W_{pot}$：</p>
+<script type="math/tex; mode=display">
+W_{\mathrm{pot}}=\int_{0}^{\delta x} e E \mathrm{~d} x=\frac{e^{2} n_{\mathrm{e}}(\delta x)^{2}}{2 \varepsilon_{0}}</script><p>唯一可以用来为上述电势能提供能量的是电子的热能（当然也有离子，但是因为离子的温度相较于电子较低，离子的热能在低温等离子体（比如离子源等离子体）中可以被忽略），对于一个自由度的运动，其能量平均为 $\frac{1}{2}k_{B}T_{e}$。因此，我们可以认为偏离电中性的尺度由下式定义出来的一个长度指标来表示：</p>
+<script type="math/tex; mode=display">
+W_{\mathrm{pot}}=\frac{1}{2} k_{\mathrm{B}} T_{\mathrm{e}}</script><p>也就是对应我们所谓的<strong>德拜-休克尔（Debye-Hückel）长度</strong>$\lambda_D$：</p>
+<script type="math/tex; mode=display">
+\lambda_{\mathrm{D}}=\left(\frac{\varepsilon_{0} k_{\mathrm{B}} T_{\mathrm{e}}}{e^{2} n_{\mathrm{e}}}\right)^{1 / 2}</script><p>该长度的数值可以由下式给出（见图二）:</p>
+<script type="math/tex; mode=display">
+\lambda_{\mathrm{D}} / \mathrm{m}=7.434 \times 10^{3}\left(k_{\mathrm{B}} T_{\mathrm{e}} / \mathrm{eV}\right)^{1 / 2} /\left(n_{\mathrm{e}} / \mathrm{m}^{-3}\right)^{1 / 2}</script><p><img src="https://file.tabirstrees.top/blogfile/ITP/Debye%20length%20versus%20plasma%20density%20and%20electron%20temperature.jpg" alt="不同温度下德拜长度与电子数之间的关系"></p>
+<center>图二 不同温度下德拜长度与电子数之间的关系</center>
+
+<p>另一方面，我们可能会问在给定长度$L$上等离子体可能偏离电中性的总量是多少$\Delta n = |n_e-n_i|$。再次强调，我们只有热能是可用的，（热能转化为电势能）因此有：</p>
+<script type="math/tex; mode=display">
+\frac{1}{2} k_{\mathrm{B}} T_{\mathrm{e}} \approx \frac{1}{2} \frac{e^{2}}{\varepsilon_{0}} \cdot \Delta n \cdot L</script><p>利用$k_{\mathrm{B}}T_{\mathrm{e}}$ 与 $\lambda_D$ 的关系我们可以得到：</p>
+<script type="math/tex; mode=display">
+\frac{\Delta n}{n} \approx\left(\frac{\lambda_{\mathrm{D}}}{L}\right)^{2}</script><p>以此来估计$\Delta n$的大小。</p>
+<p>我们可以假设电中性的条件为$\Delta n \ll n_{\mathrm{e}} ,n_\mathrm{i}$，根据方程（10）这就等价于$L \gg \lambda_{\mathrm{D}}$。这意味着为了满足形成等离子体的条件，电离气体的延伸必须要远大于德拜-休克尔长度，等离子体的电中性被定义在一个宏观尺度上，如果我们从宏观尺度来看等离子体，会发现随着尺度的减小，其偏离电中性的程度逐渐增加。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>等离子体物理</category>
+      </categories>
+      <tags>
+        <tag>等离子体物理</tag>
+        <tag>Plasma</tag>
+        <tag>物理</tag>
+        <tag>文献翻译</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>comment-mail-style</title>
+    <url>/2021/08/13/comment-mail-style/</url>
+    <content><![CDATA[<div class="note primary flat"><p>最近更换了评论系统为<a href="https://twikoo.js.org/">Twikoo</a>（很好用，推荐大家使用）。完了之后感觉它的评论邮件通知样式有点不太好看，于是自己折腾了一个<span class='heimu'>也不是很好看的</span>自己弄的样式，分享出来<span class='heimu'>接受批斗</span>！</p>
+</div>
+<hr>
+<p>首先上代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nui-fClear sR0&quot;</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">table</span> <span class="attr">style</span>=<span class="string">&quot;margin: auto; width: 340px; height: 500px;&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">&quot;background: #f5f7f6;padding: 10px;border-radius: 5px;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">    display: -webkit-box;</span></span></span><br><span class="line"><span class="string"><span class="tag">    -webkit-box-pack: center;</span></span></span><br><span class="line"><span class="string"><span class="tag">&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://file.tabirstrees.top/blogfile/piano%20xun.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;haokan&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color:rgb(255, 233, 233);background-position: center;border-left: 3px solid #414040;box-shadow:0 1px 3px #AAAAAA;line-height:180%;padding:0 15px 12px;width:500px;color:#030303;font-family:&#x27;Century Gothic&#x27;,&#x27;Trebuchet MS&#x27;,&#x27;Hiragino Sans GB&#x27;,微软雅黑,&#x27;Microsoft Yahei&#x27;,Tahoma,Helvetica,Arial,&#x27;SimSun&#x27;,sans-serif;font-size:12px;margin: auto;&quot;</span>&gt;</span> </span><br><span class="line">       </span><br><span class="line">       <span class="tag">&lt;<span class="name">h2</span> <span class="attr">style</span>=<span class="string">&quot;border-bottom:1px solid rgb(0, 0, 0);font-size:14px;font-weight:normal;padding:13px 0 10px 8px;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color: #f59200;font-weight: bold;&quot;</span>&gt;</span><span class="symbol">&amp;gt;</span> <span class="tag">&lt;/<span class="name">span</span>&gt;</span>您在 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none;color: #f59200;&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span> 博客上的留言有回复啦！<span class="tag">&lt;/<span class="name">h2</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color: rgb(208, 212, 247); padding:5px 12px 5px 12px;margin-top:18px;border-radius: 3px;&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;PARENT_NICK&#125; 同学，您曾在<span class="tag">&lt;<span class="name">strong</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>上发表评论:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;PARENT_COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;NICK&#125; 给您的回复如下:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>您可以点击 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;POST_URL&#125;&quot;</span>&gt;</span>查看回复的完整內容 <span class="tag">&lt;/<span class="name">a</span>&gt;</span>，欢迎再次光临 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span>。<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">table</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">   <span class="selector-class">.comment</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border</span>: <span class="number">0px</span> solid <span class="number">#DDD</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">15px</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">margin</span>:<span class="number">18px</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span></span><br><span class="line"><span class="css">   &#125;</span></span><br><span class="line"><span class="css"> </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>然后是效果图:</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/comment-mail-style评论邮件通知.jpg" alt="comment-mail-style评论邮件通知"></p>
+<hr>
+<div class="note success flat"><p>感觉还是太丑了,还是html和css的基础不太好,有时间得再好好学一学。大家有好看的模板也可以推荐给我啊😂！</p>
+</div>]]></content>
+      <categories>
+        <category>资源</category>
+        <category>模板</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>web技术</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Fortran语言学习——循环</title>
+    <url>/2021/08/12/fortran-cycle/</url>
+    <content><![CDATA[<p><img src="https://file.tabirstrees.top/blogfile/logo-fortran.png" alt="logo-fortran"></p>
+<h1 id="🎉DO结构"><a href="#🎉DO结构" class="headerlink" title="🎉DO结构"></a>🎉DO结构</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210710211357.png" alt="DO结构"></p>
+<p>在我们的程序编写过程中，经常会遇到需要将一部分代码重复很多遍的情况，为了使得代码简单提高可读性，可以用循环结构来进行处理，在Fortran中最常见的循环结构就是如上图所示的DO循环.</p>
+<p>DO循环由计数器（用来决定执行循环次数的变量）的初值，终值以及增量三个部分组成（Fortran 90之后），每进行一次循环，计数器就会累加上前面设置的增量，当计数器超过终值时循环就会结束.</p>
+<p>计数器的各项设定既可以用常量也可以用变量指定.下面是使用DO循环的一个例子（计算2+4+6+8+10）</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">program</span></span> ex0602</span><br><span class="line"><span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line">    <span class="keyword">integer</span>, <span class="keyword">parameter</span> : : limit=<span class="number">10</span> <span class="comment">!计数器的上限</span></span><br><span class="line">    <span class="keyword">integer</span> counter <span class="comment">!计数器</span></span><br><span class="line">    <span class="keyword">integer</span> :: ans = <span class="number">0</span> <span class="comment">!拿来累加使用</span></span><br><span class="line">    <span class="keyword">do</span> counter=<span class="number">2</span>, limit ,<span class="number">2</span></span><br><span class="line">        ans = ans + counter</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) ans</span><br><span class="line">    <span class="keyword">stop</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>对于Fortran 77及以前版本的代码来说，没有直接使用<code>end do</code>来结束循环的说法（但是仍然有人在使用），而必须要在DO后面写清楚循环到哪一行结束.即<code>do 结束的行代码, 计数器变量初值, 终值, 增量</code>，同时在循环结束的那一行设置好行代码（通常来说这一行的代码不需要可执行的意义，正好可以用我们前一节学习的<code>continue</code>命令.）.</p>
+<p>当结构中的<strong>增量</strong>使用<strong>负数</strong>时，终值需要比初值小，并且终止条件会变成计数器的值比终值小时就会结束循环.</p>
+<p>同时，结构中初值，终值，增量等如果使用变量指定时，只会在循环开始时进行一次读取，在循环过程中改变变量的值对循环是不会产生影响的，例如：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">s=<span class="number">1</span></span><br><span class="line">e=<span class="number">10</span></span><br><span class="line">inc=<span class="number">1</span></span><br><span class="line"><span class="keyword">do</span> i=s, e, inc</span><br><span class="line">    s=<span class="number">5</span></span><br><span class="line">    e=<span class="number">1</span></span><br><span class="line">    inc=-<span class="number">1</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) i</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
+<h1 id="🎉DO-WHILE-结构"><a href="#🎉DO-WHILE-结构" class="headerlink" title="🎉DO WHILE 结构"></a>🎉DO WHILE 结构</h1><p>某些时候我们会遇到更加复杂的情况，循环变量的增加可能不是线性的，或者需要在循环过程中根据情况特别指定增加方式，这个时候我们可以使用一个逻辑判断来进行循环的指定（当该判断的逻辑值为1时则循环，逻辑值为0时停止循环，即直到不满足条件为止一直循环下去）：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> whilw (逻辑运算) <span class="comment">! 逻辑运算成立时,会一直重复执行该循环</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">! 结束循环的命令</span></span><br></pre></td></tr></table></figure>
+<p>相对于<code>DO</code>结构的循环而言,该结构最大的优势就是可以在循环过程中改变循环变量的值,这样就适应了更加复杂的情况.</p>
+<h1 id="🎊循环的流程控制"><a href="#🎊循环的流程控制" class="headerlink" title="🎊循环的流程控制"></a>🎊循环的流程控制</h1><p>主要是介绍两个与循环有关的命令:<code>CYCLE</code>,<code>EXIT</code>,类似于Python中的<code>continue</code>以及<code>break</code>.</p>
+<h2 id="🎨CYCLE"><a href="#🎨CYCLE" class="headerlink" title="🎨CYCLE"></a>🎨CYCLE</h2><p><code>CYCLE</code>命令可以直接跳过循环的某一个部分,也就是说<code>CYCLE</code>后面的代码将会不被执行而直接跳入到下一个循环中.比如:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="built_in">floor</span>=<span class="number">1</span>,<span class="number">9</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">floor</span> = <span class="number">4</span>) <span class="keyword">cycle</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="built_in">floor</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
+<p>执行结构将会列出从1到9的数字(除了4以外),因为当<strong>floor=4</strong>时被<code>cycle</code>语句跳过执行<code>write(*,*) floor</code>.</p>
+<h2 id="🎨EXIT"><a href="#🎨EXIT" class="headerlink" title="🎨EXIT"></a>🎨EXIT</h2><p>使用<code>EXIT</code>命令将跳出整个循环,也就是说当出现<code>EXIT</code>后循环将不再执行,通常出现在你并不知道需要执行多少次循环,于是设置为永久循环的情况:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="keyword">while</span>( .true. ) <span class="comment">! 如果没有exit命令程序将永远执行下去</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="string">&#x27;weight:&#x27;</span></span><br><span class="line">    read(*,*) guess</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">abs</span>(guess-weight) &lt; error ) <span class="keyword">exit</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">!前面已经预先声明好了以上出现的三个变量.</span></span><br></pre></td></tr></table></figure>
+<p>以上,当<code>guess</code>与<code>weight</code>的值相差在误差范围内时,循环结束.</p>
+<hr>
+<div class="note success flat"><p>在Fortran中还可以为循环署名,这样可以明确最后的<code>end do</code>命令是对哪一个循环执行的:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">outter: <span class="keyword">do</span> i=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为outter</span></span><br><span class="line">    inner: <span class="keyword">do</span> j=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为inner</span></span><br><span class="line">        <span class="built_in">write</span>(*,<span class="string">&quot;(&#x27;(&#x27;,i2,&#x27;,&#x27;,i2,&#x27;)&#x27;)&quot;</span>) i,j</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span> inner <span class="comment">! 结束内循环inner</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> outter <span class="comment">! 结束外循环outter</span></span><br></pre></td></tr></table></figure></p>
+</div>]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>编程</category>
+        <category>Fortran</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>Fortran</tag>
+        <tag>循环语法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Fortran语言学习——流程控制与逻辑运算</title>
     <url>/2021/07/07/fortran-logic-compute/</url>
     <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210707235432.png" alt="Fortran"></p>
@@ -803,27 +698,166 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
       </tags>
   </entry>
   <entry>
-    <title>地磁场形成原因文献阅读报告</title>
-    <url>/2021/09/11/geomagnetic-field-fromation/</url>
-    <content><![CDATA[<p>地球磁场的成因曾经被科学大师爱因斯坦列为理论物理学的三大未解决的难题之一也是迄今未得到合理解释的地球科学的理论难题<sup><a href="#fn_1" id="reffn_1">1</a></sup>。磁性是地球的基本属性之一，人类早就认识了地球的磁性。自从人类认识了地球的磁性以后就希望能探秘地球磁性的形成原因。为解释地磁的成因人们提出了多种假说至今仍在继续探索和研究。一般通过应用经典电磁理论定性地分析地轴参考系中地球上电荷间洛仑兹力的特点和电荷的运动规律并据此阐述地球磁场的形成机理同时说明地球不仅具有自身的磁场而且具有自身的电场，地球电场和地球磁场是不可分割的统一体<sup><a href="#fn_2" id="reffn_2">2</a></sup>。目前普遍接受的是地磁场的发电机理论，即地球电场和地球磁场源自于地球的自转和地球上正负电荷的非对等分布。地球自转带动地球上的静电荷(相对于在不停地自转的地球静止的电荷)相对于地轴做匀速圆周运动就产生磁场。在地轴参考系中（即选地轴作为参考系）视地球为真空中的理想均质固体导体球分析地球电场和地球磁场的形成机理。地球磁场按场源电荷的运动形式分类可分为主磁场和偏磁场按场源电荷的汇集点在地球上所处的位置分类可分为中心磁场和极地磁场<sup><a href="#fn_3" id="reffn_3">3</a></sup>。地球上任意一点的磁场都是由该点的主磁场和偏磁场叠加而成主磁场又是由中心磁场和极地磁场叠加而成<sup><a href="#fn_3" id="reffn_3">3</a></sup>。该理论在观测、实验、理论和研究上得到较多证实也能较好的解释地磁反转现象地球发电机理论认为地球内核有流动的熔融态铁形成导电的“汪洋”，导电流体依据电流的磁效应必然会产生磁场，因此这便是地磁场的由来。包括地球在内的大部分太阳系行星以及包括太阳在内的所有恒星都会因导电流体的运动而产生磁场<sup><a href="#fn_4" id="reffn_4">4</a></sup>。</p>
-<p><img src="https://file.tabirstrees.top/blogfile/dicixingcheng/%E7%A3%81%E5%9C%BA%E5%9B%BE.gif" alt="磁场作图"></p>
-<p>地球的磁场源于半径为3400公里（地球半径为6370公里）、由铁合金组成的地核。地核分为半径为1220公里的固态内核和液态外核。内核（温度约为6000K，573°C，10340F））的热量向核幔边界（温度约为3800K，353°C，6380F））传导时会推动液态外核的流动。内核的高温来自于行星分异期间较重物质下沉时释放的引力势能以及核内放射性元素衰变时释放的热能。外核流动的形状与地球的自转及固态的内核有关。地球产生磁场的原理称为发电机理论。电流及其所产生的磁场之间存在一种反馈作用：电流回路产生磁场（安培定律）磁场的变化产生电场（法拉第定律）磁场和电场又反过来对电流中的电荷施力（洛伦兹力）。综合起来可用一条称为“磁感应方程”的偏微分方程来描述如此形成的磁场：</p>
-<script type="math/tex; mode=display">
-\frac{\partial \mathbf{B}}{\partial t}=\eta \nabla^{2} \mathbf{B}+\nabla \times(\mathbf{u} \times \mathbf{B})</script><p>其中u为流体的速度B为磁场η=1/σμ为磁扩散率（与电导率σ和磁导率μ之积成反比）。∂B/∂t是磁场的时间导数，∇2是拉普拉斯算子，∇×是旋度算子<sup><a href="#fn_5,6" id="reffn_5,6">5,6</a></sup>。</p>
-<p><img src="https://file.tabirstrees.top/blogfile/dicixingcheng/%E5%9C%B0%E7%90%83%E7%BB%93%E6%9E%84.jpg" alt="地球圈层"></p>
-<p>磁感应方程右边的第一项描述的是扩散。在静止不动的流体当中磁场会减弱聚集的磁场也会扩散开来。一旦地球发电机在某天停止运动地磁场的偶极分量就会在几万年内慢慢消失。在一个完美电导体（σ=∞）里不可能发生扩散。根据楞次定律磁场的任何变动会产生抵抗这一改变的电流因此进出一个给定体积流体的磁通量不会改变。流体在移动时磁场会与其一同移动。这一现象称为“磁冻结定理”。就算流体不是完美电导体其流动时也会拉长磁场线并产生新的磁场。若不是因为磁场在加强时会抵抗流体的运动这一过程会无止境地产生新磁场。浮力所致的对流使得外核流体可以持续运动。在地球内部越往深处温度越高。越高温温度越高。越高温的流体浮力越大。另外，所谓的“成分对流”现象有加强浮力的作用：当地核冷却时，其中一些熔融铁会凝固并沉积在内核表面，流体中留下较轻的元素，因此密度降低。地球自转所产生的科里奥利效应会使流体的运动形成南北轴向的卷状物。发电机可以加强磁场，但整个过程最开始的时候需有初始磁场。地球的初始磁场可能来自地球以外：地球的初始磁场可能来自地球以外：太阳在其形成初期曾经经历过一个金牛T星阶段，此时的太阳风所致磁场可能比今天强几个数量级。但是，一大部分来自太阳的磁场可能会被地幔阻挡。初始磁场也有可能来自核幔边界上的化学反应界上的化学反应，或来自导热性和导电性的变化。根据计算，地球外核的平均磁场强度为25高斯，是地表强度的50倍<sup><a href="#fn_7" id="reffn_7">7</a></sup>。</p>
-<p><img src="https://file.tabirstrees.top/blogfile/dicixingcheng/%E5%9C%B0%E7%90%83%E7%A3%81%E5%B1%82%E7%9A%84%E5%BD%A2%E6%88%90.gif" alt="太阳风作用下地磁层的形成"></p>
-<p>但是，有研究指出：地球的外核不能产生稳定的偶极磁场，发电机理论对偶极磁场是无效的<sup><a href="#fn_7" id="reffn_7">7</a></sup>。首先从磁源深度的研究结果来看偶极磁场的磁源已位于固态内核中。若这一结论能确认是正确的，偶极磁场肯定不是发电机效应产生的。由于我们对地球内部的了解太少这一结论需留有余地。为此我们又从外核流体运动的可能形态探讨发电机效应产生偶极磁场的可能发现在外核流体中找不到能激发稳定偶极磁场的流场。此外又对外核流体运动的状态进行了推测发现外核中不存在引起较大区域流速变化的动力源外核流体的运动应相对平稳的绕地轴旋转这一点不利于发电机效应的产生。这几面都说明地球的偶极磁场不是或很难是发电机效应产生的。由于地球偶极磁场占地球磁场的是地球磁场最主要、最基本的部分，地磁发电机理论的主导地位应受到质疑。将地磁研究的希望完全寄托于地磁发电机理论是需要斟酌的。</p>
-<p>另外俞光明还探究了初始弱外场的成因<sup><a href="#fn_4" id="reffn_4">4</a></sup>。初始磁场的产生与地球的起源有着密切的关系它是地球起源时期形成的物理特性的痕迹标志。在原始的行星星云中由于没有足够的能量湍流和涡流无法得以长久地维持由于引力的不稳定。原始的行星星云瓦解着一系列大的气休球(原行星)。从原行星到地球的形成大致经历四个阶段即原行星阶段、自引力收缩阶段、地球固化和地核‘液化’阶段、及大规模对流运动的出现、地球内部圈层的分化和差速自转的稳定阶段。上述各阶段的磁场特征都有较大差异，第一阶段，维系地球磁场的机制是在原始星云磁场作用下的湍流运动和行星尺度的“气体”发电机机制，它们使原始磁场逐渐增强并达到相对稳定。第二阶段，原始磁场可用“固核”发电机机制予以维系，由于固核的存在气体的运动受到一定的限制，因而磁场强度相对于前一阶段逐渐减小。第三阶段，地球固化使湍流磁场效应和涡流运动行星尺度气休发电机机制均消失地球磁场依靠物质的磁化作用得以保存。由于地球内部温度升高地球内部出现了消磁效应，从内到外磁性逐渐开始消失，原始磁场强度迅速减小，磁性仅保留在地球的壳层与此同时。地球内部温度的增加使地核“液化”，微弱的差异自转和内部对流的萌发驱动了最初的地磁发电机。第四阶段,地球内部强烈的对流运动和差速自转启动了地磁发电机从而维系和增强了地球的基本磁场。</p>
-<div class="note info flat"><p>参考文献<br><sup><a href="#fn_1" id="reffn_1">1</a></sup>张世红,李海燕.地磁学、古地磁学和环境磁学的研究新进展——第32届国际地质大会学科总结和评述[J].现代地质,2004(04):415-422.<br><sup><a href="#fn_2" id="reffn_2">2</a></sup>黄金钟.论地球磁场的成因和自反转机制:中国科协2000年学术年会,2000[C].<br><sup><a href="#fn_3" id="reffn_3">3</a></sup>邹润莉.地球电场与地球磁场的形成机理[J].地球物理学进展,2008,23(4):1071-1084.<br><sup><a href="#fn_4" id="reffn_4">4</a></sup>喻光明.地磁场起源机理的探讨:中国地球物理学会1990年度综合学术讨论会,武汉,1990[C].<br><sup><a href="#fn_5" id="reffn_5">5</a></sup>WeissN.Dynamosinplanets,starsandgalaxies[J].Astronomy&amp;Geophysics:TheJournaloftheRoyalAstronomicalSociety,2002,43(3):3-9.<br><sup><a href="#fn_6" id="reffn_6">6</a></sup>董超,张怀,石耀霖.地磁场发电机数值模拟综述[J].中国科学院大学学报,<br>2019,36(02):145-154.<br><sup><a href="#fn_7" id="reffn_7">7</a></sup>李安生,李国栋.对地磁发电机理论的反思与天体磁场研究展望[J].地球物理学进展,2010,25(3):809-816.</p>
-</div>]]></content>
+    <title>对高等数学最精简的整理(自己考研最后期间用的)</title>
+    <url>/2021/06/26/last-remenber/</url>
+    <content><![CDATA[<p>博客网站建了快两年了,干货少得可怜(主要还是因为自己太菜了),想着把自己考研时候准备的复习总结的pdf放上来吧(<span class=heimu>自我感觉里面关于三重积分-体积分-线积分-面积分等的整理还是蛮不错的!</span>).同时也算是对网站新加的PDF预览功能做一个测试吧,看看能不能用.</p>
+
+
+	<div class="row">
+    <embed src="https://file.tabirstrees.top/blogfile/last-remenber.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+]]></content>
       <categories>
-        <category>文献阅读</category>
+        <category>笔记</category>
+        <category>数学</category>
       </categories>
       <tags>
-        <tag>文献阅读</tag>
-        <tag>地磁场</tag>
-        <tag>行星形成与演化</tag>
+        <tag>高等数学</tag>
+        <tag>笔记</tag>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Description of Approaches in T-PROGS</title>
+    <url>/2021/05/19/fangfamiaoshu-of-T-PROGS/</url>
+    <content><![CDATA[<div class="note primary flat"><p>在T-PROGS中提供了五种方法方便我们构建马尔科夫链的转移概率矩阵，这五种方法各自适用于不同的情况，并且在操作上有着比较大的区别，现在通过对T-PROGS操作手册的翻译来大致介绍一下每一种方法的情况。测试</p>
+</div>
+<h1 id="T-PROGS中各种方法的具体描述"><a href="#T-PROGS中各种方法的具体描述" class="headerlink" title="T-PROGS中各种方法的具体描述"></a>T-PROGS中各种方法的具体描述</h1><hr>
+<h2 id="转移率方法"><a href="#转移率方法" class="headerlink" title="转移率方法"></a>转移率方法</h2><p>所谓转移率就是计算连续转移概率矩阵的方程所提到的转移率矩阵$R_\phi$的输入元素。转移率可以被解释为转移概率在滞后距离为零时的斜率。因此，一个建立转移率矩阵的方法需要估计转移概率数据的斜率：$\frac{\partial t_{jk}(h \rightarrow 0)}{\partial h_\phi}$ ，对于一个四分类的例子来说（debris flow, floodplain, levee, channel）转移率矩阵可以被建立为:</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{z}=\left[\begin{array}{cccc}
+-0.87 & * & 0.10 & 0.066 \\
+* & * & * & * \\
+0.030 & * & -1.23 & 0.12 \\
+0.039 & * & 0.79 & -0.82
+\end{array}\right] \mathrm{m}^{-1}</script><p>其中非背景分类的部分是可以改变的，但是需要遵守一定的概率原则；含有背景分类的部分不能改变，程序会自动调整以满足前述概率原则。值得注意的是，对角线元素是负数，非对角线元素是非负的（这是和自转移以及协转移相关的，自己转移到自己的概率随着滞后距离的增加必定是减小的，而两个不同分类之间的转移随着滞后距离的增加自然是增加的，而转移率实际上就是转移概率的斜率，自然会满足上面的条件）。</p>
+<hr>
+<h2 id="使用某一特定滞后距离转移概率数据的离散滞后距离方法"><a href="#使用某一特定滞后距离转移概率数据的离散滞后距离方法" class="headerlink" title="使用某一特定滞后距离转移概率数据的离散滞后距离方法"></a>使用某一特定滞后距离转移概率数据的离散滞后距离方法</h2><p>MCMOD使用特征分析的方法来从特殊滞后距离的转移概率数据中建立转移率矩阵，其中$\Delta h_\phi$将在两者(两种岩性)相关的距离内选取，例如下面这个垂向的转移概率矩阵：</p>
+<script type="math/tex; mode=display">
+\mathbf{T}\left(\Delta h_{z}=0.6 \mathrm{~m}\right)=\left[\begin{array}{llll}
+0.6182 & 0.2892 & 0.0529 & 0.0397 \\
+0.0325 & 0.8061 & 0.0787 & 0.0826 \\
+0.0192 & 0.3817 & 0.5258 & 0.0727 \\
+0.0168 & 0.0995 & 0.2359 & 0.6478
+\end{array}\right]</script><p>通过这个特定距离的转移概率（离散）计算出转移率，再通过转移率计算出连续的转移概率。</p>
+<hr>
+<h2 id="内嵌马尔科夫链分析的转移概率方法"><a href="#内嵌马尔科夫链分析的转移概率方法" class="headerlink" title="内嵌马尔科夫链分析的转移概率方法"></a>内嵌马尔科夫链分析的转移概率方法</h2><p>内嵌马尔可夫链分析是估计分离的地质单元事件发生在临近的另一个地质单元特定方向上的条件概率（通俗一点说就是某一个方向上，A分类出现在B分类之后的条件概率）。举个例子，对于上述的四分类系统中，内嵌转移概率$\pi_{jk,\phi}$在垂直方向$(z)$上被定义为：</p>
+<script type="math/tex; mode=display">
+\pi_{43,\phi} = Pr\{levee \ occurs \ above \ | \ channel\  occurs\ below \}</script><p>因此内嵌转移概率矩阵$\boldsymbol{\Pi}_{z}$可以被构建为：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{\Pi}_{z}=\left[\begin{array}{cccc}
+- & 0.803 & 0.124 & 0.073 \\
+0.176 & - & 0.390 & 0.434 \\
+0.026 & 0.846 & - & 0.128 \\
+0.045 & 0.058 & 0.896 & -
+\end{array}\right]</script><p>注意，对角线上的自转移被视为无法观测到的，因此，对角线上的输入元素是空着的。从解释的观点来说，(4)式中$\pi_{43,z} &gt;&gt; \pi_{41,z}$以及$\pi_{43,z} &gt;&gt; \pi_{42,z}$意味着levee相对来说趋向于出现在channel的上面。</p>
+<p>如果有岩层更进一步的平均长度$\overline{L}_{j,z}$的信息，那么内嵌转移概率（通过频率来估计的）可以通过下式转化为转移率矩阵：</p>
+<script type="math/tex; mode=display">
+r_{jk,z} = \frac{\pi_{jk,z}}{\overline{L}_{j,z}}\\
+r_{jj,z} = - \frac{1}{\overline{L}_{j,z}}</script><p>因此，开发转移率矩阵的方法步骤是：</p>
+<ol>
+<li>根据并置趋势的地质解释或者数据建立内嵌转移概率矩阵；</li>
+<li>建立平均长度；</li>
+<li>根据(5)式将内嵌转移概率转化为转移率。</li>
+</ol>
+<p>注意非对角线元素需要满足:</p>
+<script type="math/tex; mode=display">
+\sum^K_{k = 1}\pi_{jk,z} = 1</script><p>如果设定了背景类别，矩阵中包含了背景类别的行列元素就不需要精确规定（可以将它们设置为零），这样根据内嵌转移概率以及平均长度改进后的转移率矩阵$R_z$为：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{cccc}
+\bar{L}_{1, z}=1.15 & * & 0.12 & 0.075 \\
+* & * & * & * \\
+0.025 & * & \bar{L}_{3, z}=0.82 & 0.10 \\
+0.04 & * & 0.96 & \bar{L}_{4, z}=1.24
+\end{array}\right]</script><p>其中第2各分类被设置为背景类别，这就是为什么含有该类别的元素被设定成了任意值，由此建立的马尔科夫链如下图所示：</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210518114127.png" alt="image-20210518114127505"></p>
+<p>可以看到，由内嵌转移概率方法对测量转移概率的拟合相对初试模型（最大熵因子法）来说稍稍更好一点。</p>
+<hr>
+<h2 id="内嵌马尔科夫链分析的转移频率方法"><a href="#内嵌马尔科夫链分析的转移频率方法" class="headerlink" title="内嵌马尔科夫链分析的转移频率方法"></a>内嵌马尔科夫链分析的转移频率方法</h2><p>所谓内嵌转移频率（垂直方向上）被定义为：</p>
+<script type="math/tex; mode=display">
+f_{43,z} = Pr\{ levee\ occurs\ above\ {\bf and} \ channel\ occurs\ below\}</script><p>于是内嵌转移频率矩阵$F_z$可以被表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{F}_{z}=\left[\begin{array}{llll}
+(0.0841) & 0.0677 & 0.0101 & 0.0063 \\
+0.0672 & (0.3468) & 0.1264 & 0.1713 \\
+0.0085 & 0.2971 & (0.3395) & 0.0340 \\
+0.0085 & 0.0000 & 0.2031 & (0.2115)
+\end{array}\right]</script><p>其中对角线元素（插入的部分）是对应$j$类别嵌入事件的边缘频率$f_{j,z}$的行列之和：</p>
+<script type="math/tex; mode=display">
+f_{j,z} = \sum^K_{k \not= j}f_{jk,z} = \sum^K_{j \not= k}f_{kj,z}</script><p>再加上平均长度$\overline{L}_{j,z}$的信息，转移频率可以转化为转移率通过：</p>
+<script type="math/tex; mode=display">
+r_{jk,z} = \frac{f_{jk,z}}{f_{j,z} \overline{L}_{j,z}} \quad \forall k \neq j</script><p>类似内嵌转移概率，MCMOD同样可以由转移频率构建出转移率矩阵的非对角线部分的元素：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{cccc}
+\bar{L}_{1, z}=1.15 & * & 0.0101 & 0.0063 \\
+* & \bar{L}_{1, z}=2.27 . & * & * \\
+0.0085 & * & \bar{L}_{3, z}=0.82 & 0.0340 \\
+0.0085 & * & 0.2031 & \bar{L}_{4, z}=1.24
+\end{array}\right]</script><p>尽管非对角线元素并不需要额外的设定，但是这个方法需要背景类别的平均长度，因为边缘频率依赖于各个类别的比例以及平均长度。</p>
+<hr>
+<h2 id="“独立性”或者“最大熵因子（无序）”转移频率方法"><a href="#“独立性”或者“最大熵因子（无序）”转移频率方法" class="headerlink" title="“独立性”或者“最大熵因子（无序）”转移频率方法"></a>“独立性”或者“最大熵因子（无序）”转移频率方法</h2><p>地质系统的并置趋势反映了地层序列的有序或者无序的程度，地层之间转移频率$f_{jk,\phi}$（某一种地层紧挨着其他地层的概率）的熵因子$S_{\phi}$可以量化某一特殊方向$\phi$上的并置趋势的无序性，其中熵因子定义（参考“熵分析方法”）为：</p>
+<script type="math/tex; mode=display">
+S_{\phi} = - \sum_j \sum_k f_{jk,\phi} \ln{f_{jk,\phi}}</script><p>考虑一个问题，“最大程度无序的系统来说，地层应该是什么样的呢？”。从我们所参考的状态来说，其中一个答案可能是能够判断出观察到的地层序列显示非随机的并置趋势或者说是一定程度上的有序。</p>
+<p>在应用内嵌马尔科夫链分析时，地质学家将兴趣放在量化他们对用地质相连续性的解释上，尤其是在垂直方向上。四种类别岩性连续性的“随机”或者独立的转移频率为：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{llll}
+f_{1} f_{1} & f_{1} f_{2} & f_{1} f_{3} & f_{1} f_{4} \\
+f_{2} f_{1} & f_{2} f_{2} & f_{2} f_{3} & f_{1} f_{4} \\
+f_{3} f_{1} & f_{3} f_{2} & f_{3} f_{3} & f_{3} f_{4} \\
+f_{4} f_{1} & f_{4} f_{2} & f_{4} f_{3} & f_{4} f_{4}
+\end{array}\right]</script><p>其中$f_i$代表连续出现$i$类别的“边缘”频率，但在实际操作中这个问题并不简单。通常来说，自转移的情况是无法观察到的（尤其是对于钻孔数据来说），所以不仅仅是对角线上的转移频率，就连边缘频率也是没有办法直接估计的。而非对角线上的转移_计数_是可以被精确估计的，因为协转移（不同类别之间的转移）是可以观察到的。</p>
+<p>假设自转移观察不到，一个更加实际的问题就被暴露出来了。于是，取而代之的是，非对角转移频率$\eta_{jk}$的观测值，被定义为转移计数除以所有非对角转移计数的总和：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{llll}
+- & \eta_{12} & \eta_{13} & \eta_{14} \\
+\eta_{21} & - & \eta_{23} & \eta_{24} \\
+\eta_{31} & \eta_{32} & - & \eta_{34} \\
+\eta_{41} & \eta_{42} & \eta_{43} & -
+\end{array}\right]</script><p>其中，自转移无法观察到，所以留为空白。</p>
+<p>独立转移频率的目标是找到满足以下条件的$f_i$：</p>
+<script type="math/tex; mode=display">
+\frac{1}{T} \sum^K_{j \neq i} f_i f_j = \sum_{j \neq i}^K \eta_{ij} \quad \forall i = 1,...,K\\
+T = \sum^K_{i = 1}\sum^K_{i \neq j} f_i f_j</script><p>上式的非线性系统可以通过IPF（iterative proportion fitting)方法解决。生成的独立模型将显示嵌入事件$\eta_i$的相同边缘频率：</p>
+<script type="math/tex; mode=display">
+\eta_{i}=\sum_{j \neq i}^{K} \eta_{i j} \quad \forall i=1, \ldots, K</script><p>以上，与$f_i$对应的非对角线转移频率将会是独立的。通过将$\eta_i$与比例$p_i$除以平均长度$\bar{L}_i$成比例，可以将连续滞后马尔可夫链模型与该独立性模型联系起来：</p>
+<script type="math/tex; mode=display">
+\frac{p_{i}}{L_{i}} \propto \eta_{i} \quad \forall i=1, \ldots, K</script><p>因此，给定比例和平均长度的设定，就可以得到一个包含独立转移频率的连续滞后马尔科夫链。</p>
+<p>因此一个特殊的问题出现了，“对于给定的比例和平均长度，什么是使得熵最大的转移频率矩阵呢？”巧合的是统计独立性的概念正好与最大熵的结果是一致的。在先前的例子中，比例和平均长度对应的独立或者最大熵转移频率矩阵$F_z^{(S\ max)}$为</p>
+<script type="math/tex; mode=display">
+\mathbf{F}_{z}^{(S \max )}=\left[\begin{array}{cccc}
+(0.0841) & 0.0377 & 0.0311 & 0.0152 \\
+0.0377 & (0.3671) & 0.2196 & 0.1075 \\
+0.0311 & 0.2196 & (0.3396) & 0.0888 \\
+0.0152 & 0.1075 & 0.0888 & (0.2115)
+\end{array}\right]</script><p>其中对角线元素代表某一行或者某一列的边缘频率的总和。这个矩阵可以用来作为解释在相同比例和平均长度的情况下与最大无序程度的地层连续性相关的并置趋势的基础。例如，如果观测到的转移频率$f_{43,z}$比$f_{z}^{(S\ max)}$更大，一个可能的推断是此处_levee_出现在_channel_的上方是具有统计趋势的.</p>
+<p>综上所述，开发转移率矩阵有以下的步骤：</p>
+<ol>
+<li>建立各类别的比例和平均长度；</li>
+<li>计算最大熵因子转移频率矩阵$F_{z}^{(S\ max)}$以及相应的转移率；</li>
+<li>解释相对于最大熵因子转移率的非对角转移率。</li>
+</ol>
+<p>举个例子里说，根据（11），最大熵因子转化率$r_{jk,z}^{(S\ max)}$可以通过下式计算：</p>
+<script type="math/tex; mode=display">
+r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq j} f_{j k, z}^{(S \max )}}</script><p>最大熵转移率对应的垂向转移率矩阵表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{z}^{(S \max )}=\left[\begin{array}{llll}
+\frac{-1}{\bar{L}_{1, z}=1.15 \mathrm{~m}} & 1.80 r_{12, z}^{(S \max )} & 0.32 r_{13, z}^{(S \max )} & 0.41 r_{14, z}^{(S \max )} \\
+1.78 r_{21, z}^{(S \text { max })} & \frac{-1}{\bar{L}_{2, z}=2.27 \mathrm{~m}} & 0.58 r_{23, z}^{(S \max )} & 1.59 r_{24, z}^{(S \max )} \\
+0.27 r_{31, z}^{(S \max )} & 1.35 r_{32, z}^{(S \max )} & \frac{-1}{\bar{L}_{3, z}=0.82 \mathrm{~m}} & 0.45 r_{34, z}^{(S \max )} \\
+0.56 r_{41, z}^{(S \max )} & 0.00 r_{42, z}^{(S \max )} & 2.29 r_{43, z}^{(S \max )} & \frac{-1}{\bar{L}_{4, z}=1.24 \mathrm{~m}}
+\end{array}\right]</script><p>这样计算出来的非对角线上的元素通过系数乘以$r_{jk,z}^{(S\ max)}$得到，如果比1小则表示两个类别具有并置趋势（在某个方向上某一分类通常紧挨着另一分类出现）小于1时则不具有并置趋势。</p>
+<p>最大熵的概念在解释已存在的马尔科夫链模型的并置趋势时是非常有用的。举个例子，你可以通过比例和平均长度建立一个已存在的模型，比如说（11），然后生成一个马尔科夫链，它有着最大程度的无序的并置趋势。再与转移概率方法进行比较，从而解释地层是否展现出了一定程度的有序并置趋势。在这过程中必须要给定全部类别的平均长度，包括背景类别。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>地下水数值模拟</category>
+      </categories>
+      <tags>
+        <tag>GMS</tag>
+        <tag>地统计</tag>
+        <tag>转移概率</tag>
       </tags>
   </entry>
   <entry>
@@ -858,186 +892,105 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
       </tags>
   </entry>
   <entry>
-    <title>宫崎骏电影合集(持续更新中......)</title>
-    <url>/2020/07/14/gqj/</url>
-    <content><![CDATA[<h1 id="充满幻想的作品中热爱的幸福"><a href="#充满幻想的作品中热爱的幸福" class="headerlink" title="充满幻想的作品中热爱的幸福"></a>充满幻想的作品中热爱的幸福</h1><blockquote>
-<div class="note info flat"><blockquote>
-<p> “创作一部动画也就是创造一个虚拟的世界，这个世界慰藉着那些失去勇气的、与残忍现实搏斗的灵魂。”    ——宫崎骏</p>
-</blockquote>
-</div>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/吉卜力动画背景.jpg" alt="吉卜力动画背景"></p>
-</blockquote>
-<p>在日本动漫界无数动画创作者中，有很多优秀的，带有自己强烈的个人色彩的导演，比如庵野秀明、汤浅政明、久米田康治以及新房昭之等等。他们有的作品画风诡异，内涵深刻，有的人作品明嘲暗讽，针砭时政，有的人被称为“爱的战士”，家里的刀片为今后退出动漫界开五金店铺平了道路。然而，在动漫发展到今天，这些风格我们已经见怪不怪了，甚至感到了一些审美疲劳。</p>
-<p>但是有一个人的作品，无论你在什么时候看，都会给人一种强烈的感动，浓浓的温馨，出动人们心底最原始的悸动。童年开始便伴随我们成长（<span class="heimu" >还记得当初上高一的时候找同学借的手机回家，半夜爬起来偷偷蹲在角落蹭楼下的WiFi看电影的那种激动感 </span>），长大之后更教会我们热爱生活，这个世界上除他之外再也找不出第二个人能创作出如此美好的动画。每个人都不得不承认宫崎骏是这个世界上最能抓住我们内心最柔软地方的人，看他的作品的时候是平静的，但是这种平静中还蕴含着对生命，对生活的热爱，让人感到这世界上的一切都是那么的自然，相较起来那些黑暗绝望的角落在这份自然面前倒显得无所谓了。</p>
-<p>为了重温那些可能已经淡忘的感动，在女朋友的提醒下，我决定在浩如烟海的网络中找到宫崎骏老爷子所有的电影，并放到自己的网盘上。希望自己还有满怀希望的所有人都可以保持看完电影的之后感受到的老爷子传达给我们的，<strong>对于我们所生活的世界的希望和幸福感</strong>！</p>
-<h1 id="1-借东西的小人阿埃丽缇"><a href="#1-借东西的小人阿埃丽缇" class="headerlink" title="1.借东西的小人阿埃丽缇"></a>1.借东西的小人阿埃丽缇</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/艾莉缇.jpg" alt="艾莉缇"></p>
-<div class="note light flat"><p>这是宫崎骏作品里面我女朋友最喜欢的一部（<span class="heimu">应该是这样的吧hahaha，不知道是千与千寻多一点还是这个多一点。</span>）。对我来讲当初看完之后感慨万千，片尾艾莉缇他们离开那么漂亮温馨的家（那个房子真的爱了爱了！❤😍）准备去其他的新的地方生存，站在茶壶中回望曾经生活的地方和男主告别时，让我有种长大离开家乡去很远很远的地方，以往那些快乐美好的日子全部成为了有可能被淡忘记忆的伤感。也让我联想到《猫武士》（英国儿童文学作品，非常推荐！）中那个猫离开故土去新月山谷经过山坡时候的场景，那是我第一次对世界之外产生强烈憧憬，又对故土产生无限眷恋的时刻。另外男主和艾莉缇不能在一起（虽然知道不可能，但还是好难受）我真的意难平！—— _”Tabris Trees Severus”_</p>
-</div>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/艾莉缇的房子.jpg" alt="艾莉缇的房子"></p>
-<h1 id="2-天空之城"><a href="#2-天空之城" class="headerlink" title="2.天空之城"></a>2.天空之城</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/希达.gif" alt="希达"></p>
-<div class="note light flat"><p>异世界的故事总是让我兴趣盎然，宫崎骏的很多动漫都有这种设定，这也是我喜欢他的一部分原因。天空之城就好像一个童话故事，希达是天空之城遗落的公主，巴斯就是是勇敢的骑士，他们一起寻找天空之城并打败了坏人，最后幸福的生活在一起（童话故事标准结局(≧ω≦)/）。</p>
-<p>希达扎着两根长长的辫子，蓝色的长裙子，看起来好温柔好舒服，里面惊险的战斗场景也是宫崎骏动漫里面难得的场面，天空之城安静的像世外桃源，自然美丽的环境，还有许多远古生物，和激烈的战斗形成鲜明对比。最后为了阻止了更惨烈战争的爆发，希达毁灭了天空之城，这样一个美好的世界就这样消失了……但是，这警示我们要珍惜现在美丽的地球，千万不要让它被战争毁灭了！宫崎骏真的很热爱和平呢！哈哈（∩△∩）❤永远喜欢❤！  —— _”艾莉缇”_</p>
-</div>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/QQ图片20200715092901.jpg" alt="QQ图片20200715092901"></p>
-<h1 id="3-悬崖上的金鱼姬"><a href="#3-悬崖上的金鱼姬" class="headerlink" title="3.悬崖上的金鱼姬"></a>3.悬崖上的金鱼姬</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/89B14785A06910E5ECB8A46B32E5DD91.png" alt="89B14785A06910E5ECB8A46B32E5DD91"></p>
-<div class="note light flat"><p>之前我听过很多宫崎骏的电影，我却只看过《哈尔的移动城堡》，实际上我这个人不太喜欢看动漫，很需要机缘，所以看《悬崖上的金鱼姬》的机缘是因为高三的音乐课，宫崎骏和久石让的合作有很多，金鱼姬的电影里就有很多好听的音乐【原谅我比较俗，只能用简单的“好听”来形容音乐】，所以老师就上课的时候放给我们看了。一节课45分钟，看了三个礼拜吧，高中除了学习之外的事情还真不多，反而这音乐课放的电影让我印象颇深。</p>
-<p>《悬崖上的金鱼姬》画面真的很美，宫崎骏的每一个动漫画面都美，最令我印象深刻的就是里面的食物了，看着就太香啦~【原谅我是个吃货，太生动形象了】</p>
-<p> “波妞，喜欢宗介。”这句话虽然被抖音玩烂了，但是里面包含了小孩子之间很纯粹的喜欢，每次听到都会莞尔，毕竟这种喜欢对于不再是孩提的我，还是很珍贵的。剧里的每一位角色都很善良，那位看起来是反派的老爸也很善良，初心是为了保护波妞呀【妥妥女儿奴了】。这真是一部很美好的电影。电影结局很美好，但这部动漫更深层的含义就是呼吁人们保护海洋了，确实应该人人有责，很多循环后遭殃的还是人类。那就写到这里吧，宫崎骏的电影很值得看。——_”微封”_</p>
-</div>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/CE6198FAB518A44FFC426E88C7F3A38E.png" alt="CE6198FAB518A44FFC426E88C7F3A38E"></p>
-<h1 id="4-侧耳倾听"><a href="#4-侧耳倾听" class="headerlink" title="4.侧耳倾听"></a>4.侧耳倾听</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/3b9b918e7d601606cea47dec3059a495.gif" alt="3b9b918e7d601606cea47dec3059a495"></p>
-<div class="note light flat"><p>相比保卫蓝天 守护家园 拯救世界 有时候生活中的小美好反而让我更为感动<br>侧耳倾听 在看完整部电影之后 我觉得这个名字好美啊 它的内容其实更加的贴近生活话 描述的是男女主角互相勉励互相学习 为各自的理想而奋斗 然后男女主相爱的故事 听起来很像偶像剧 但是它却没有那种俗气</p>
-<p>“我早就想好了，要这样载着你，翻山越岭”</p>
-<p>“我不要成为你的包袱，我也早就想好了，要在背后支持你”</p>
-<p>这部电影里我最爱的两句话<br>之前和朋友聊起这部电影，记得自己说过：哈这么小就谈恋爱啊 不太好吧<br>有时候看一部电影最怕的就是真的将自己代入进去  高三好像自己喜欢上一个女孩子 自己也没想到会在那么不合宜的时间有不合适的想法 脑子里一直在打消那些念头 可是上课偶尔还是想回头望望 就好像自己一直在等她一样 她是班上新来的复读生 自己一有什么东西就想和她分享 一个解题思路 或者自己认识的一个有趣的单词<br>自己总会有无限的热情去找她 站在那里等她<br>可是其实好像她并不喜欢这样子 忘记发生了什么事 在我转头回去找她的时候 她突然凶着对我说了一句：我没有这么多时间可以浪费 也许你轻而易举就能碰的东西 我要努力好久<br>好像其实那一刻自己有一点明白侧耳倾听描述的是什么 又好像突然一切也不符合我自己<br>现在看侧耳倾听其实多的是带了自己心中的那份遗憾去欣赏一个特别特别美妙的故事<br>也许一直不会发生<br>虽然有时候觉得这个电影和这件事没多大关系 但是自己一提到这部电影就会想起这件事<br>也许自己那份遗憾在这部电影中得以满足</p>
-<p>可是这么美好的一部电影也会因为一句台词毁掉<br>所以请不要看最后一点 也不要听那句<br>你将来愿意嫁给我吗？<br>可能我提会不到这句话的浪漫。——_“初见”_</p>
-</div>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/5409b8cd83d8222544dd29a63c96f734.png" alt="5409b8cd83d8222544dd29a63c96f734"></p>
-<h1 id="电影下载地址"><a href="#电影下载地址" class="headerlink" title="电影下载地址"></a>电影下载地址</h1><p>可在线播放,但是由于网速限制等问题,建议下载之后播放,用云盘中软件文件夹下的potplayer播放器就不存在字幕的问题。(云盘服务器到期没续费，文件全部丢到了，没办法，估计是看不到了。)</p>
-<div class="note success flat"><p><a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E5%80%9F%E4%B8%9C%E8%A5%BF%E7%9A%84%E5%B0%8F%E4%BA%BA%E8%89%BE%E8%8E%89%E7%BC%87" 
-  title="借东西的小人阿埃丽缇"><i class="点击我去往放电影的地方！"></i><span>借东西的小人阿埃丽缇</span></a> <a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E5%A4%A9%E7%A9%BA%E4%B9%8B%E5%9F%8E" 
-  title="天空之城"><i class="点击我去往放电影的地方"></i><span>天空之城</span></a> <a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E6%82%AC%E5%B4%96%E4%B8%8A%E7%9A%84%E9%87%91%E9%B1%BC%E5%A7%AC" 
-  title="悬崖上的金鱼姬"><i class="点击我去往放电影的地方"></i><span>悬崖上的金鱼姬</span></a> <a class="btn-beautify button--animated " href="https://zfile.tabirstrees.top/#/3/main/%E7%94%B5%E5%BD%B1/%E5%AE%AB%E5%B4%8E%E9%AA%8F%E5%90%88%E9%9B%86/%E4%BE%A7%E8%80%B3%E5%80%BE%E5%90%AC" 
-  title="侧耳倾听"><i class="点击我去往放电影的地方"></i><span>侧耳倾听</span></a></p>
-</div>]]></content>
-      <categories>
-        <category>资源</category>
-        <category>动漫</category>
-        <category>宫崎骏</category>
-      </categories>
-      <tags>
-        <tag>动漫</tag>
-        <tag>童话</tag>
-        <tag>宫崎骏</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo+fluid主题添加二级导航</title>
-    <url>/2020/05/14/hexo-fluid%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E4%BA%8C%E7%BA%A7%E5%AF%BC%E8%88%AA/</url>
-    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/6418A1E7501871AF561B89A22AB13D3F.png" alt="6418A1E7501871AF561B89A22AB13D3F"></p>
+    <title>T-PROGS</title>
+    <url>/2021/01/10/T-PROGS/</url>
+    <content><![CDATA[<h1 id="关于T-PROGS的简单介绍"><a href="#关于T-PROGS的简单介绍" class="headerlink" title="关于T-PROGS的简单介绍"></a>关于T-PROGS的简单介绍</h1><p>T-PROGS是一个可以模拟地质岩性在三维空间中的随机分布的成熟软件，它原本是基于Fortran语言的开源软件包，现在的地下水模拟软件GMS软件系统中已经包含了该模块，可以直接在GMS中直接使用。本文的目的在于记录该软件模块的使用学习和过程记录。</p>
+<h1 id="为什么要使用T-PROGS"><a href="#为什么要使用T-PROGS" class="headerlink" title="为什么要使用T-PROGS"></a>为什么要使用T-PROGS</h1><p>在地下水数值模拟的过程中，由于地下水系统属于巨复杂系统，将其复杂的运移过程简单的用一个微分方程的计算结果代替必然会产生大量的不确定性；另外模拟所需要的参数在获取过程中同样会带来各种各样的不确定性。目前的地下水数值模拟逐渐将目光集中到地下水模拟的不确定性分析上，在各种非确定分析方法中使用广泛的随机模拟方法最为常见。</p>
+<h2 id="随机模拟方法"><a href="#随机模拟方法" class="headerlink" title="随机模拟方法"></a>随机模拟方法</h2><p>地下水随机模拟主要有矩方程法和Monte Carlo法。矩方程法通过求解随机微分方程直接求取模拟结果的各阶统计矩；Monte-Carlo方法则是通过随机场生成器实现大量的确定模型，对这些实现的模拟结果进行统计分析得到模拟的统计特征。</p>
+<p>在Monte-Carlo方法过程中涉及到随机参数场的生成。对<strong>渗透性</strong>这一参数而言，为了分析其在模拟过程中的不确定性大小，对其进行参数随机模拟，于是需要生成大量的渗透系数随机场。一般来说，渗透系数的自然分布满足<strong>对数正态分布</strong>的关系，在已知水文地质参数信息的帮助下通过各种条件模拟方法便可以模拟出未知点处的渗透系数概率分布情况，并基于此概率生成大量的确定参数场进行地下水数值模拟。</p>
+<h2 id="建模过程"><a href="#建模过程" class="headerlink" title="建模过程"></a>建模过程</h2><p>此处涉及到水文地质概念模型建模过程的问题：1. 直接建模，在建立水文地质概念模型时直接输入所需要的各种边界条件，源汇项以及水文地质参数；2. 间接建模，在水文地质参数的建立过程中，并不是直接划分参数分区并给定相应的参数，而是先通过三维地质建模建立研究区的三维地质模型，再根据地质介质与水文地质参数之间的相互联系间接地建立水文地质参数场。间接建模的好处是考虑了自然情况下的物理因素（一般来说，误差范围内的水文地质参数就是由地质结构以及地层介质来决定的），减少了由于人为的参数分区而带来不确定性。</p>
+<p>在此基础上，我们可以说实际上T-PROGS是一种基于马尔科夫链的“转移概率地统计（_Transition Probability Geostatistical_）”模型，用于生成地层岩性的三维随机分布。他主要处理的是类似钻孔信息的<strong>分类</strong>地质参数（指示地统计方法）。通过间接建模的方法利用T-PROGS便可以直接由钻孔数据得到渗透系数等水文地质参数的随机分布场，相对于其他方法更加占据优势，在国内外也得到了大量的应用。<del>举例就不要举例了，又不是写论文……</del></p>
 <hr>
-<div class="note info flat"><p>使用hexo博客的fluid主题已经有一段时间了，因为打算写的内容很杂，所从很早开始就想要做一个二级导航出来，这段时间一直在折腾这个东西！前几天给网站加上了豆瓣的📕书评和🎦电影栏目，发现这样要是以后再加点什么东西导航栏就放不下了。所以痛定思痛决定开始弄二级导航（<del>鬼知道我为了做这个东西连即将要到来的考试和难到爆炸的课程设计都不管了</del>）</p>
+<h1 id="理论与方法"><a href="#理论与方法" class="headerlink" title="理论与方法"></a>理论与方法</h1><h2 id="地统计方法简单介绍"><a href="#地统计方法简单介绍" class="headerlink" title="地统计方法简单介绍"></a>地统计方法简单介绍</h2><p>地质统计学的核心以及基础是”变差(变异)函数”:</p>
+<blockquote>
+<p>空间中一点$x$与其相邻一点$x+h$的某一相关变量$Z(x)$方差的差值,称为$Z(x)$在$x$方向上的变异函数,记为$\gamma(x,h)$:  </p>
+<script type="math/tex; mode=display">
+\gamma(x, h)=\frac{1}{2} \operatorname{Var}[Z(x)-Z(x+h)]</script></blockquote>
+<p>上式是在以为情况下成立的,高维情况都是以一维情况为基础,在二阶平稳场(简单来说就是$\gamma(x,h)$只与$h$有关,任何一点相同距离内的变差函数的均值都是一样的)中有:</p>
+<blockquote>
+<script type="math/tex; mode=display">
+\gamma(h)=\frac{1}{2} E\left[(Z(x)-Z(x+h))^{2}\right]-\frac{1}{2}(E[Z(x)-Z(x+h)])^{2}</script></blockquote>
+<p>如此一来,变异函数就被简化为一个单变量函数,并且在$x$方向上任取两点$x_i,x_i+h$对应的变异函数都是以$h$为自变量的随即变量的一个统计样本,其所有取值构成了一次统计。</p>
+<p>对于<strong>克里金方法(Kriging Method)</strong>来说,空间中一点处某一参数$z$的估计值为:</p>
+<script type="math/tex; mode=display">
+\hat z_o = \sum_{i=1}^n\lambda_iz_i</script><p>其中$\hat{z_o}$是点处的估计值，即$z_o=z(x_o,y_o)$,$λ_i$是权重系数。克里金方法是用空间上所有已知点的数据加权求和来估计未知点的值。此处的权重是能够满足点 $(x_o,y_o)$处的估计值$\hat{z_o}$与真实值$z_o$的差最小的一套最优系数，即</p>
+<script type="math/tex; mode=display">
+\min_{\lambda_i} Var(\hat{z_o}-z_o)</script><p>同时满足无偏估计的条件:</p>
+<script type="math/tex; mode=display">
+E(\hat{z_o}-z_o)=0</script><p>求解简化（拉格朗日乘数法）之后可以得到下面的一组控制方程:</p>
+<script type="math/tex; mode=display">
+\left\{
+    \begin{aligned}
+        \sum_{i=1}^n\lambda_i\gamma((x_i,y_i),(x_j,y_j))+\mu &=\overline\gamma((x_o,y_o),V) \\
+        \sum_{i=1}^n\lambda_i &= 1
+    \end{aligned}
+\right.</script><p>在上式中唯一未知的便是我们先前所提到的变差函数（或称变异函数,半方差函数；此处的$\overline\gamma(x_o,V)$表示以$(x_o,y_o)$为中心的一个空间范围$V$内所有的变差函数的均值）。事实上，根据地理学第一定律：距离越近空间相关性越强，我们可以简单地做出假设：</p>
+<blockquote>
+<p>两点的变差函数与其距离之间存在某种函数关系，这种函数关系可以是线性、二次函数、指数、对数关系。</p>
+</blockquote>
+<p>通过对数据集进行分析，从而寻找到一个最优的拟合曲线拟合距离$d$与变差函数$\gamma$的关系，得到函数关系式$\gamma = \gamma(d)$那么对于任意两点$(x_i,y_i)$，$(x_j,y_j)$，先计算他们之间的距离$d_{ij}$然后根据得到的函数关系就可以得到这两点的变差函数，进一步的解决空间中一点的参数估计问题。</p>
+<hr>
+<h2 id="马尔科夫链与转移概率地统计"><a href="#马尔科夫链与转移概率地统计" class="headerlink" title="马尔科夫链与转移概率地统计"></a>马尔科夫链与转移概率地统计</h2><p>转移概率是马尔科夫链的一个重要概念，马尔科夫过程假设事物后一时刻的状态至于前一时刻的状态相关。换句话说：今天的事情由昨天完全决定，明天的事情由今天完全决定，并且与此前的每一天都没有直接关系。在此基础上所谓转移概率就是从一种状态转变为另一种状态的概率，在地统计学中有如下的表达：</p>
+<script type="math/tex; mode=display">
+t_{jk}(h) = Pr(k\ occurs\ at\ (x+h)\ |\ j\ occurs\ at\ x)</script><p>它表示已知$x$处的岩性为$j$，$(x+h)$处岩性为$k$的概率。</p>
+<p>利用指示地统计中指示变量的形式（$I_j(x)$）我们可以将变差函数转为下面的形式（协变差函数）：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \gamma_{jk}(h) &= \frac{1}{2}E{[I_j(x)-I_j(x+h)][I_k(x)-I_k(x+h)]} \\
+    I_j(x) &=\left\{
+        \begin{aligned}
+            1\ &,if\ occurs\ at\ x\\
+            0\ &,otherwise
+        \end{aligned}
+    \right.
+\end{aligned}</script><p>同时，将转移概率用指示变量表示：</p>
+<script type="math/tex; mode=display">
+t_{jk}(h) = \frac{E[(I_j(x)I_k(x+h))]}{E[I_j(x)]}</script><blockquote>
+<p>PS:这里使用均值是一个统计过程，实际过程过我们不可能知道概率的实际大小，所以利用统计得到的两个事件各自在多个统计点发生的平均数之比来代替概率之比。事实上，在指示地统计中均值和概率是等价的。</p>
+</blockquote>
+<p>紧接着,我们可以将转移概率和所谓协变差函数结合起来,找出它们的关系式:</p>
+<p>作如下的假设:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    P_j(x) &= E[E[I_j(x)]]\\
+    P_{jk}(h) &= E[E[I_j(x)I_k(x+h)]]
+\end{aligned}</script><p>特别的,我们有:$P_{jk}(0) = P_j(x)P_k(x)$，如此一来，协变差函数以及转移概率就变成了如下的形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \gamma_{jk}(h) &= P_{jk}(0)-\frac{1}{2}(P_{jk}(h)+P_{jk}(-h))\\
+    t_{jk}(h) &= \frac{P_{jk}(h)}{P_j(x)}\\
+    \Rightarrow\ \ \ \gamma_{jk}(h) &= P_j(x){t_{jk}(0)-\frac{1}{2}[t_{jk}(h)+t_{jk}(-h)]}
+\end{aligned}</script><p>最后，结合克里金方法与转移概率，用转移概率矩阵表达上述普通克里金方程：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{cccc}
+t_{i j}\left(x_{1}-x_{1}\right) & \cdots & t_{i j}\left(x_{N}-x_{1}\right) & 1 \\
+\vdots & \ddots & \vdots & \vdots \\
+t_{i j}\left(x_{1}-x_{N}\right) & \cdots & t_{i j}\left(x_{N}-x_{N}\right) & 1 \\
+1 & \cdots & 1 & 0
+\end{array}\right]\left[\begin{array}{c}
+\lambda_{j, 1} \\
+\vdots \\
+\lambda_{j, n} \\
+\mu
+\end{array}\right]=\left[\begin{array}{c}
+t_{i j}\left(x-x_{1}\right) \\
+\vdots \\
+t_{i j}\left(x-x_{N}\right) \\
+1
+\end{array}\right]</script><p>这样，通过转移概率利用克里金进行空间插值就得到了实现。</p>
+<hr>
+<div class="note primary flat"><p>参考文献:<br>克里金(Kriging)插值的原理与公式推导:<a href="https://xg1990.com/blog/archives/222">https://xg1990.com/blog/archives/222</a></p>
+<p>董英, 基于随机水文地质结构的华北平原地下水流模拟研究, 2006, 中国地质大学（北京）. </p>
 </div>
-<h1 id="开始搞事情😄O-∩-∩-O"><a href="#开始搞事情😄O-∩-∩-O" class="headerlink" title="开始搞事情😄O(∩_∩)O"></a>开始搞事情😄O(∩_∩)O</h1><p>emmmmm，首先<del>其实差不多只有这一步啦</del>我们要做的就是更改文章生成的模板，fluid主题的话就打开主题目录下的<code>layout</code>文件夹中的<code>nav.ejs</code>文件，修改为如下的样式（其中注释的位置就是修改的主要位置，也是导航栏内容所在，你也可以按照自己的想法修改这个地方的内容）：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">id</span>=<span class="string">&quot;navbar&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;navbar-brand&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for() %&gt;&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>&lt;%- theme.navbar.blog_title || config.title %&gt;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;navbar-toggler-btn&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar-toggler&quot;</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;collapse&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">data-target</span>=<span class="string">&quot;#navbarSupportedContent&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">aria-controls</span>=<span class="string">&quot;navbarSupportedContent&quot;</span> <span class="attr">aria-expanded</span>=<span class="string">&quot;false&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;Toggle navigation&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;animated-icon&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Collapsible content --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;collapse navbar-collapse&quot;</span> <span class="attr">id</span>=<span class="string">&quot;navbarSupportedContent&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;navbar-nav ml-auto text-center&quot;</span>&gt;</span></span><br><span class="line">        &lt;% for(const each of theme.navbar.menu) &#123; %&gt;</span><br><span class="line">          &lt;% if (!each.link) continue %&gt;</span><br><span class="line">          &lt;% var text = each.name || __(each.key + &#x27;.title&#x27;) %&gt;</span><br><span class="line">          &lt;% if (text.indexOf(&#x27;.title&#x27;) !== -1) &#123;</span><br><span class="line">            text = each.key</span><br><span class="line">          &#125; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%= url_for(each.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">              &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + each.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">              &lt;%- text %&gt;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--以上的部分是一级导航的部分--&gt;</span></span><br><span class="line">              <span class="comment">&lt;!--这里判断有没有二级菜单，有的话遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">              &lt;% if (each.submenu) &#123; %&gt;</span><br><span class="line">                <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;sub-menu&quot;</span>&gt;</span></span><br><span class="line">                  <span class="comment">&lt;!--//遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">                  &lt;% for (const submenu of each.submenu)&#123; %&gt;</span><br><span class="line">                    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">                      <span class="comment">&lt;!--//a标签里当然是输出二级菜单的路径咯--&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for(submenu.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--//i标签里输出二级菜单的icon的class咯--&gt;</span></span><br><span class="line">                        &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + submenu.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">                        <span class="comment">&lt;!--//这里输出二级菜单名咯--&gt;</span></span><br><span class="line">                        &lt;%= submenu.key %&gt;</span><br><span class="line">                      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                  &lt;% &#125; %&gt;</span><br><span class="line">                <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">              &lt;% &#125; %&gt;</span><br><span class="line"></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">        &lt;% if(theme.search.enable) &#123; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span> <span class="attr">id</span>=<span class="string">&quot;search-btn&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;modal&quot;</span> <span class="attr">data-target</span>=<span class="string">&quot;#modalSearch&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">i</span></span></span><br><span class="line"><span class="tag">                <span class="attr">class</span>=<span class="string">&quot;iconfont icon-search&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h1 id="修改css配置，让它好看点"><a href="#修改css配置，让它好看点" class="headerlink" title="修改css配置，让它好看点"></a>修改css配置，让它好看点</h1><p>如果不修改css配置其实也是可以的，只不过很丑就对了。</p>
-<p>所以我们打开主题目录下<code>source/css/mian.styl</code>，本来应该在子项对应的部分添加，但是考虑到（<del>好吧，╮(╯-╰)╭，其实是我懒</del>）慢慢找实在是太麻烦了，所以我们直接在main文件里添加（这部分你可以先<code>hexo s</code>打开浏览器进行调试到你喜欢的样式，然后再复制相应的样式表到文件中）如下代码：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0px</span> <span class="number">8px</span> <span class="number">16px</span> <span class="number">0px</span> <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-right</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">width</span>: auto;</span><br><span class="line">    <span class="attribute">height</span>: auto;</span><br><span class="line">    <span class="attribute">box-shadow</span>: -<span class="number">6px</span> <span class="number">6px</span> <span class="number">8px</span> black;</span><br><span class="line">&#125;</span><br><span class="line">// 以上是控制二级菜单呼出的形式</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.sub-menu</span> <span class="selector-class">.li</span> &#123;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.nav-item</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line">// 控制鼠标停留在一级菜单上时呼出二级菜单</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">li</span><span class="selector-class">.nav-item</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">15px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们的基本的配置就算是完成了，接下来就是二级菜单的写法！</p>
-<h1 id="配置文件中二级菜单的写法"><a href="#配置文件中二级菜单的写法" class="headerlink" title="配置文件中二级菜单的写法"></a>配置文件中二级菜单的写法</h1><p>打开主题配置文件<code>fluid_config.yml</code>，在菜单部分以“_分类_”菜单为例我们做如下的改动<br>submenu指定二级菜单，和一级菜单类似，<strong>最后用[]括起来！！！</strong></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">navbar:</span></span><br><span class="line">  <span class="attr">blog_title:</span>  <span class="comment"># 导航栏左侧的标题，为空则按 hexo config.title 显示</span></span><br><span class="line">  <span class="attr">menu:</span>  <span class="comment"># 可自行增减，key 用来关联 languages/*.yml，如不存在关联则显示 key 本身的值；icon 是 css class，可以省略；增加 name 可以强制显示指定名称；submenu指定二级菜单，和一级菜单类似，最后用[]括起来！！！</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;home&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-home-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;archive&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/archives/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-archive-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;category&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;#&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-category-fill&#x27;</span>, <span class="attr">submenu:</span> [</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;全部&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-abc&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;生活&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/生活/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-love&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;🖊笔记&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/笔记/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-notebook&#x27;</span> &#125;</span><br><span class="line">    ]&#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;tag&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/tags/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-tags-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;about&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/about/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-user-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="comment">#- &#123; key: &#x27;links&#x27;, link: &#x27;/links/&#x27;, icon: &#x27;iconfont icon-link-fill&#x27; &#125; # 友链页，把前面#去掉即可展示</span></span><br></pre></td></tr></table></figure>
-<p>这样我们就完成了一个主题的二级导航自定义，当然这样其实还是不太好看，可以自己用css进行调整。此外，针对不同的主题配置<code>config.yml</code>的不同写法情况，其实都是大同小异的，<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">可以点我去往某个大佬的空间看看，以作参考！！！&lt;(￣︶￣)↗[GO!]</a>。</p>
-<p>以我的网站为例最终实现就是这样的效果：<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170113.png" alt="20200514170113"><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170146.png" alt="20200514170146"></p>
-<p>哈哈哈哈，我觉得还是可以的！！！😁😁😁<br><div class="note success flat"><p>参考：</p>
-<p>yaml基本语法及实现Hexo二级导航栏功能<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/</a></p>
-<p>为博客网站增加一个二级目录菜单<a href="https://sunhwee.com/posts/65d7181d.html">https://sunhwee.com/posts/65d7181d.html</a></p>
-<p>如何通过html和css完成下拉菜单的制作？<a href="https://www.zhihu.com/question/36356940">https://www.zhihu.com/question/36356940</a></p>
-<p>and so on ……</p>
-</div></p>
-]]></content>
-      <categories>
-        <category>资源</category>
-        <category>模板</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>web技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>对高等数学最精简的整理(自己考研最后期间用的)</title>
-    <url>/2021/06/26/last-remenber/</url>
-    <content><![CDATA[<p>博客网站建了快两年了,干货少得可怜(主要还是因为自己太菜了),想着把自己考研时候准备的复习总结的pdf放上来吧(<span class=heimu>自我感觉里面关于三重积分-体积分-线积分-面积分等的整理还是蛮不错的!</span>).同时也算是对网站新加的PDF预览功能做一个测试吧,看看能不能用.</p>
-
-
-	<div class="row">
-    <embed src="https://file.tabirstrees.top/blogfile/last-remenber.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
 ]]></content>
       <categories>
         <category>笔记</category>
-        <category>数学</category>
+        <category>地下水数值模拟</category>
       </categories>
       <tags>
-        <tag>高等数学</tag>
-        <tag>笔记</tag>
-        <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>A Short Introduction to Plasma Physics</title>
-    <url>/2021/08/19/plasma-introduction-translate/</url>
-    <content><![CDATA[<div class="note primary flat"><h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文包括了对等离子体现象的某些物理基础的讨论。在第二部分我们介绍了等离子体的关键特性，例如准中性、屏蔽（拜德屏蔽？）、粒子输运过程以及等离子体鞘的形成。在第三部分中我们描述了最简单的等离子体模型：从单粒子轨迹和等离子体流体动力学的基本原理推导出的集体现象（漂移）。最后讨论了均匀无界的冷等离子体的波动现象。</p>
-</div>
-<hr>
-<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p>​        等离子体在自然界中以很多种形式存在，并在科技生产中有着广泛的应用。它是有以下几种物质组成的特殊电离气体：</p>
-<ul>
-<li>带正电荷的离子（正离子）</li>
-<li>电子</li>
-<li>中性粒子（原子，分子以及自由基）</li>
-</ul>
-<p>（在特殊条件下，等离子体也可能包含负离子，但我们之后不会讨论这种情况，因此之后的离子普遍代表“正离子”。）我们将呈现_准中性_，并且其特性由电磁力控制的电离气体称为“等离子体”。</p>
-<p>​        由于自由离子的存在，使用等离子体作为离子源是很自然的事情，对于这种特殊情况，等离子体是通过适当形式的低压气体放电产生的，由此产生的等离子体通常被称作“低温等离子体”。尽管电子可能达到数万卡尔文的高温（比太阳表面的温度更高），而离子和中性气体的或多或少只能算是温暖，但是由于电子的质量很低，无法将它们的热能传递给更重的等离子体部分（离子或者中性气体部分）或者enclosing walls（<span class="heimu"> 这个不知道是什么意思，翻译不出来… </span>）。因此，这种类型的冷等离子体不会向其周围的环境传递太多热量，因此可以更准确地将其描述为“低熵-等离子体”。</p>
-<h1 id="2-关键的等离子体性质"><a href="#2-关键的等离子体性质" class="headerlink" title="2. 关键的等离子体性质"></a>2. 关键的等离子体性质</h1><h2 id="2-1-粒子密度"><a href="#2-1-粒子密度" class="headerlink" title="2.1 粒子密度"></a>2.1 粒子密度</h2><p>​        由于自由运动电荷的存在，等离子体会对电磁场响应，传导电流，并具有明确定义的空间势。</p>
-<p>​        正离子可能带有单个电荷或者多个电荷。对于包含单个电荷的离子，离子群可以被离子密度$n_i$充分描述，</p>
-<script type="math/tex; mode=display">
-n_{\mathrm{i}}=\frac{\text { number of particles(粒子数量) }}{\text { volume(体积) }}, \quad\left[n_{\mathrm{i}}\right]=\mathrm{cm}^{-3} \text { or }\left[n_{\mathrm{i}}\right]=\mathrm{m}^{-3} \text { . }</script><p>除了离子密度，我们还可以通过电子密度$n_e$以及中性气体部分的密度$n_a$描述等离子体。</p>
-<h2 id="2-2-电离度，准中性"><a href="#2-2-电离度，准中性" class="headerlink" title="2.2 电离度，准中性"></a>2.2 电离度，准中性</h2><p>​        等离子体的准中性意味着正负电荷的密度（几乎）相等。在单电荷离子的例子中，表示为：</p>
-<script type="math/tex; mode=display">
-n_{\mathrm{i}} \approx n_{\mathrm{e}}</script><p>在多电荷离子的情况下，我们需要修改这个关系式。如果$z$表示正电荷离子的电荷数，$n_z$表示具有z个电荷的离子的密度，电中性的条件表示为：</p>
-<script type="math/tex; mode=display">
-n_{\mathrm{e}} \approx \sum_{z} z \cdot n_{z}</script><p>电离度用粒子密度而不是电荷密度来定义。然而，这里有两种不同的定义来使用：</p>
-<script type="math/tex; mode=display">
-\eta_{\mathrm{i}}=\frac{\sum_{z} n_{z}}{n_{\mathrm{a}}+\sum_{z} n_{2}} \quad \text { and } \quad \eta_{\mathrm{i}}^{\prime}=\frac{\sum_{z} n_{z}}{n_{\mathrm{a}}}</script><p>严格来说，通常情况下$\eta_{\mathrm{i}}^{\prime}$是对$\eta_i &lt;&lt;1$时的$\eta_i$的估计。离子源等离子体$\eta_i$的典型值在$10^{-5}$到$10^{-3}$之间，完全电离的等离子体$\eta_i = 1$（在这种情况下$\eta_i^{\prime} \rightarrow \infty$）。</p>
-<p><img src="https://file.tabirstrees.top/blogfile/ITP/Charge%20separation%2C%20schematic.jpg" alt="电离过程示意"></p>
-<center>图一 电荷分离过程示意</center>
-
-<p>为了进一步研究电中性，我们假设等离子体中的电子云移动到了一个确定的区域内，形成了一个负电荷区域。类似的离子云在$L = \delta x$的距离内不存在电子，形成一个正电荷区域（见图一）。因此，我们可以在这些电荷空间的共同边界处得到一个最大值的电场$\overline{E_{max}}$。并且可以通过泊松方程得到这个最大电场的估计值：</p>
-<script type="math/tex; mode=display">
-E_{\max }=\frac{e \cdot n_{\mathrm{i}} \cdot \delta x}{\varepsilon_{0}}</script><p>$E$的的方向取决于电场力使得两团粒子云趋向于相互重叠。这里$e$是基本正电荷，$\varepsilon_0$是真空中的介电常数。</p>
-<p>为了进一步讨论，我们计算了带电粒子通过空间电荷层移动$\delta x$后的势能增量（电场力做功）$W_{pot}$：</p>
-<script type="math/tex; mode=display">
-W_{\mathrm{pot}}=\int_{0}^{\delta x} e E \mathrm{~d} x=\frac{e^{2} n_{\mathrm{e}}(\delta x)^{2}}{2 \varepsilon_{0}}</script><p>唯一可以用来为上述电势能提供能量的是电子的热能（当然也有离子，但是因为离子的温度相较于电子较低，离子的热能在低温等离子体（比如离子源等离子体）中可以被忽略），对于一个自由度的运动，其能量平均为 $\frac{1}{2}k_{B}T_{e}$。因此，我们可以认为偏离电中性的尺度由下式定义出来的一个长度指标来表示：</p>
-<script type="math/tex; mode=display">
-W_{\mathrm{pot}}=\frac{1}{2} k_{\mathrm{B}} T_{\mathrm{e}}</script><p>也就是对应我们所谓的<strong>德拜-休克尔（Debye-Hückel）长度</strong>$\lambda_D$：</p>
-<script type="math/tex; mode=display">
-\lambda_{\mathrm{D}}=\left(\frac{\varepsilon_{0} k_{\mathrm{B}} T_{\mathrm{e}}}{e^{2} n_{\mathrm{e}}}\right)^{1 / 2}</script><p>该长度的数值可以由下式给出（见图二）:</p>
-<script type="math/tex; mode=display">
-\lambda_{\mathrm{D}} / \mathrm{m}=7.434 \times 10^{3}\left(k_{\mathrm{B}} T_{\mathrm{e}} / \mathrm{eV}\right)^{1 / 2} /\left(n_{\mathrm{e}} / \mathrm{m}^{-3}\right)^{1 / 2}</script><p><img src="https://file.tabirstrees.top/blogfile/ITP/Debye%20length%20versus%20plasma%20density%20and%20electron%20temperature.jpg" alt="不同温度下德拜长度与电子数之间的关系"></p>
-<center>图二 不同温度下德拜长度与电子数之间的关系</center>
-
-<p>另一方面，我们可能会问在给定长度$L$上等离子体可能偏离电中性的总量是多少$\Delta n = |n_e-n_i|$。再次强调，我们只有热能是可用的，（热能转化为电势能）因此有：</p>
-<script type="math/tex; mode=display">
-\frac{1}{2} k_{\mathrm{B}} T_{\mathrm{e}} \approx \frac{1}{2} \frac{e^{2}}{\varepsilon_{0}} \cdot \Delta n \cdot L</script><p>利用$k_{\mathrm{B}}T_{\mathrm{e}}$ 与 $\lambda_D$ 的关系我们可以得到：</p>
-<script type="math/tex; mode=display">
-\frac{\Delta n}{n} \approx\left(\frac{\lambda_{\mathrm{D}}}{L}\right)^{2}</script><p>以此来估计$\Delta n$的大小。</p>
-<p>我们可以假设电中性的条件为$\Delta n \ll n_{\mathrm{e}} ,n_\mathrm{i}$，根据方程（10）这就等价于$L \gg \lambda_{\mathrm{D}}$。这意味着为了满足形成等离子体的条件，电离气体的延伸必须要远大于德拜-休克尔长度，等离子体的电中性被定义在一个宏观尺度上，如果我们从宏观尺度来看等离子体，会发现随着尺度的减小，其偏离电中性的程度逐渐增加。</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>等离子体物理</category>
-      </categories>
-      <tags>
-        <tag>等离子体物理</tag>
-        <tag>Plasma</tag>
-        <tag>物理</tag>
-        <tag>文献翻译</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>something I won&#39;t talk at almost time</title>
-    <url>/2020/04/28/me/</url>
-    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200428233849.png" alt="img_0183"></p>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200428233946.jpg" alt="img_0156"></p>
-]]></content>
-      <categories>
-        <category>生活</category>
-        <category>想法</category>
-      </categories>
-      <tags>
-        <tag>自我</tag>
+        <tag>GMS</tag>
+        <tag>地下水溶质运移模型</tag>
+        <tag>地统计</tag>
       </tags>
   </entry>
   <entry>
@@ -1147,6 +1100,107 @@ W_{\mathrm{pot}}=\frac{1}{2} k_{\mathrm{B}} T_{\mathrm{e}}</script><p>也就是�
       </tags>
   </entry>
   <entry>
+    <title>hexo+fluid主题添加二级导航</title>
+    <url>/2020/05/14/hexo-fluid%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E4%BA%8C%E7%BA%A7%E5%AF%BC%E8%88%AA/</url>
+    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/6418A1E7501871AF561B89A22AB13D3F.png" alt="6418A1E7501871AF561B89A22AB13D3F"></p>
+<hr>
+<div class="note info flat"><p>使用hexo博客的fluid主题已经有一段时间了，因为打算写的内容很杂，所从很早开始就想要做一个二级导航出来，这段时间一直在折腾这个东西！前几天给网站加上了豆瓣的📕书评和🎦电影栏目，发现这样要是以后再加点什么东西导航栏就放不下了。所以痛定思痛决定开始弄二级导航（<del>鬼知道我为了做这个东西连即将要到来的考试和难到爆炸的课程设计都不管了</del>）</p>
+</div>
+<h1 id="开始搞事情😄O-∩-∩-O"><a href="#开始搞事情😄O-∩-∩-O" class="headerlink" title="开始搞事情😄O(∩_∩)O"></a>开始搞事情😄O(∩_∩)O</h1><p>emmmmm，首先<del>其实差不多只有这一步啦</del>我们要做的就是更改文章生成的模板，fluid主题的话就打开主题目录下的<code>layout</code>文件夹中的<code>nav.ejs</code>文件，修改为如下的样式（其中注释的位置就是修改的主要位置，也是导航栏内容所在，你也可以按照自己的想法修改这个地方的内容）：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">id</span>=<span class="string">&quot;navbar&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;navbar-brand&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for() %&gt;&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>&lt;%- theme.navbar.blog_title || config.title %&gt;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;navbar-toggler-btn&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar-toggler&quot;</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;collapse&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">data-target</span>=<span class="string">&quot;#navbarSupportedContent&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">aria-controls</span>=<span class="string">&quot;navbarSupportedContent&quot;</span> <span class="attr">aria-expanded</span>=<span class="string">&quot;false&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;Toggle navigation&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;animated-icon&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Collapsible content --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;collapse navbar-collapse&quot;</span> <span class="attr">id</span>=<span class="string">&quot;navbarSupportedContent&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;navbar-nav ml-auto text-center&quot;</span>&gt;</span></span><br><span class="line">        &lt;% for(const each of theme.navbar.menu) &#123; %&gt;</span><br><span class="line">          &lt;% if (!each.link) continue %&gt;</span><br><span class="line">          &lt;% var text = each.name || __(each.key + &#x27;.title&#x27;) %&gt;</span><br><span class="line">          &lt;% if (text.indexOf(&#x27;.title&#x27;) !== -1) &#123;</span><br><span class="line">            text = each.key</span><br><span class="line">          &#125; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%= url_for(each.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">              &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + each.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">              &lt;%- text %&gt;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--以上的部分是一级导航的部分--&gt;</span></span><br><span class="line">              <span class="comment">&lt;!--这里判断有没有二级菜单，有的话遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">              &lt;% if (each.submenu) &#123; %&gt;</span><br><span class="line">                <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;sub-menu&quot;</span>&gt;</span></span><br><span class="line">                  <span class="comment">&lt;!--//遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">                  &lt;% for (const submenu of each.submenu)&#123; %&gt;</span><br><span class="line">                    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">                      <span class="comment">&lt;!--//a标签里当然是输出二级菜单的路径咯--&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for(submenu.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--//i标签里输出二级菜单的icon的class咯--&gt;</span></span><br><span class="line">                        &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + submenu.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">                        <span class="comment">&lt;!--//这里输出二级菜单名咯--&gt;</span></span><br><span class="line">                        &lt;%= submenu.key %&gt;</span><br><span class="line">                      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                  &lt;% &#125; %&gt;</span><br><span class="line">                <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">              &lt;% &#125; %&gt;</span><br><span class="line"></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">        &lt;% if(theme.search.enable) &#123; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span> <span class="attr">id</span>=<span class="string">&quot;search-btn&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;modal&quot;</span> <span class="attr">data-target</span>=<span class="string">&quot;#modalSearch&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">i</span></span></span><br><span class="line"><span class="tag">                <span class="attr">class</span>=<span class="string">&quot;iconfont icon-search&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="修改css配置，让它好看点"><a href="#修改css配置，让它好看点" class="headerlink" title="修改css配置，让它好看点"></a>修改css配置，让它好看点</h1><p>如果不修改css配置其实也是可以的，只不过很丑就对了。</p>
+<p>所以我们打开主题目录下<code>source/css/mian.styl</code>，本来应该在子项对应的部分添加，但是考虑到（<del>好吧，╮(╯-╰)╭，其实是我懒</del>）慢慢找实在是太麻烦了，所以我们直接在main文件里添加（这部分你可以先<code>hexo s</code>打开浏览器进行调试到你喜欢的样式，然后再复制相应的样式表到文件中）如下代码：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0px</span> <span class="number">8px</span> <span class="number">16px</span> <span class="number">0px</span> <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-right</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">width</span>: auto;</span><br><span class="line">    <span class="attribute">height</span>: auto;</span><br><span class="line">    <span class="attribute">box-shadow</span>: -<span class="number">6px</span> <span class="number">6px</span> <span class="number">8px</span> black;</span><br><span class="line">&#125;</span><br><span class="line">// 以上是控制二级菜单呼出的形式</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.sub-menu</span> <span class="selector-class">.li</span> &#123;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.nav-item</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line">// 控制鼠标停留在一级菜单上时呼出二级菜单</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">li</span><span class="selector-class">.nav-item</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">15px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们的基本的配置就算是完成了，接下来就是二级菜单的写法！</p>
+<h1 id="配置文件中二级菜单的写法"><a href="#配置文件中二级菜单的写法" class="headerlink" title="配置文件中二级菜单的写法"></a>配置文件中二级菜单的写法</h1><p>打开主题配置文件<code>fluid_config.yml</code>，在菜单部分以“_分类_”菜单为例我们做如下的改动<br>submenu指定二级菜单，和一级菜单类似，<strong>最后用[]括起来！！！</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">navbar:</span></span><br><span class="line">  <span class="attr">blog_title:</span>  <span class="comment"># 导航栏左侧的标题，为空则按 hexo config.title 显示</span></span><br><span class="line">  <span class="attr">menu:</span>  <span class="comment"># 可自行增减，key 用来关联 languages/*.yml，如不存在关联则显示 key 本身的值；icon 是 css class，可以省略；增加 name 可以强制显示指定名称；submenu指定二级菜单，和一级菜单类似，最后用[]括起来！！！</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;home&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-home-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;archive&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/archives/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-archive-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;category&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;#&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-category-fill&#x27;</span>, <span class="attr">submenu:</span> [</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;全部&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-abc&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;生活&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/生活/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-love&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;🖊笔记&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/笔记/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-notebook&#x27;</span> &#125;</span><br><span class="line">    ]&#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;tag&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/tags/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-tags-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;about&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/about/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-user-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="comment">#- &#123; key: &#x27;links&#x27;, link: &#x27;/links/&#x27;, icon: &#x27;iconfont icon-link-fill&#x27; &#125; # 友链页，把前面#去掉即可展示</span></span><br></pre></td></tr></table></figure>
+<p>这样我们就完成了一个主题的二级导航自定义，当然这样其实还是不太好看，可以自己用css进行调整。此外，针对不同的主题配置<code>config.yml</code>的不同写法情况，其实都是大同小异的，<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">可以点我去往某个大佬的空间看看，以作参考！！！&lt;(￣︶￣)↗[GO!]</a>。</p>
+<p>以我的网站为例最终实现就是这样的效果：<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170113.png" alt="20200514170113"><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170146.png" alt="20200514170146"></p>
+<p>哈哈哈哈，我觉得还是可以的！！！😁😁😁<br><div class="note success flat"><p>参考：</p>
+<p>yaml基本语法及实现Hexo二级导航栏功能<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/</a></p>
+<p>为博客网站增加一个二级目录菜单<a href="https://sunhwee.com/posts/65d7181d.html">https://sunhwee.com/posts/65d7181d.html</a></p>
+<p>如何通过html和css完成下拉菜单的制作？<a href="https://www.zhihu.com/question/36356940">https://www.zhihu.com/question/36356940</a></p>
+<p>and so on ……</p>
+</div></p>
+]]></content>
+      <categories>
+        <category>资源</category>
+        <category>模板</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>web技术</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>something I won&#39;t talk at almost time</title>
+    <url>/2020/04/28/me/</url>
+    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200428233849.png" alt="img_0183"></p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200428233946.jpg" alt="img_0156"></p>
+]]></content>
+      <categories>
+        <category>生活</category>
+        <category>想法</category>
+      </categories>
+      <tags>
+        <tag>自我</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>放逐者</title>
+    <url>/2020/04/14/%E6%94%BE%E9%80%90%E8%80%85/</url>
+    <content><![CDATA[<div class="note primary flat"><p>无垠的宇宙仿佛一块巨大的黑色天鹅绒，闪烁的群星变作天鹅绒上美丽的宝石，熠熠生辉的黑暗间一道明亮的轨迹插入！一艘“放逐者”号的小型探索式宇宙飞船在宇宙中已经航行了十年零四个月！</p>
+</div>
+<p>“你觉得真的有神存在吗？”</p>
+<p> “这话是什么意思？”</p>
+<p> “我最近老是觉得有种被人监视的感觉，可是又找不出来到底是谁在监视！我有点害怕！”</p>
+<p> “你怕是最近忙晕了吧，脑子出问题了？”</p>
+<p> “我没和你开玩笑！我真的有这种感觉，当我一个人独处的时候就尤为强烈！一开始我也没当回事，可是直到最近发生了那件事，我就确定了我的感觉是真的！”</p>
+<p> “什么事？最近到底发生了什么？你可不要乱来我们这是在太空中，就我们两人，出了事可不会有人来救我们的！”</p>
+<p> “我知道！我没干什么，只是……，你知道的！就我那间实验室，我在我们开始这趟旅程的时候在一个培养基里培育了当时的一种新型细菌，就是为我们生产食物的那种！”</p>
+<p> “我知道，有什么问题吗？”</p>
+<p> “就在几天前，我在培养基的外围发现了一些经过变异的细菌，你不觉得奇怪吗？按照道理来说，它们离开了培养基中间的营养物质就基本无法存活的啊！可现在的情况看上去是他们在争先恐后的往外面爬！”</p>
+<p> “嗯？你为什么说‘争先恐后’？”</p>
+<p> “因为一发现这件事后我就清除了外围的细菌，可是第二天我再去看的时候又出现了这种情况，如果说前面一次是偶然，那这一次又算什么？接下来的几天里，我每天都重复地清理，但每天都会有新的细菌在培养基外出现，而且数量还越来越多！再这样下去，我的培养基就快要空了！”</p>
+<p> “呃，是有些奇怪！不过这也说不了什么吧！折和你感觉被人监视有什么关系吗？”</p>
+<p> “问题在于在此之前我的这种感觉都还是极其轻微的，但从那天起，我几乎每天都会梦到同一件事情！”</p>
+<p> “啥玩意儿！梦到同一件什么事情？”</p>
+<p> “我总是梦到自己似乎在一个实验室里。作为观察者观察一个我也说不上来是什么的东西，嗯，等等！气泡！对，那东西就像是气泡！不，应该是类似于气泡的膜！”</p>
+<p> “这有什么奇怪的，你想多了吧！”</p>
+<p> “不，重点在于气泡里面的东西！”</p>
+<p> “哈哈哈，里面有什么不得了的东西吗？连你都会害怕？”</p>
+<p> “你在梦里看见你自己是什么感受？”</p>
+<p> “你什么意思？”</p>
+<p> “我看到的！气泡里面是宇宙，虽然看上去很小，但是你却可以感觉到那种没有边界，无法逃离的无垠感！还有很多好看的闪闪发光的星星，就像是天鹅绒上面的宝石！我们的飞船就这样在天鹅绒上“滑行着”，我还看见了你我的脸！每当此时我都会惊醒！”</p>
+<p> “哈哈哈，你逗我吗？这哪里奇怪了？你是不是这几天太累了，这么多年的航行确实很枯燥啊！你可不要在这个时候出岔子，我看你这几天精神状态很不稳定！要不接下来的几天就由我来做全部的工作吧，你先休息几天？”</p>
+<p> “你什么意思？你觉得我在开玩笑？我精神好得很！你难道没注意到吗？那些细菌！那些到外围的细菌！不就是我们吗？我们向宇宙外围飞了这么久！你没有想过我们为什么要这个方向一直飞？我们到底再找个什么东西？还是说我们只是吃饱了撑的到处转转而已！？”</p>
+<p> “你说什么呢？我们不是为了探索宇宙来的吗？你不是要研究宇宙的形成的吗？这不就是我们的目的吗？你不知道我们在干什么？那这些年我们传回地球的数据是什么？你现在说这些话才是“吃饱了撑的吧”！”</p>
+<p> “很好，我来告诉你那些数据有什么意义！我们的世界，不，应该说是我们的宇宙是由更高维度的生命创造出来研究他们自身演化历程的！他们为了弄清楚自身的存在，构建了‘宇宙’这个模型来观察生命的诞生与进化，就像是我们研究细菌那样，它们准备很多个培养基，也就是宇宙！但仅仅只有少数的宇宙诞生了生命，更少的宇宙中生命诞生了文明！我们是被自然选择出来的幸运儿，然而这仍然改变不来我们存在价值就是被观察，被记录的事实！我们将会是他们最宝贵的研究材料，当你的研究材料想要逃离你给他们的用来观察的器皿时你会怎么做？如果是我，就像我之前做的那样，我的第一反应是清除！决不能让他们破坏了实验材料的稳定，要知道这可是亿万分之一概率才会出现的奇迹，说什么我都不会让机会丢失的！另外，你忘了一件事，我们最重要的使命不是了解宇宙的形成，而是弄清楚宇宙到底是什么样的！我们的航线一开始就是设定好的，从离开地球开始我们就一直朝着一个方向在前进！反正我们对于那些‘掌权者’根本不重要，当时选中我们来做这次航行就是为了不让我们参与地球的事务，亏我们还激动万分的为自己将成为第一批作超过太阳系的星际航行的人而骄傲！他们一开始就是决定好的不让我们回去，而且航线对于宇宙这种每个方向看起来根本就差不多的东西根本没什么意义！所以，我们只是被利用来寻求可能存在的宇宙的边界的！但是你去看看这些年的数据，你没有发现我们所在的这个宇宙越来越像是一个‘膜’了吗？你还记得很多年前的‘膜理论’吗？你再想想所谓的‘分形宇宙’的看法！我绝对不会相信你没有经历过被监视的感受！我们作为实验对象却正在试图逃出这个‘实验器皿’！你觉得我们前面将会遇到什么？嗯？我们就快要被抹除掉了！”</p>
+<p>… …沉默！</p>
+<p> “你疯了！”</p>
+<p> “呵呵！也许吧！我知道你觉得我说的有理，你无法反驳我！你只是不愿意接受人类悲惨的现实，我们在我们所认为的世界里相互争夺，相互欺骗，相互之间勾心斗角，明争暗斗！到头来只是别人的研究材料，只是想想可能性就觉得可悲可笑！呵呵呵~！”</p>
+<p> “你够了，即使你是对的！我们作为人类只是别人的实验材料，但是当我们诞生出智慧，催生出思想的那一刻起，我们就有了存在的价值，有了灵性！从我们文明诞生伊始我们就是和你所说的更高等的生命是平等的！他们有的东西我们同样是拥有的，我们有作为实验品的可能他们也绝不会排除在外！这个世界上，除了你所说的阴暗面也还有着很多美好的东西！为什么你没有看见这些东西？你没有看见爱，看见追求，看见苦难中那些难能可贵，熠熠生辉的品质？我可以这样给你说：无论地球上的那些人是不是想要将我永久的放逐，我都为自己所正在做的事情感到骄傲，因为我是在为整个人类文明存在做出贡献！我知道长期以来无聊的旅程有多么地折磨一个人的意志！我建议你还是休息吧！现在真正危险的是你，你自己心里也清楚的，在这种长期的孤独状态下是很容易疯掉的！我还不想失去你这个我现在唯一可以说话人！所以你最好是赶快给我想清楚！如果有一天你真的疯了，我会毫不犹豫的杀了你，你知道我会的！”</p>
+<p> “… …你就是这样的人，我知道，你会的！我现在累了，想睡一会了。我会考虑你说的话，再见。”</p>
+<p> 他起身。快速的，低着头，回房去了！看不见他脸上的表情，但是你仍可以感觉到他在发抖！</p>
+<p> “唉~！”</p>
+<p> 剩下来的一个人叹气，面无表情！他知道，至少某些人为的既定事实是大家都心知肚明的，只是他不愿意提起！现在，他就这样坐在那里！</p>
+<p> 不一会，他也起身，记录下探测仪上的数据并传回给遥远的地球，他知道地球有和飞船仪器同步的记录设备作为备份，但还是每天会亲自己记录一遍再传回到地球的数据中心，这是他唯一感觉到与那颗遥远星球还存在着联系的时刻，十多年来，地球与这艘飞船的通讯仅仅只有这冰冷的数据，也只有在这时候他的内心才是最平静的。</p>
+<p> 但是最近的数据似乎越来越奇怪了，所有的数据都在显示飞船附近暗物质密度正在随着航行深入急剧增加着，这意味着飞船承受的引力也会随之加大。飞船似乎正在穿越一个临界带。</p>
+<p> 数据传回地球后，他回到了自己的房间，沉沉睡去，睡着前他在想不知道他的梦里会不会也出现自己！</p>
+<p>“放逐者”仍然在天鹅绒上缓缓前行着。天鹅绒的黑色似乎愈发的深厚了，上面流光的宝石也变得越来越少，到最后也许只会剩下那永无止尽的黑色吧！此刻的地球，数据中心的工作人员发现一直正常连接并同步状态的“放逐者”在发出数据的那一刻，就那一瞬间，完完全全的失去了信号！人们再也无法了解到这个伟大的“放逐者”身上到底发生了什么，只知道它失联之前的所有数据都是正常的并且现阶段来说相当具有研究意义的！几天之后，数据中心将其被黑洞吞噬的消息外放，从此它连同它上面的人真正意义上的被放逐。也许多年以后，新的“放逐者”会找到“他们”的残骸！<br><div class="note success flat"><p>——end——</p>
+</div></p>
+]]></content>
+      <categories>
+        <category>创作</category>
+        <category>小说</category>
+        <category>科幻</category>
+      </categories>
+      <tags>
+        <tag>小说</tag>
+        <tag>自己写的</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>吴恩达机器学习——梯度下降法</title>
     <url>/2020/02/04/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A021/</url>
     <content><![CDATA[<p>太惨了，因为七牛云的域名关系，这个内容里面的图片暂时无法访问了，现在有没有时间去弄这些东西，这能暂时搁置，后面有时间的话再把那些图片找回来，目前的图片已经转移到腾讯云上来了，后面应该是都可以访问的！！！</p>
@@ -1216,60 +1270,6 @@ W_{\mathrm{pot}}=\frac{1}{2} k_{\mathrm{B}} T_{\mathrm{e}}</script><p>也就是�
       </categories>
       <tags>
         <tag>建站之始</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>放逐者</title>
-    <url>/2020/04/14/%E6%94%BE%E9%80%90%E8%80%85/</url>
-    <content><![CDATA[<div class="note primary flat"><p>无垠的宇宙仿佛一块巨大的黑色天鹅绒，闪烁的群星变作天鹅绒上美丽的宝石，熠熠生辉的黑暗间一道明亮的轨迹插入！一艘“放逐者”号的小型探索式宇宙飞船在宇宙中已经航行了十年零四个月！</p>
-</div>
-<p>“你觉得真的有神存在吗？”</p>
-<p> “这话是什么意思？”</p>
-<p> “我最近老是觉得有种被人监视的感觉，可是又找不出来到底是谁在监视！我有点害怕！”</p>
-<p> “你怕是最近忙晕了吧，脑子出问题了？”</p>
-<p> “我没和你开玩笑！我真的有这种感觉，当我一个人独处的时候就尤为强烈！一开始我也没当回事，可是直到最近发生了那件事，我就确定了我的感觉是真的！”</p>
-<p> “什么事？最近到底发生了什么？你可不要乱来我们这是在太空中，就我们两人，出了事可不会有人来救我们的！”</p>
-<p> “我知道！我没干什么，只是……，你知道的！就我那间实验室，我在我们开始这趟旅程的时候在一个培养基里培育了当时的一种新型细菌，就是为我们生产食物的那种！”</p>
-<p> “我知道，有什么问题吗？”</p>
-<p> “就在几天前，我在培养基的外围发现了一些经过变异的细菌，你不觉得奇怪吗？按照道理来说，它们离开了培养基中间的营养物质就基本无法存活的啊！可现在的情况看上去是他们在争先恐后的往外面爬！”</p>
-<p> “嗯？你为什么说‘争先恐后’？”</p>
-<p> “因为一发现这件事后我就清除了外围的细菌，可是第二天我再去看的时候又出现了这种情况，如果说前面一次是偶然，那这一次又算什么？接下来的几天里，我每天都重复地清理，但每天都会有新的细菌在培养基外出现，而且数量还越来越多！再这样下去，我的培养基就快要空了！”</p>
-<p> “呃，是有些奇怪！不过这也说不了什么吧！折和你感觉被人监视有什么关系吗？”</p>
-<p> “问题在于在此之前我的这种感觉都还是极其轻微的，但从那天起，我几乎每天都会梦到同一件事情！”</p>
-<p> “啥玩意儿！梦到同一件什么事情？”</p>
-<p> “我总是梦到自己似乎在一个实验室里。作为观察者观察一个我也说不上来是什么的东西，嗯，等等！气泡！对，那东西就像是气泡！不，应该是类似于气泡的膜！”</p>
-<p> “这有什么奇怪的，你想多了吧！”</p>
-<p> “不，重点在于气泡里面的东西！”</p>
-<p> “哈哈哈，里面有什么不得了的东西吗？连你都会害怕？”</p>
-<p> “你在梦里看见你自己是什么感受？”</p>
-<p> “你什么意思？”</p>
-<p> “我看到的！气泡里面是宇宙，虽然看上去很小，但是你却可以感觉到那种没有边界，无法逃离的无垠感！还有很多好看的闪闪发光的星星，就像是天鹅绒上面的宝石！我们的飞船就这样在天鹅绒上“滑行着”，我还看见了你我的脸！每当此时我都会惊醒！”</p>
-<p> “哈哈哈，你逗我吗？这哪里奇怪了？你是不是这几天太累了，这么多年的航行确实很枯燥啊！你可不要在这个时候出岔子，我看你这几天精神状态很不稳定！要不接下来的几天就由我来做全部的工作吧，你先休息几天？”</p>
-<p> “你什么意思？你觉得我在开玩笑？我精神好得很！你难道没注意到吗？那些细菌！那些到外围的细菌！不就是我们吗？我们向宇宙外围飞了这么久！你没有想过我们为什么要这个方向一直飞？我们到底再找个什么东西？还是说我们只是吃饱了撑的到处转转而已！？”</p>
-<p> “你说什么呢？我们不是为了探索宇宙来的吗？你不是要研究宇宙的形成的吗？这不就是我们的目的吗？你不知道我们在干什么？那这些年我们传回地球的数据是什么？你现在说这些话才是“吃饱了撑的吧”！”</p>
-<p> “很好，我来告诉你那些数据有什么意义！我们的世界，不，应该说是我们的宇宙是由更高维度的生命创造出来研究他们自身演化历程的！他们为了弄清楚自身的存在，构建了‘宇宙’这个模型来观察生命的诞生与进化，就像是我们研究细菌那样，它们准备很多个培养基，也就是宇宙！但仅仅只有少数的宇宙诞生了生命，更少的宇宙中生命诞生了文明！我们是被自然选择出来的幸运儿，然而这仍然改变不来我们存在价值就是被观察，被记录的事实！我们将会是他们最宝贵的研究材料，当你的研究材料想要逃离你给他们的用来观察的器皿时你会怎么做？如果是我，就像我之前做的那样，我的第一反应是清除！决不能让他们破坏了实验材料的稳定，要知道这可是亿万分之一概率才会出现的奇迹，说什么我都不会让机会丢失的！另外，你忘了一件事，我们最重要的使命不是了解宇宙的形成，而是弄清楚宇宙到底是什么样的！我们的航线一开始就是设定好的，从离开地球开始我们就一直朝着一个方向在前进！反正我们对于那些‘掌权者’根本不重要，当时选中我们来做这次航行就是为了不让我们参与地球的事务，亏我们还激动万分的为自己将成为第一批作超过太阳系的星际航行的人而骄傲！他们一开始就是决定好的不让我们回去，而且航线对于宇宙这种每个方向看起来根本就差不多的东西根本没什么意义！所以，我们只是被利用来寻求可能存在的宇宙的边界的！但是你去看看这些年的数据，你没有发现我们所在的这个宇宙越来越像是一个‘膜’了吗？你还记得很多年前的‘膜理论’吗？你再想想所谓的‘分形宇宙’的看法！我绝对不会相信你没有经历过被监视的感受！我们作为实验对象却正在试图逃出这个‘实验器皿’！你觉得我们前面将会遇到什么？嗯？我们就快要被抹除掉了！”</p>
-<p>… …沉默！</p>
-<p> “你疯了！”</p>
-<p> “呵呵！也许吧！我知道你觉得我说的有理，你无法反驳我！你只是不愿意接受人类悲惨的现实，我们在我们所认为的世界里相互争夺，相互欺骗，相互之间勾心斗角，明争暗斗！到头来只是别人的研究材料，只是想想可能性就觉得可悲可笑！呵呵呵~！”</p>
-<p> “你够了，即使你是对的！我们作为人类只是别人的实验材料，但是当我们诞生出智慧，催生出思想的那一刻起，我们就有了存在的价值，有了灵性！从我们文明诞生伊始我们就是和你所说的更高等的生命是平等的！他们有的东西我们同样是拥有的，我们有作为实验品的可能他们也绝不会排除在外！这个世界上，除了你所说的阴暗面也还有着很多美好的东西！为什么你没有看见这些东西？你没有看见爱，看见追求，看见苦难中那些难能可贵，熠熠生辉的品质？我可以这样给你说：无论地球上的那些人是不是想要将我永久的放逐，我都为自己所正在做的事情感到骄傲，因为我是在为整个人类文明存在做出贡献！我知道长期以来无聊的旅程有多么地折磨一个人的意志！我建议你还是休息吧！现在真正危险的是你，你自己心里也清楚的，在这种长期的孤独状态下是很容易疯掉的！我还不想失去你这个我现在唯一可以说话人！所以你最好是赶快给我想清楚！如果有一天你真的疯了，我会毫不犹豫的杀了你，你知道我会的！”</p>
-<p> “… …你就是这样的人，我知道，你会的！我现在累了，想睡一会了。我会考虑你说的话，再见。”</p>
-<p> 他起身。快速的，低着头，回房去了！看不见他脸上的表情，但是你仍可以感觉到他在发抖！</p>
-<p> “唉~！”</p>
-<p> 剩下来的一个人叹气，面无表情！他知道，至少某些人为的既定事实是大家都心知肚明的，只是他不愿意提起！现在，他就这样坐在那里！</p>
-<p> 不一会，他也起身，记录下探测仪上的数据并传回给遥远的地球，他知道地球有和飞船仪器同步的记录设备作为备份，但还是每天会亲自己记录一遍再传回到地球的数据中心，这是他唯一感觉到与那颗遥远星球还存在着联系的时刻，十多年来，地球与这艘飞船的通讯仅仅只有这冰冷的数据，也只有在这时候他的内心才是最平静的。</p>
-<p> 但是最近的数据似乎越来越奇怪了，所有的数据都在显示飞船附近暗物质密度正在随着航行深入急剧增加着，这意味着飞船承受的引力也会随之加大。飞船似乎正在穿越一个临界带。</p>
-<p> 数据传回地球后，他回到了自己的房间，沉沉睡去，睡着前他在想不知道他的梦里会不会也出现自己！</p>
-<p>“放逐者”仍然在天鹅绒上缓缓前行着。天鹅绒的黑色似乎愈发的深厚了，上面流光的宝石也变得越来越少，到最后也许只会剩下那永无止尽的黑色吧！此刻的地球，数据中心的工作人员发现一直正常连接并同步状态的“放逐者”在发出数据的那一刻，就那一瞬间，完完全全的失去了信号！人们再也无法了解到这个伟大的“放逐者”身上到底发生了什么，只知道它失联之前的所有数据都是正常的并且现阶段来说相当具有研究意义的！几天之后，数据中心将其被黑洞吞噬的消息外放，从此它连同它上面的人真正意义上的被放逐。也许多年以后，新的“放逐者”会找到“他们”的残骸！<br><div class="note success flat"><p>——end——</p>
-</div></p>
-]]></content>
-      <categories>
-        <category>创作</category>
-        <category>小说</category>
-        <category>科幻</category>
-      </categories>
-      <tags>
-        <tag>小说</tag>
-        <tag>自己写的</tag>
       </tags>
   </entry>
 </search>
