@@ -6337,3 +6337,36 @@ blockquote.pullquote.right {
     max-height: 75vh !important;
   }
 }
+.heimu {
+  background-color: #000;
+  color: #000;
+  -webkit-transition: background-color 0.5s;
+  -moz-transition: background-color 0.5s;
+  -o-transition: background-color 0.5s;
+  -ms-transition: background-color 0.5s;
+  transition: background-color 0.5s;
+}
+.heimu:hover {
+  background-color: #fff;
+}
+.mohu {
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -o-transition: 0.3s;
+  -ms-transition: 0.3s;
+  transition: 0.3s;
+  filter: blur(3px);
+}
+.mohu:hover {
+  filter: blur(0px);
+}
+blockquote {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  background: #fff;
+  color: #000;
+  margin: 25px 25px 15px;
+  padding: 5px 10px 0;
+}
