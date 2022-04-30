@@ -1416,15 +1416,6 @@ table {
   border-collapse: collapse;
   empty-cells: show;
 }
-table thead {
-  background: rgba(153,169,191,0.1);
-}
-table th,
-table td {
-  padding: 0.3rem 0.6rem;
-  border: 1px solid var(--light-grey);
-  vertical-align: middle;
-}
 *::selection {
   background: #00c4b6;
   color: #f7f7f7;
@@ -6369,4 +6360,38 @@ blockquote {
   color: #000;
   margin: 25px 25px 15px;
   padding: 5px 10px 0;
+}
+/* 三线表 */
+.table-wrap > table {
+  border-top: 1.5pt solid;
+  border-bottom: 1.5pt solid;
+  font-family: "Times New Roman", Arial, "Source Han Serif SC", 'simsun', sans-serif;
+  text-align: center;
+/*文字居中*/
+  page-break-inside: avoid;
+/*禁止断页*/
+  width: 100%;
+/*扩展表格宽度*/
+  overflow: auto;
+  margin-bottom: 8pt;
+/*表格间距*/
+  border-collapse: collapse;
+}
+.table-wrap > table .katex {
+  font-size: 9pt;
+/*表内公式*/
+}
+.table-wrap > table td {
+  font-family: 'Latin Modern Roman 10', 'LM Roman 10', "Times New Roman", Arial, "Source Han Serif SC", 'simsun', sans-serif;
+  font-size: 9pt;
+/*表内文字*/
+}
+.table-wrap > table thead {
+  border-bottom: 0.75pt solid #000;
+/*三线表中间线*/
+}
+/*标题行*/
+.table-wrap > table th {
+  font-family: 'Latin Modern Roman 10', 'LM Roman 10', "Times New Roman", Arial, "SimHei", "Source Han Serif SC", 'simsun', sans-serif;
+  font-size: 9pt;
 }
