@@ -57,8 +57,7 @@
   <entry>
     <title>非线性动力学-概论</title>
     <url>/2022/04/30/nonlineardynamics1/</url>
-    <content><![CDATA[<div class="note primary flat"><p><strong>动力学</strong>——一门研究系统随时间演化的学科，它告诉我们所考虑的系统是稳定到平衡点，做重复的周期运动还是做更复杂的随机运动。</p>
-<p><span class='heimu'>世界的规律是简单的，但世界却是复杂的。越是深入的了解我们身处的这个世界，我们就越深刻的认识到世界的复杂性，并且这些出乎意料的复杂性往往来源于我们所熟知的某些简单的规律。也许，有时候从简单到复杂之间的规律才是对我们来说至关重要的东西。</span></p>
+    <content><![CDATA[<div class="note primary flat"><p><strong>动力学</strong>——一门研究系统随时间演化的学科，它告诉我们所考虑的系统是稳定到平衡点，做重复的周期运动还是做更复杂的随机运动。<span class='heimu'>世界的规律是简单的，但世界却是复杂的。越是深入的了解我们身处的这个世界，我们就越深刻的认识到世界的复杂性，并且这些出乎意料的复杂性往往来源于我们所熟知的某些简单的规律。也许，有时候从简单到复杂之间的规律才是对我们来说至关重要的东西。</span></p>
 </div>
 <h1 id="动力学简史"><a href="#动力学简史" class="headerlink" title="动力学简史"></a>动力学简史</h1><div class="table-container">
 <table>
@@ -97,18 +96,15 @@
 </tr>
 <tr>
 <td></td>
-<td></td>
 <td>Kolmogorov</td>
 <td></td>
 </tr>
 <tr>
 <td></td>
-<td></td>
 <td>Arnol’d</td>
 <td></td>
 </tr>
 <tr>
-<td></td>
 <td></td>
 <td>Moser</td>
 <td></td>
@@ -125,30 +121,25 @@
 </tr>
 <tr>
 <td></td>
-<td></td>
 <td>May</td>
 <td>Logistic 映射中的混沌</td>
 </tr>
 <tr>
-<td></td>
 <td></td>
 <td>Feigenbaum</td>
 <td>一般性与重整化、混沌与相变的联系，混沌的实验研究</td>
 </tr>
 <tr>
 <td></td>
-<td></td>
 <td>Winfree</td>
 <td>生物学中的非线性振子</td>
 </tr>
 <tr>
 <td></td>
-<td></td>
 <td>Mandelbrot</td>
 <td>分形</td>
 </tr>
 <tr>
-<td></td>
 <td>20世纪80年代</td>
 <td></td>
 <td>混沌、分形、振子及其应用的广泛研究</td>
@@ -172,17 +163,17 @@
 <script type="math/tex; mode=display">
 \begin{equation}
     \begin{aligned}\begin{array}{c}
-        \.{x_1} = f_1(x_1,x_2,\cdots,x_n) \\
+        \dot{x_1} = f_1(x_1,x_2,\cdots,x_n) \\
         \vdots \\
-        \.{x_n} = f_n(x_1,x_2,\cdots,x_n)
+        \dot{x_n} = f_n(x_1,x_2,\cdots,x_n)
     \end{array}
     \end{aligned}
 \end{equation}</script><p>即将 $x_1$ 取为 $x$，$x_2$ 取为 $\mathrm{d} x/\mathrm{d} t$:</p>
 <script type="math/tex; mode=display">
 \begin{equation}
     \begin{aligned}
-        &\.{x_1} = x_2 \\
-        &\.{x_2} = -\frac{b}{m} x_2-\frac{k}{m} x_1
+        &\dot{x_1} = x_2 \\
+        &\dot{x_2} = -\frac{b}{m} x_2-\frac{k}{m} x_1
     \end{aligned}
 \end{equation}</script><p>由于右端所有的 $x_i$ 都是一次项，我们称这个系统是线性的。与线性系统对立的是非线性系统，它表示那些右边的 $x_i$ 存在非一次项的情况，例如 $x_1 x_2,\ x_1^3,\ \cos{x_2} $ 之类的。对于钟摆运动的方程：</p>
 <script type="math/tex; mode=display">
@@ -203,7 +194,7 @@
 <p>如同图1.2.1所示，我们将曲线称为<span style='background: yellow'><strong>轨迹</strong></span>，空间称为<span style='background: yellow'><strong>相空间</strong></span>，由于每一个点都有可能是初始条件，因此系统的轨迹应该是完全填满相空间的。</p>
 <p>我们要做的事情是将上述过程反过来考虑，给定一个系统，我们画出轨迹，并从中提取出关于解的信息。很多情况下，几何推理有助于我们画出轨迹而无须对系统求解。</p>
 <p>另外，我们把写成一般形式之后具有n个自变量的系统称为<strong>n-维系统</strong>或者<strong>n-阶系统</strong>，n代表了相空间的维数。</p>
-<h2 id="非自洽系统"><a href="#非自洽系统" class="headerlink" title="非自洽系统"></a>非自洽系统</h2><p>所谓非自洽系统指的是在描述系统的方程中出现了对时间的依赖（函数中显含时间），例如受迫简谐振子方程 $m \ddot{x}+b.{x}+kx = F\cos{t}$ 如同之前一样，令 $x_1 = x$ 与 $x_2 = .{x}$ 以及 $x_3 = t$。那么原来的方程可以写成是：</p>
+<h2 id="非自洽系统"><a href="#非自洽系统" class="headerlink" title="非自洽系统"></a>非自洽系统</h2><p>所谓非自洽系统指的是在描述系统的方程中出现了对时间的依赖（函数中显含时间），例如受迫简谐振子方程 $m \ddot{x}+b\dot{x}+kx = F\cos{t}$ 如同之前一样，令 $x_1 = x$ 与 $x_2 = \dot{x}$ 以及 $x_3 = t$。那么原来的方程可以写成是：</p>
 <script type="math/tex; mode=display">
 \begin{equation}
     \begin{aligned}
@@ -211,12 +202,12 @@
         &\dot{x}_{2}=\frac{1}{m}\left(-k x_{1}-b x_{2}+F \cos x_{3}\right) \\
         &\dot{x}_{3}=1
     \end{aligned}
-\end{equation}</script><p>这样做相当于是将原本在二维相空间中运动的简谐振子转换到三维相空间中，如果不考虑时间的维度，我们画出来的相空间轨迹将会呈现出一直晃动的特征，不利于我们从中提取信息，所以我们通过对系统增加额外的维数来消除了其对时间的依赖性。在物理上，受迫简谐振子运动的<strong>状态</strong>实际上也是三维的，给定当前的状态，我们只需要知道三个量，$x$、$.{x}$ 以及 $t$ 就可以预测中未来时刻的状态，因此以上的做法对于我们利用几何方法研究系统是很自然的。</p>
+\end{equation}</script><p>这样做相当于是将原本在二维相空间中运动的简谐振子转换到三维相空间中，如果不考虑时间的维度，我们画出来的相空间轨迹将会呈现出一直晃动的特征，不利于我们从中提取信息，所以我们通过对系统增加额外的维数来消除了其对时间的依赖性。在物理上，受迫简谐振子运动的<strong>状态</strong>实际上也是三维的，给定当前的状态，我们只需要知道三个量，$x$、$\dot{x}$ 以及 $t$ 就可以预测中未来时刻的状态，因此以上的做法对于我们利用几何方法研究系统是很自然的。</p>
 <h2 id="为什么非线性系统这么困难"><a href="#为什么非线性系统这么困难" class="headerlink" title="为什么非线性系统这么困难"></a>为什么非线性系统这么困难</h2><p>在数学上，我们研究复杂问题（函数）时通常采用将其分解成一系列线性问题（函数）的叠加去近似原问题的方法，诸如我们所熟知的泰勒展开、傅里叶变换等都是这种思想的体现。各部分线性问题的求解通常是简单的，再将这些解重新整合成复杂问题的解，这样操作后，线性系统等于其各部分的精确和。</p>
 <p>但在自然界中的事物存在各部分之间的相互影响、合作或者竞争，出现很多非线性作用。<span class='heimu'>在数学上，我们通常会要求展开的基函数是正交的，这样保证了展开后的各部分相互之间不存在影响，但自然界中的事物并不都是数学的理想造物，日常生活中的全部几乎都是非线性的，于是叠加原理出人意料的失效了。</span>想象你同时听到两首非常喜欢的歌，但是你的快乐却不会因此翻倍。我们可以放心大胆地说：“我们的世界是非线性的！”，也许这正是人类无法完全掌握我们所身处世界的原因所在。</p>
 <h1 id="世界的动力学视角"><a href="#世界的动力学视角" class="headerlink" title="世界的动力学视角"></a>世界的动力学视角</h1><p>在旧世界的地图上，某些区域被标识着“此处有龙”以表示这些区域在地球上还尚未被探索。在现代科学中，非线性科学就是这样的一块区域，这些主题还有很多区域未被涉足，他们处于研究的极限地带，通常是那些我们现实生活中所需要面对的各种复杂现象，它将成为我们未来很重要的一个挑战。</p>
 <p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/nonlineardynamics1-1.3.1.png" alt="nonlineardynamics1-1.3.1"></p>
-<p>我们将所在的这个世界上的现象按照系统的维度和线性与否作了如上图所示的划分，如同旧时代的新大陆探索者，我们要做的事情就是去那些还未被开垦过的土地深耕，寻找那些可能存在的规律，解开世界最深的谜底……</p>
+<p>我们可以所在的这个世界上的现象按照系统的维度和线性与否作如上图所示的划分，如同旧时代的新大陆探索者，我们要做的事情就是去那些还未被开垦过的土地深耕，寻找那些可能存在的规律，解开世界最深的谜底……</p>
 ]]></content>
       <categories>
         <category>笔记</category>
