@@ -874,7 +874,6 @@
 <th>Degree(n)</th>
 <th>Order(m)</th>
 <th>Value</th>
-<th></th>
 <th>Coefficent</th>
 <th>Degree(n)</th>
 <th>Order(m)</th>
@@ -887,7 +886,6 @@
 <td>1</td>
 <td>0</td>
 <td>-29017.523</td>
-<td></td>
 <td>h</td>
 <td>3</td>
 <td>1</td>
@@ -898,7 +896,6 @@
 <td>1</td>
 <td>1</td>
 <td>-1858.68841</td>
-<td></td>
 <td>h</td>
 <td>3</td>
 <td>2</td>
@@ -909,7 +906,6 @@
 <td>1</td>
 <td>1</td>
 <td>4903.10927</td>
-<td></td>
 <td>h</td>
 <td>3</td>
 <td>3</td>
@@ -920,7 +916,6 @@
 <td>2</td>
 <td>0</td>
 <td>-2497.135416</td>
-<td></td>
 <td>g</td>
 <td>4</td>
 <td>0</td>
@@ -931,7 +926,6 @@
 <td>2</td>
 <td>1</td>
 <td>2617.981296</td>
-<td></td>
 <td>g</td>
 <td>4</td>
 <td>1</td>
@@ -942,7 +936,6 @@
 <td>2</td>
 <td>2</td>
 <td>2178.890222</td>
-<td></td>
 <td>g</td>
 <td>4</td>
 <td>2</td>
@@ -953,7 +946,6 @@
 <td>2</td>
 <td>1</td>
 <td>-3201.763686</td>
-<td></td>
 <td>g</td>
 <td>4</td>
 <td>3</td>
@@ -964,7 +956,6 @@
 <td>2</td>
 <td>2</td>
 <td>-923.4214529</td>
-<td></td>
 <td>g</td>
 <td>4</td>
 <td>4</td>
@@ -975,7 +966,6 @@
 <td>3</td>
 <td>0</td>
 <td>805.1006385</td>
-<td></td>
 <td>h</td>
 <td>4</td>
 <td>1</td>
@@ -986,7 +976,6 @@
 <td>3</td>
 <td>1</td>
 <td>-2166.619627</td>
-<td></td>
 <td>h</td>
 <td>4</td>
 <td>2</td>
@@ -997,7 +986,6 @@
 <td>3</td>
 <td>2</td>
 <td>1281.757376</td>
-<td></td>
 <td>h</td>
 <td>4</td>
 <td>3</td>
@@ -1008,7 +996,6 @@
 <td>3</td>
 <td>3</td>
 <td>90.1221627</td>
-<td></td>
 <td>h</td>
 <td>4</td>
 <td>4</td>
