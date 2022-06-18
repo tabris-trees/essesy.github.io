@@ -55,6 +55,891 @@
       </tags>
   </entry>
   <entry>
+    <title>Modeling the global geomagnetic field</title>
+    <url>/2022/06/18/globalmagnetic/</url>
+    <content><![CDATA[<h1 id="Advanced-Earth-electromagnetism-Homework-3"><a href="#Advanced-Earth-electromagnetism-Homework-3" class="headerlink" title="Advanced Earth electromagnetism Homework-3"></a>Advanced Earth electromagnetism Homework-3</h1><center><span style='font-size: 20px;font-weight:bold'>Build an internal geomagnetic using observatory data</span></center>
+
+<center><div style='height:2mm;'></div><div style='font-family:华文楷体;font-size:14pt;'>Wu Xianshu 12132710</div></center>
+
+<h2 id="Methods-and-data"><a href="#Methods-and-data" class="headerlink" title="Methods and data"></a>Methods and data</h2><p>According to the Gauss Theory of geomagnetism, we can use the spherical harmonic analysis to describe the earth’s main magnetic field. Suppose the magnetic potential of the geomagnetic field obeys Laplace’s equation at the surface of the Earth as well as outside of the Earth, the model can be written as:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        V(r,\theta,\phi)=a \sum_{n=1}^{N} \sum_{m=0}^{n}\left(g_{n}^{m} \cos m \phi+h_{n}^{m} \sin m \phi\right)\left(\frac{a}{r}\right)^{n+1} P_{n}^{m}(\cos \theta)
+    \end{aligned}
+\end{equation}</script><script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        X&=\sum_{n=1}^{N} \sum_{m=0}^{n}\left(\frac{a}{r}\right)^{n+2}\left(g_{n}^{m} \cos m \phi+h_{n}^{m} \sin m \phi\right) \frac{d}{d \theta} p_{n}^{m}(\cos \theta) \\
+        Y&=\sum_{n=1}^{N} \sum_{m=0}^{n} \frac{-m}{\sin \theta}\left(\frac{a}{r}\right)^{n+2}\left(-g_{n}^{m} \sin m \phi+h_{n}^{m} \cos m \phi\right) p_{m}^{m}(\cos \theta) \\
+        Z&=\sum_{n=0}^{N} \sum_{m=0}^{n}-(n+1)\left(\frac{a}{r}\right)^{n+2}\left(g_{n}^{m} \cos m \phi+h_{n}^{m} \sin m \phi\right) p_{n}^{m}(\cos \theta)
+    \end{aligned}
+\end{equation}</script><p>The only uncertainty in the formula is $g_n^m$ and $h_n^m$, which called Gauss Coefficient, and when we have the model and the data, we can get the parameters value by inversion methods. The problem becomes solving the following system of linear algebraic equations (the observations are taken at a spherical surface of the Earth’s mean radius, $r=a$ ):</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbf{A}\mathbf{m}=\mathbf{d}
+    \end{aligned}
+\end{equation}</script><script type="math/tex; mode=display">
+\begin{aligned}
+    \mathbf{A} = \left[ \begin{array}{c}
+        \vdots & \vdots & \vdots & \vdots \\ \cdots & \cos(m\phi_i)\frac{\mathrm{d} P_n^m(\cos\theta_i)}{\mathrm{d}\theta_i} & \sin(m\phi_i)\frac{\mathrm{d} P_n^m(\cos\theta_i)}{\mathrm{d}\theta_i} & \cdots \\
+        \cdots & m \sin(m\phi_i)\frac{P_n^m(\cos\theta_i)}{\sin\theta_i} & -m \cos(m\phi_i)\frac{P_n^m(\cos\theta_i)}{\sin\theta_i} & \cdots \\
+        \cdots & -\cos(m\phi_i)P_n^m(\cos\theta_i)(n+1) & -\sin(m\phi_i)P_n^m(\cos\theta_i)(n+1) & \cdots \\
+        \vdots & \vdots & \vdots & \vdots 
+    \end{array} \right];
+\end{aligned}</script><script type="math/tex; mode=display">
+\begin{aligned}
+    \mathbf{m} = \left[ \begin{array}{c}
+        g_1^0 \\ \vdots \\ g_n^{n-1} \\ g_n^n \\h_n^1 \\ h_n^2 \\ \vdots \\ h_N^N
+    \end{array} \right];\ \mathbf{d} = \left[ \begin{array}{c}
+        \vdots \\ X_i \\ Y_i \\ Z_i \\ \vdots
+    \end{array} \right];\ \frac{\mathrm{d}P_n^m(\cos\theta)}{\mathrm{d}\theta} = \frac{\left(n \cos \theta P_{n}^{m}-R_{n}^{m} P_{n-1}^{m}\right)}{\sin \theta};
+\end{aligned}</script><p>The data in $\mathbf{d}$ are download from <strong>INTERMAGNET</strong>, the website is <a href="https://www.intermagnet.org/data-donnee/download-eng.php">https://www.intermagnet.org/data-donnee/download-eng.php</a>. I selected the definitive minute data on 2020-03-05 (Table <a href="#t1">1</a>), all available observation stations are included, Figure <a href="#f1">1</a> is a map showing the observatories I used. the 24-hour data of each station are averaged to obtain the observed values of the day, after eliminating the outliers. I wrote a MATLAB script to implement the above process, and built a model up to spherical harmonic degree 4.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-stations.jpg" alt="globalmagnetic-stations"></p>
+<center id='f1'><span style='font-weight:bold'>Fig 1. </span>Map showing the observatories I used </center>
+
+<h1 id=""><a href="#" class="headerlink" title=""></a> </h1><p><span style='font-weight:bold' id='t1'>Tab 1. </span>A table of data</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Name</th>
+<th>Latitude</th>
+<th>Longitude</th>
+<th>X</th>
+<th>Y</th>
+<th>Z</th>
+<th>Date</th>
+<th>Index</th>
+<th>Name</th>
+<th>Latitude</th>
+<th>Longitude</th>
+<th>X</th>
+<th>Y</th>
+<th>Z</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>abg</td>
+<td>18.62</td>
+<td>72.87</td>
+<td>38255.32861</td>
+<td>290.4123611</td>
+<td>20393.29507</td>
+<td>20200305</td>
+<td>42</td>
+<td>kdu</td>
+<td>-12.686</td>
+<td>132.472</td>
+<td>35457.00736</td>
+<td>1754.704167</td>
+<td>-29582.17056</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>2</td>
+<td>abk</td>
+<td>68.358</td>
+<td>18.823</td>
+<td>11263.29438</td>
+<td>1862.256042</td>
+<td>52149.73104</td>
+<td>20200305</td>
+<td>43</td>
+<td>kep</td>
+<td>-54.282</td>
+<td>323.507</td>
+<td>15328.23479</td>
+<td>-1902.493542</td>
+<td>-22927.075</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>3</td>
+<td>aia</td>
+<td>-65.25</td>
+<td>295.73</td>
+<td>19743.62451</td>
+<td>5529.188194</td>
+<td>-31781.59625</td>
+<td>20200305</td>
+<td>44</td>
+<td>kmh</td>
+<td>-26.541</td>
+<td>18.11</td>
+<td>10625.24368</td>
+<td>-3290.684375</td>
+<td>-24317.20576</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>4</td>
+<td>asp</td>
+<td>-23.761</td>
+<td>133.883</td>
+<td>30118.9534</td>
+<td>2384.582361</td>
+<td>-43746.81958</td>
+<td>20200305</td>
+<td>45</td>
+<td>kny</td>
+<td>31.424</td>
+<td>130.88</td>
+<td>32523.31208</td>
+<td>-3937.392708</td>
+<td>33352.49993</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>5</td>
+<td>bdv</td>
+<td>49.08</td>
+<td>14.015</td>
+<td>20408.24278</td>
+<td>1476.498472</td>
+<td>44384.11257</td>
+<td>20200305</td>
+<td>46</td>
+<td>kou</td>
+<td>5.21</td>
+<td>307.269</td>
+<td>26566.90834</td>
+<td>-8649.159903</td>
+<td>6534.03419</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>6</td>
+<td>bel</td>
+<td>51.836</td>
+<td>20.789</td>
+<td>18910.50938</td>
+<td>2155.445069</td>
+<td>46753.62417</td>
+<td>20200305</td>
+<td>47</td>
+<td>lrm</td>
+<td>-22.222</td>
+<td>114.101</td>
+<td>30377.57938</td>
+<td>113.0718056</td>
+<td>-43262.77563</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>7</td>
+<td>bfo</td>
+<td>48.331</td>
+<td>8.325</td>
+<td>21000.85431</td>
+<td>971.8170139</td>
+<td>43518.68674</td>
+<td>20200305</td>
+<td>48</td>
+<td>lyc</td>
+<td>64.612</td>
+<td>18.748</td>
+<td>12954.21903</td>
+<td>1788.108194</td>
+<td>50824.92569</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>8</td>
+<td>bmt</td>
+<td>40.3</td>
+<td>116.2</td>
+<td>27901.35056</td>
+<td>-4109.268472</td>
+<td>47580.71354</td>
+<td>20200305</td>
+<td>49</td>
+<td>mab</td>
+<td>50.298</td>
+<td>5.683</td>
+<td>20026.52454</td>
+<td>676.6008535</td>
+<td>44643.7574</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>9</td>
+<td>box</td>
+<td>58.07</td>
+<td>38.23</td>
+<td>15149.76771</td>
+<td>3423.754653</td>
+<td>50605.48924</td>
+<td>20200305</td>
+<td>50</td>
+<td>maw</td>
+<td>-67.6</td>
+<td>62.88</td>
+<td>6637.389861</td>
+<td>-17331.47576</td>
+<td>-45610.43313</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>10</td>
+<td>brd</td>
+<td>49.87</td>
+<td>260.026</td>
+<td>15215.71021</td>
+<td>1349.588194</td>
+<td>54525.18188</td>
+<td>20200305</td>
+<td>51</td>
+<td>mcq</td>
+<td>-54.5</td>
+<td>158.95</td>
+<td>10702.30986</td>
+<td>6865.926042</td>
+<td>-62729.04792</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>11</td>
+<td>brw</td>
+<td>71.32</td>
+<td>203.38</td>
+<td>8896.940417</td>
+<td>2040.051944</td>
+<td>56567.42097</td>
+<td>20200305</td>
+<td>52</td>
+<td>mea</td>
+<td>54.616</td>
+<td>246.653</td>
+<td>13676.0725</td>
+<td>3502.193194</td>
+<td>55141.94083</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>12</td>
+<td>bsl</td>
+<td>30.35</td>
+<td>270.364</td>
+<td>23897.89611</td>
+<td>-534.3659028</td>
+<td>40619.165</td>
+<td>20200305</td>
+<td>53</td>
+<td>mmb</td>
+<td>43.91</td>
+<td>144.189</td>
+<td>25860.92479</td>
+<td>-4160.602986</td>
+<td>42601.24806</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>13</td>
+<td>cbb</td>
+<td>69.123</td>
+<td>254.969</td>
+<td>5052.641181</td>
+<td>515.9493056</td>
+<td>58112.67063</td>
+<td>20200305</td>
+<td>54</td>
+<td>ngk</td>
+<td>52.072</td>
+<td>12.675</td>
+<td>18870.10889</td>
+<td>1331.096806</td>
+<td>45797.97604</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>14</td>
+<td>cki</td>
+<td>-12.187</td>
+<td>96.834</td>
+<td>34897.57944</td>
+<td>-1267.207778</td>
+<td>-32411.88188</td>
+<td>20200305</td>
+<td>55</td>
+<td>nur</td>
+<td>60.508</td>
+<td>24.655</td>
+<td>14746.53667</td>
+<td>2287.914931</td>
+<td>50328.62708</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>15</td>
+<td>clf</td>
+<td>48.025</td>
+<td>2.26</td>
+<td>21268.24681</td>
+<td>374.1634028</td>
+<td>43038.32201</td>
+<td>20200305</td>
+<td>56</td>
+<td>nvs</td>
+<td>54.85</td>
+<td>83.23</td>
+<td>15977.18264</td>
+<td>2267.85125</td>
+<td>57794.77472</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>16</td>
+<td>cmo</td>
+<td>64.871</td>
+<td>212.139</td>
+<td>12071.0441</td>
+<td>3662.327361</td>
+<td>55060.79042</td>
+<td>20200305</td>
+<td>57</td>
+<td>ott</td>
+<td>45.403</td>
+<td>284.448</td>
+<td>18006.06139</td>
+<td>-4293.210347</td>
+<td>50757.78646</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>17</td>
+<td>cnb</td>
+<td>-35.314</td>
+<td>149.363</td>
+<td>23121.84965</td>
+<td>5192.365069</td>
+<td>-52948.43965</td>
+<td>20200305</td>
+<td>58</td>
+<td>pag</td>
+<td>42.515</td>
+<td>24.177</td>
+<td>23724.57785</td>
+<td>2052.341181</td>
+<td>41095.60694</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>18</td>
+<td>cpl</td>
+<td>17.293</td>
+<td>78.92</td>
+<td>39453.13201</td>
+<td>-510.5802778</td>
+<td>17435.07875</td>
+<td>20200305</td>
+<td>59</td>
+<td>pet</td>
+<td>52.971</td>
+<td>158.248</td>
+<td>21521.23347</td>
+<td>-2453.807986</td>
+<td>47410.99722</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>19</td>
+<td>csy</td>
+<td>-66.28</td>
+<td>110.53</td>
+<td>-1183.919167</td>
+<td>-8905.680139</td>
+<td>-63455.59493</td>
+<td>20200305</td>
+<td>60</td>
+<td>pil</td>
+<td>-31.667</td>
+<td>296.119</td>
+<td>18525.13889</td>
+<td>-1971.772847</td>
+<td>-12926.00313</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>20</td>
+<td>cta</td>
+<td>-20.09</td>
+<td>146.264</td>
+<td>31415.04941</td>
+<td>4032.899791</td>
+<td>-37523.00592</td>
+<td>20200305</td>
+<td>61</td>
+<td>pst</td>
+<td>-51.704</td>
+<td>302.107</td>
+<td>17998.51828</td>
+<td>816.7563025</td>
+<td>-21589.41492</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>21</td>
+<td>dou</td>
+<td>50.1</td>
+<td>4.599</td>
+<td>20166.69694</td>
+<td>564.5751389</td>
+<td>44377.19028</td>
+<td>20200305</td>
+<td>62</td>
+<td>res</td>
+<td>74.69</td>
+<td>265.105</td>
+<td>2821.225278</td>
+<td>-966.5449306</td>
+<td>57412.04722</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>22</td>
+<td>dur</td>
+<td>41.65</td>
+<td>14.467</td>
+<td>24664.39583</td>
+<td>1661.169444</td>
+<td>39635.57229</td>
+<td>20200305</td>
+<td>63</td>
+<td>sba</td>
+<td>-77.85</td>
+<td>166.762</td>
+<td>-10322.08271</td>
+<td>5515.313542</td>
+<td>-65094.66458</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>23</td>
+<td>ebr</td>
+<td>40.957</td>
+<td>0.333</td>
+<td>25322.75201</td>
+<td>348.5455556</td>
+<td>37632.16313</td>
+<td>20200305</td>
+<td>64</td>
+<td>sbl</td>
+<td>43.932</td>
+<td>299.991</td>
+<td>20099.86778</td>
+<td>-6159.527222</td>
+<td>45830.59819</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>24</td>
+<td>frd</td>
+<td>38.201</td>
+<td>282.63</td>
+<td>21211.1253</td>
+<td>-3948.038707</td>
+<td>45969.93919</td>
+<td>20200305</td>
+<td>65</td>
+<td>sfs</td>
+<td>36.667</td>
+<td>354.055</td>
+<td>27692.98333</td>
+<td>-437.525625</td>
+<td>33061.71813</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>25</td>
+<td>frn</td>
+<td>37.091</td>
+<td>240.281</td>
+<td>22610.76882</td>
+<td>5106.934306</td>
+<td>41905.74014</td>
+<td>20200305</td>
+<td>66</td>
+<td>she</td>
+<td>-15.961</td>
+<td>354.253</td>
+<td>16010.89917</td>
+<td>-3784.684444</td>
+<td>-25849.75875</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>26</td>
+<td>fur</td>
+<td>48.165</td>
+<td>11.277</td>
+<td>20993.37243</td>
+<td>1266.938681</td>
+<td>43689.14313</td>
+<td>20200305</td>
+<td>67</td>
+<td>sit</td>
+<td>57.058</td>
+<td>224.675</td>
+<td>15003.98639</td>
+<td>5020.095972</td>
+<td>52959.09139</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>27</td>
+<td>gan</td>
+<td>-0.695</td>
+<td>73.154</td>
+<td>38064.10701</td>
+<td>-2720.955278</td>
+<td>-12852.37549</td>
+<td>20200305</td>
+<td>68</td>
+<td>sjg</td>
+<td>18.111</td>
+<td>293.85</td>
+<td>26371.23667</td>
+<td>-6125.861667</td>
+<td>24778.29694</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>28</td>
+<td>gck</td>
+<td>44.63</td>
+<td>20.77</td>
+<td>22705.50861</td>
+<td>1968.7925</td>
+<td>42322.95653</td>
+<td>20200305</td>
+<td>69</td>
+<td>spg</td>
+<td>60.542</td>
+<td>29.716</td>
+<td>14451.77243</td>
+<td>2766.171111</td>
+<td>50554.4159</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>29</td>
+<td>gng</td>
+<td>-31.356</td>
+<td>115.715</td>
+<td>24154.41201</td>
+<td>-695.7534028</td>
+<td>-52657.5475</td>
+<td>20200305</td>
+<td>70</td>
+<td>spt</td>
+<td>39.547</td>
+<td>355.651</td>
+<td>26157.41243</td>
+<td>-212.2654861</td>
+<td>35974.31007</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>30</td>
+<td>gui</td>
+<td>28.321</td>
+<td>343.559</td>
+<td>27788.94125</td>
+<td>-3297.265486</td>
+<td>22532.55771</td>
+<td>20200305</td>
+<td>71</td>
+<td>tam</td>
+<td>22.792</td>
+<td>5.53</td>
+<td>33853.35556</td>
+<td>317.1153472</td>
+<td>17125.37632</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>31</td>
+<td>had</td>
+<td>50.995</td>
+<td>355.516</td>
+<td>19815.59375</td>
+<td>-487.1833333</td>
+<td>44458.94479</td>
+<td>20200305</td>
+<td>72</td>
+<td>tdc</td>
+<td>-37.067</td>
+<td>347.684</td>
+<td>9158.353472</td>
+<td>-3520.939514</td>
+<td>-22389.23111</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>32</td>
+<td>hbk</td>
+<td>-25.883</td>
+<td>27.707</td>
+<td>12484.80071</td>
+<td>-4183.221111</td>
+<td>-24963.03222</td>
+<td>20200305</td>
+<td>73</td>
+<td>thl</td>
+<td>77.47</td>
+<td>290.77</td>
+<td>3048.201319</td>
+<td>-2836.9075</td>
+<td>56138.82771</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>33</td>
+<td>her</td>
+<td>-34.425</td>
+<td>19.225</td>
+<td>9607.833819</td>
+<td>-4713.809861</td>
+<td>-22995.42292</td>
+<td>20200305</td>
+<td>74</td>
+<td>thy</td>
+<td>46.9</td>
+<td>17.893</td>
+<td>21518.14722</td>
+<td>1798.217431</td>
+<td>43480.7241</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>34</td>
+<td>hlp</td>
+<td>54.603</td>
+<td>18.811</td>
+<td>17482.39139</td>
+<td>1693.542639</td>
+<td>47405.90799</td>
+<td>20200305</td>
+<td>75</td>
+<td>tsu</td>
+<td>-19.202</td>
+<td>17.584</td>
+<td>14031.38007</td>
+<td>-2157.920833</td>
+<td>-25488.01035</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>35</td>
+<td>hrb</td>
+<td>47.875</td>
+<td>18.19</td>
+<td>20998.77708</td>
+<td>1814.178403</td>
+<td>44071.71535</td>
+<td>20200305</td>
+<td>76</td>
+<td>tuc</td>
+<td>32.174</td>
+<td>249.266</td>
+<td>23874.2234</td>
+<td>3757.009861</td>
+<td>40291.74611</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>36</td>
+<td>hyb</td>
+<td>17.42</td>
+<td>78.55</td>
+<td>39586.70764</td>
+<td>-409.4116667</td>
+<td>18254.32278</td>
+<td>20200305</td>
+<td>77</td>
+<td>ups</td>
+<td>59.903</td>
+<td>17.353</td>
+<td>15093.9141</td>
+<td>1687.224931</td>
+<td>49301.94847</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>37</td>
+<td>iqa</td>
+<td>63.756</td>
+<td>291.49</td>
+<td>8624.755702</td>
+<td>-3943.983658</td>
+<td>56107.03804</td>
+<td>20200305</td>
+<td>78</td>
+<td>vic</td>
+<td>48.517</td>
+<td>236.583</td>
+<td>18091.75582</td>
+<td>5186.817181</td>
+<td>49871.91367</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>38</td>
+<td>irt</td>
+<td>52.17</td>
+<td>104.45</td>
+<td>18339.39819</td>
+<td>-1321.375208</td>
+<td>57631.08368</td>
+<td>20200305</td>
+<td>79</td>
+<td>vna</td>
+<td>-70.683</td>
+<td>351.718</td>
+<td>18066.2466</td>
+<td>-4484.883403</td>
+<td>-33255.14722</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>39</td>
+<td>izn</td>
+<td>40.5</td>
+<td>29.72</td>
+<td>25075.98528</td>
+<td>2459.532708</td>
+<td>40544.37868</td>
+<td>20200305</td>
+<td>80</td>
+<td>vss</td>
+<td>-22.4</td>
+<td>316.35</td>
+<td>16425.94375</td>
+<td>-6916.265278</td>
+<td>-14993.05438</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>40</td>
+<td>jco</td>
+<td>70.356</td>
+<td>211.201</td>
+<td>8698.91</td>
+<td>2596.038472</td>
+<td>56590.54382</td>
+<td>20200305</td>
+<td>81</td>
+<td>wic</td>
+<td>47.928</td>
+<td>15.862</td>
+<td>21013.83049</td>
+<td>1646.833889</td>
+<td>43916.92826</td>
+<td>20200305</td>
+</tr>
+<tr>
+<td>41</td>
+<td>kak</td>
+<td>36.232</td>
+<td>140.186</td>
+<td>29794.62132</td>
+<td>-4036.528194</td>
+<td>35869.73299</td>
+<td>20200305</td>
+<td>82</td>
+<td>wng</td>
+<td>53.725</td>
+<td>9.053</td>
+<td>18186.19222</td>
+<td>1002.707153</td>
+<td>46352.84486</td>
+<td>20200305</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p>The 24 Gaussian coefficients I have calculated are in Table <a href="#t2">2</a></p>
+<p><span style='font-weight:bold' id='t2'>Tab 2. </span>Gauss Coefficients my obtained (using quasi-Schmidt normalization)<br>Coefficent | Degree(n) | Order(m) | Value |  | Coefficent | Degree(n) | Order(m) | Value<br>—————-|—————-|—————|———-|—|——————|—————-|—————|———<br>g | 1 | 0 | -29017.523 |  | h | 3 | 1 | -42.65915408<br>g | 1 | 1 | -1858.68841 |  | h | 3 | 2 | 600.217349<br>h | 1 | 1 | 4903.10927 |  | h | 3 | 3 | -633.5583365<br>g | 2 | 0 | -2497.135416 |  | g | 4 | 0 | 1132.882537<br>g | 2 | 1 | 2617.981296 |  | g | 4 | 1 | 1296.172272<br>g | 2 | 2 | 2178.890222 |  | g | 4 | 2 | -2.933163263<br>h | 2 | 1 | -3201.763686 |  | g | 4 | 3 | -357.3671095<br>h | 2 | 2 | -923.4214529 |  | g | 4 | 4 | 120.6542625<br>g | 3 | 0 | 805.1006385 |  | h | 4 | 1 | 486.9660327<br>g | 3 | 1 | -2166.619627 |  | h | 4 | 2 | -230.1865231<br>g | 3 | 2 | 1281.757376 |  | h | 4 | 3 | 195.544086<br>g | 3 | 3 | 90.1221627 |  | h | 4 | 4 | -207.4272451</p>
+<p>In order to evaluate the fitting effect of the model on the data, the prediction data on the original observation point were obtained by using $\mathbf{E} = \mathbf{A}\mathbf{m}$, and the error between the observation value and the prediction value was calculated, as shown in Figure <a href="#f2">2</a>, <a href="#f3">3</a>:</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-est_obs.jpg" alt="globalmagnetic-est_obs"></p>
+<center id='f2'><span style='font-weight:bold'>Fig 2. </span>Maps of observation value and prediction value</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f3](codeserrors.jpg" alt="globalmagnetic-![f3](codeserrors.jpg)">.jpg)</p>
+<center id='f2'><span style='font-weight:bold'>Fig 3. </span>Maps of errors at each observational stations</center>
+
+
+
+<h2 id="Global-model-from-inverse-Gauss-Coefficient"><a href="#Global-model-from-inverse-Gauss-Coefficient" class="headerlink" title="Global model from inverse Gauss Coefficient"></a>Global model from inverse Gauss Coefficient</h2><p>The inverse Gauss coefficient can be used to calculate the global magnetic field distribution, which has been shown in Figure <a href="#f4">4-11</a></p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f4](codesF-c.jpg" alt="globalmagnetic-![f4](codesF-c.jpg)">.jpg)</p>
+<center id='f4'><span style='font-weight:bold'>Fig 4. </span>Contour-maps of the total field intensity F</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f5](codesBr-c.jpg" alt="globalmagnetic-![f5](codesBr-c.jpg)">.jpg)</p>
+<center id='f5'><span style='font-weight:bold'>Fig 5. </span>Contour-maps of the radial component Br</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f6](codesD-c.jpg" alt="globalmagnetic-![f6](codesD-c.jpg)">.jpg)</p>
+<center id='f6'><span style='font-weight:bold'>Fig 6. </span>Contour-maps of the Declination D</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f7](codesI-c.jpg" alt="globalmagnetic-![f7](codesI-c.jpg)">.jpg)</p>
+<center id='f7'><span style='font-weight:bold'>Fig 7. </span>Contour-maps of the Inclination I</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f8](codesF-p.jpg" alt="globalmagnetic-![f8](codesF-p.jpg)">.jpg)</p>
+<center id='f8'><span style='font-weight:bold'>Fig 8. </span>Contourf-maps of the total field intensity F</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-f9.jpg" alt="globalmagnetic-f9"></p>
+<center id='f9'><span style='font-weight:bold'>Fig 9. </span>Contourf-maps of the radial component Br</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-D-p.jpg" alt="globalmagnetic-D-p"></p>
+<center id='f10'><span style='font-weight:bold'>Fig 10. </span>Contourf-maps of the Declination D</center>
+
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-I-p.jpg" alt="globalmagnetic-I-p"></p>
+<center id='f11'><span style='font-weight:bold'>Fig 11. </span>Contourf-maps of the Inclination I</center>
+
+<p>It is obvious that the South Atlantic magnetic anomaly is consistent with the known characteristics of the geomagnetic field, indicating that our model can reflect the characteristics of the geomagnetic field to a certain extent.</p>
+<h2 id="Comparison-with-IGRF-13"><a href="#Comparison-with-IGRF-13" class="headerlink" title="Comparison with IGRF-13"></a>Comparison with IGRF-13</h2><p>Compute the spectrum in SH degree by:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        S(n)=(n+1) \sum_{m=0}^{n}\left(g_{n}^{m}\right)^{2}+\left(h_{n}^{m}\right)^{2}
+    \end{aligned}
+\end{equation}</script><p>and compare them with the results of IGRF-13 (Figure <a href="#f12">12</a>) shown that the inversed Gauss coefficients are in good agreement with IGRF-13 model. The characteristics of the main earth’s magnetic field are almost the same, except for a small deviation when the degree is high.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-spectrum.jpg" alt="globalmagnetic-spectrum"></p>
+<center id='f12'><span style='font-weight:bold'>Fig 12. </span>A plot comparing the spectra of my model with that of IGRF-13</center>
+
+
+
+<h2 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h2><p>Through the inversion of the observed data, I got 24 Gauss coefficients, and used them to establish the global magnetic field model, draw the magnetic field distribution on the surface of earth. Compared with the IGRF-13 model, it has good consistency, but there are still subtle differences. The reason is that when we sift through the data, the distribution of observation stations is not  well-distributed enough, and we can not achieve uniform distribution on a global scale. Therefore, the inversed model is greatly affected by the local data, even if we increase the degree of the  spherical harmonic coefficient will not help, there will be even greater difference. If our model is to be more accurate, it will need to include satellite data that can orbit the Earth around, which will also take into account the effects of external fields on the geomagnetic field, making the model more accurate.</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>The code can be attained at <a href="https://github.com/tabris-trees/GMFM">my github repository</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1]  聂琳娟, 许智铭. 利用SWARM星群磁测数据反演地球主磁场模型WHU-MM01[J]. 测绘地理信息, 2020, 45(05): 16–19.</p>
+<p>[2]  徐文耀, 区加明, 杜爱民. 地磁场全球建模和局域建模[J]. 地球物理学进展, 地球物理学进展, 2011, 26(2): 398–415.</p>
+<p>[3]  Monika Korte, Catherine Constable. Continuous global geomagnetic field models for the past 3000 years[J]. Physics of the Earth and Planetary Interiors, 2003, 140(1): 73–89.</p>
+<p>[4]  N. W. Peddie. USGS model coefficients for continental U.S. and Hawaii (1985)[J]. Planetary and Space Science, 1992, 40(4): 561.</p>
+<p>[5]  An Homage to Gauss and His Model of the Earth’s Magnetic Field[J]. CMS Notes, .</p>
+<p>[6]  Davis J. Mathematical Modeling of Earth’s Magnetic Field[J]. .</p>
+<p>[7]  白春华, 徐文耀, 康国发. 地球主磁场模型[J]. 地球物理学进展, 2008(4): 1045–1057.</p>
+<p>[8]  冯春. Matlab实现IGRF国际地磁参考场模型的计算[J]. 内蒙古石油化工, 2014, 40(12): 43–46.</p>
+<p>[9]  安振昌. 地磁场区域模型与全球模型的比较和讨论[J]. 物探与化探, 1991(04): 248–254.</p>
+<p>[10] 刘元元, 王仕成, 张金生, 等. 最新国际地磁参考场模型IGRF11研究[J]. 地震学报, 2013, 35(1): 125-131+133-134+138.</p>
+<p>[11] International Geomagnetic Reference Field (IGRF-13)[EB/OL]. /2022-05-28. <a href="https://wdc.kugi.kyoto-u.ac.jp/igrf/index.html">https://wdc.kugi.kyoto-u.ac.jp/igrf/index.html</a>.</p>
+<p>[12] Alken P, Thébault E, Beggan C D, 等. International Geomagnetic Reference Field: the thirteenth generation[J]. Earth, Planets and Space, 2021, 73(1): 49.</p>
+<p>[13]  Finlay C C, Kloss C, Olsen N, 等. The CHAOS-7 geomagnetic field model and observed changes in the South Atlantic Anomaly[J]. Earth, Planets and Space, 2020, 72(1): 156.</p>
+]]></content>
+      <categories>
+        <category>科研</category>
+        <category>地球磁场</category>
+      </categories>
+      <tags>
+        <tag>地球磁场</tag>
+        <tag>反演</tag>
+        <tag>南大西洋磁异常</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>非线性动力学-概论</title>
     <url>/2022/04/30/nonlineardynamics1/</url>
     <content><![CDATA[<div class="note primary flat"><p><strong>动力学</strong>——一门研究系统随时间演化的学科，它告诉我们所考虑的系统是稳定到平衡点，做重复的周期运动还是做更复杂的随机运动。<span class='heimu'>世界的规律是简单的，但世界却是复杂的。越是深入的了解我们身处的这个世界，我们就越深刻的认识到世界的复杂性，并且这些出乎意料的复杂性往往来源于我们所熟知的某些简单的规律。也许，有时候从简单到复杂之间的规律才是对我们来说至关重要的东西。</span></p>
