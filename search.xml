@@ -870,25 +870,25 @@
 <p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-est_obs.jpg" alt="globalmagnetic-est_obs"></p>
 <center id='f2'><span style='font-weight:bold'>Fig 2. </span>Maps of observation value and prediction value</center>
 
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f3](codeserrors.jpg" alt="globalmagnetic-![f3](codeserrors.jpg)">.jpg)</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-errors.jpg" alt="globalmagnetic-errors"></p>
 <center id='f2'><span style='font-weight:bold'>Fig 3. </span>Maps of errors at each observational stations</center>
 
 
 
 <h2 id="Global-model-from-inverse-Gauss-Coefficient"><a href="#Global-model-from-inverse-Gauss-Coefficient" class="headerlink" title="Global model from inverse Gauss Coefficient"></a>Global model from inverse Gauss Coefficient</h2><p>The inverse Gauss coefficient can be used to calculate the global magnetic field distribution, which has been shown in Figure <a href="#f4">4-11</a></p>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f4](codesF-c.jpg" alt="globalmagnetic-![f4](codesF-c.jpg)">.jpg)</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-F-c.jpg" alt="globalmagnetic-F-c"></p>
 <center id='f4'><span style='font-weight:bold'>Fig 4. </span>Contour-maps of the total field intensity F</center>
 
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f5](codesBr-c.jpg" alt="globalmagnetic-![f5](codesBr-c.jpg)">.jpg)</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-Br-c.jpg" alt="globalmagnetic-Br-c"></p>
 <center id='f5'><span style='font-weight:bold'>Fig 5. </span>Contour-maps of the radial component Br</center>
 
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f6](codesD-c.jpg" alt="globalmagnetic-![f6](codesD-c.jpg)">.jpg)</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-D-c.jpg" alt="globalmagnetic-D-c"></p>
 <center id='f6'><span style='font-weight:bold'>Fig 6. </span>Contour-maps of the Declination D</center>
 
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f7](codesI-c.jpg" alt="globalmagnetic-![f7](codesI-c.jpg)">.jpg)</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-I-c.jpg" alt="globalmagnetic-I-c"></p>
 <center id='f7'><span style='font-weight:bold'>Fig 7. </span>Contour-maps of the Inclination I</center>
 
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-![f8](codesF-p.jpg" alt="globalmagnetic-![f8](codesF-p.jpg)">.jpg)</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-F-p.jpg" alt="globalmagnetic-F-p"></p>
 <center id='f8'><span style='font-weight:bold'>Fig 8. </span>Contourf-maps of the total field intensity F</center>
 
 <p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/globalmagnetic-f9.jpg" alt="globalmagnetic-f9"></p>
