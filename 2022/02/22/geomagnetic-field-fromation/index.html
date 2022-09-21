@@ -236,14 +236,14 @@ window.addEventListener('load',preloader.endLoading())</script><div class="js-pj
   const init = () => {
     twikoo.init(Object.assign({
       el: '#twikoo-wrap',
-      envId: 'https://hexo-comment-phi.vercel.app/',
+      envId: 'https://twikoo.tabirstrees.top/',
       region: 'ap-shanghai'
     }, "window.location.pathname"))
   }
 
   const getCount = () => {
     twikoo.getCommentsCount({
-      envId: 'https://hexo-comment-phi.vercel.app/',
+      envId: 'https://twikoo.tabirstrees.top/',
       region: 'ap-shanghai',
       urls: [window.location.pathname],
       includeReply: false
@@ -292,7 +292,7 @@ window.addEventListener('load',preloader.endLoading())</script><div class="js-pj
   const getComment = () => {
     const runTwikoo = () => {
       twikoo.getRecentComments({
-        envId: 'https://hexo-comment-phi.vercel.app/',
+        envId: 'https://twikoo.tabirstrees.top/',
         region: 'ap-shanghai',
         pageSize: 6,
         includeReply: true
