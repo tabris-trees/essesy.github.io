@@ -83,10 +83,10 @@
 \end{equation}</script><p>方程（2）的前两项可以很简单的给出：</p>
 <script type="math/tex; mode=display">
 \begin{equation}
-    \begin{align*}
-        \int \frac{\partial f}{\partial t} \mathrm{d}\vec{v} = \frac{\partial n}{\partial t} \\[8pt]
-        \int \vec{v} \cdot \frac{\partial f}{\partial \vec{r}} \mathrm{d}\vec{v} = \frac{\partial }{\partial \vec{r}} \cdot (n\vec{u}) = \nabla \cdot (n\vec{u})
-    \end{align*}
+    \begin{aligned}
+        \int \frac{\partial f}{\partial t} \mathrm{d}\vec{v} &= \frac{\partial n}{\partial t} \\[8pt]
+        \int \vec{v} \cdot \frac{\partial f}{\partial \vec{r}} \mathrm{d}\vec{v} &= \frac{\partial }{\partial \vec{r}} \cdot (n\vec{u}) = \nabla \cdot (n\vec{u})
+    \end{aligned}
 \end{equation}</script><p>将第三项拆开，首先来看含有 $\vec{E}$ 的项：</p>
 <script type="math/tex; mode=display">
 \begin{equation}
@@ -237,8 +237,8 @@
 <script type="math/tex; mode=display">
 \begin{equation*}
     \begin{aligned}
-        \vec{\Omega}_e = -e (1-\rm{d}_e^2 \nabla^2) \vec{B}/c \\[8pt]
-        \rm{d}_e = c/\omega_{pe}
+        \vec{\Omega}_e &= -e (1-\rm{d}_e^2 \nabla^2) \vec{B}/c \\[8pt]
+        \rm{d}_e &= c/\omega_{pe}
     \end{aligned}
 \end{equation*}</script><p>式（25）被称为“电子磁流体方程”。<span class='mohu'>看起来是挺复杂的，我也不知道为什么这么复杂，但</span>如果物理量变化的空间特征尺度远远大于电子的趋肤深度，即 $\rm{d}_e^2 \nabla^2 \ll 1,\ \vec{\Omega}_e \approx -e\vec{B}/c$，并忽略碰撞，上述方程可以被简化为：</p>
 <script type="math/tex; mode=display">
@@ -297,9 +297,13 @@
      \rho_{e}/L_{\text{H}} \ll \rho_{i}/L_{\text{H}} \ll 1,\ \omega_{\text{H}} \ll \Omega_{c i} \ll \Omega_{c i}
  \end{aligned}
 \end{equation}</script></li>
-<li><p>等离子体假设：该假设要求德拜球内含有大量的粒子，等离子体整体呈现电中性，即：<br>$$<br>\begin{equation}<br> \begin{aligned}</p>
-<pre><code> n^&#123;-1/3&#125; \ll \lambda_&#123;\rm&#123;D&#125;&#125; \ll L_&#123;\text&#123;H&#125;&#125;,\ \omega_&#123;\text&#123;H&#125;&#125; \ll \omega_&#123;p e&#125;,\ \Rightarrow \sum_&#123;\alpha&#125; n_&#123;\alpha&#125; q_&#123;\alpha&#125; \to 0
-</code></pre><p> \end{aligned}<br>\end{equation}<br>$$这一假设比较复杂，它实际上是保证等离子体是弱耦合等离子体，但弱耦合等离子体有时也被假设成“无碰撞”等离子体，这时候就和前面的局域热力学平衡假设矛盾，需要进一步讨论，我们这里暂且不表。</p>
+<li><p>等离子体假设：该假设要求德拜球内含有大量的粒子，等离子体整体呈现电中性，即：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+ \begin{aligned}
+     n^{-1/3} \ll \lambda_{\rm{D}} \ll L_{\text{H}},\ \omega {\text{H}} \ll \omega_{p e},\ \Rightarrow \sum_{\alpha} n_{\alpha} q_{\alpha} \to 0
+ \end{aligned}
+\end{equation}</script><p>这一假设比较复杂，它实际上是保证等离子体是弱耦合等离子体，但弱耦合等离子体有时也被假设成“无碰撞”等离子体，这时候就和前面的局域热力学平衡假设矛盾，需要进一步讨论，我们这里暂且不表。</p>
 </li>
 <li><p>非相对论假设：这个比较简单，因为我们考虑的流体假设速度一般比较慢，不满足相对论条件，所以有：</p>
 <script type="math/tex; mode=display">
