@@ -815,27 +815,6 @@ t_{i j}\left(x-x_{N}\right) \\
       </tags>
   </entry>
   <entry>
-    <title>等离子体物理近期期刊文章速读 3</title>
-    <url>/2022/11/07/articlepreview3/</url>
-    <content><![CDATA[<div class="note primary flat"><p>由于科研需要，最近看了几篇关于 <strong>回旋共振</strong> 的文章，都发表在高水平的期刊上，很多地方值得学习和借鉴，一些有趣的结论也方便之后更加深入的研究，所以下面对这几篇文章做简单的介绍。借此锻炼自己总结阅读能力，方便自己以后参阅</p>
-</div>
-<h1 id="1-In-Situ-Signature-of-Cyclotron-Resonant-Heating-in-the-Solar-Wind"><a href="#1-In-Situ-Signature-of-Cyclotron-Resonant-Heating-in-the-Solar-Wind" class="headerlink" title="1. In Situ Signature of Cyclotron Resonant Heating in the Solar Wind"></a>1. In Situ Signature of Cyclotron Resonant Heating in the Solar Wind</h1><blockquote>
-<p><a href="10.1103/PhysRevLett.129.165101">In Situ Signature of Cyclotron Resonant Heating in the Solar Wind</a> ——— Trevor A. Bowen et al.</p>
-</blockquote>
-<p>一直以来关于日冕加热和太阳风加速的物理机制得不到完美的解释，随机加热，磁重联，以及朗道或者回旋共振加热等一系列理论都是存在潜在可能的能量耗散机制，另外电子和离子对能量耗散各自贡献的比例也仍然是一个公开讨论的问题。</p>
-<p>这篇文章利用 Parker Solar Probe (PSP) 的观测数据对离子回旋共振加热的贡献作了定量估计，得到了一些有趣的结果。大致的研究过程如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart TB</span><br><span class="line"></span><br><span class="line">A(data from PSP) --- B(magnetic field) &amp; C(plasma distributions) --&gt; |quasilinear theory| D(heating rate)</span><br><span class="line"></span><br><span class="line">subgraph plasma distributions</span><br><span class="line">    direction TB</span><br><span class="line">    TT[Bi-Maxwellian fit] --- GG[Hermite representation]</span><br><span class="line">end</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>文中将PSP测到的等离子体速度分布函数用两种方式进行了插值:</p>
-<ol>
-<li>双麦克斯韦分布形式</li>
-<li>Hermite 表示形式</li>
-</ol>
-<p>两者的主要差别在于 Hermite 表示下具有更加精细的速度分布结构。根据前人建立的离子回旋波加热准线性理论，在有了磁场波动数据和等离子体速度分布函数之后可以估计加热率（heating rate）。经过这么一算呢，发现 Bi-Maxwellian 拟合出来的分布加热率平均下来是 $3 \times 10^{-15} \mathrm{W/m^{3}}$，Hermite 拟合出来的结果为 $1 \times 10^{-14} \mathrm{W/m^3}$，这个结果表明分布函数的精细结构不会对加热的结果造成数量级上的影响，但仍然是不能忽略的（毕竟存在精细结构的估算出来差不多是没有的两倍了）。同时呢，这个结果和前人算出来的湍流串级的能量率 $4.7 \times 10^{-14} \mathrm{W/m^3}$ 是相当的，表明了回旋加热在这个过程中的重要性，可以作为一种重要的能量耗散机制存在，将磁能转化为离子的热能和动能。</p>
-<p>同时作者也指出了一些存在的小问题，首先是文中考虑的都是平行传播的离子回旋波，对于倾斜离子回旋波的情况还需要进一步讨论；另外研究的时间间隔内观测到的磁场波动 95% 都是左旋极化的波，同时分布函数计算的结果显示基本上都是波的吸收从而提供给离子能量，那么这些波是如何产生的就是一个比较重要的问题，文中提出两种可能的机制：1. beam 分布的不稳定性可以导致离子回旋波，但问题是这样产生的波的极化特性是右旋的，2. 湍流产生的大量左旋极化离子回旋波，对于这种机制文中也给出了一些近年来的支撑证据。</p>
-<p>文章总体的工作思路还是比较简单的，过程可能会比较复杂，发表在PRL上，而且是编辑推荐文章，含金量肯定是很高的。也可以为我们想要量化一种波粒相互作用在空间物理过程中的贡献时提供研究思路。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>等离子体近期期刊文章摘要速读</title>
     <url>/2022/01/22/articlevpreview/</url>
     <content><![CDATA[<h1 id="导读🍇"><a href="#导读🍇" class="headerlink" title="导读🍇"></a>导读🍇</h1><div class="note primary flat"><p>最近一直在用<span style='background: yellow'>Feedly</span>看研究领域相关的论文，并且关注的国家天文台的某位博士师兄在自己的公众号上推出了<b>太阳物理Arxiv速读</b>系列文章，感觉还比较有意思，自己也想尝试一下，于是有了这一期的博客，想要对自己在feedly上看到的一些感兴趣的文章的摘要翻译一下，方便日后查看并了解一下领域内（包括 <code>等离子体物理</code>、<code>太阳物理</code>、<code>空间物理</code>以及<code>等离子体天体物理</code>方面的研究 ）的一些最新动态。<span class='mohu'>鉴于水平有限，很多地方没办法完全翻译（理解）准确，需要多加学习精进才行。</span></p>
@@ -876,26 +855,21 @@ t_{i j}\left(x-x_{N}\right) \\
       </tags>
   </entry>
   <entry>
-    <title>comment-mail-style</title>
-    <url>/2021/08/13/comment-mail-style/</url>
-    <content><![CDATA[<div class="note primary flat"><p>最近更换了评论系统为<a href="https://twikoo.js.org/">Twikoo</a>（很好用，推荐大家使用）。完了之后感觉它的评论邮件通知样式有点不太好看，于是自己折腾了一个<span class='heimu'>也不是很好看的</span>自己弄的样式，分享出来<span class='heimu'>接受批斗</span>！</p>
-</div>
-<hr>
-<p>首先上代码：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nui-fClear sR0&quot;</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">table</span> <span class="attr">style</span>=<span class="string">&quot;margin: auto; width: 340px; height: 500px;&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">&quot;background: #f5f7f6;padding: 10px;border-radius: 5px;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">    display: -webkit-box;</span></span></span><br><span class="line"><span class="string"><span class="tag">    -webkit-box-pack: center;</span></span></span><br><span class="line"><span class="string"><span class="tag">&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://file.tabirstrees.top/blogfile/piano%20xun.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;haokan&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color:rgb(255, 233, 233);background-position: center;border-left: 3px solid #414040;box-shadow:0 1px 3px #AAAAAA;line-height:180%;padding:0 15px 12px;width:500px;color:#030303;font-family:&#x27;Century Gothic&#x27;,&#x27;Trebuchet MS&#x27;,&#x27;Hiragino Sans GB&#x27;,微软雅黑,&#x27;Microsoft Yahei&#x27;,Tahoma,Helvetica,Arial,&#x27;SimSun&#x27;,sans-serif;font-size:12px;margin: auto;&quot;</span>&gt;</span> </span><br><span class="line">       </span><br><span class="line">       <span class="tag">&lt;<span class="name">h2</span> <span class="attr">style</span>=<span class="string">&quot;border-bottom:1px solid rgb(0, 0, 0);font-size:14px;font-weight:normal;padding:13px 0 10px 8px;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color: #f59200;font-weight: bold;&quot;</span>&gt;</span><span class="symbol">&amp;gt;</span> <span class="tag">&lt;/<span class="name">span</span>&gt;</span>您在 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none;color: #f59200;&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span> 博客上的留言有回复啦！<span class="tag">&lt;/<span class="name">h2</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color: rgb(208, 212, 247); padding:5px 12px 5px 12px;margin-top:18px;border-radius: 3px;&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;PARENT_NICK&#125; 同学，您曾在<span class="tag">&lt;<span class="name">strong</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>上发表评论:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;PARENT_COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;NICK&#125; 给您的回复如下:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>您可以点击 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;POST_URL&#125;&quot;</span>&gt;</span>查看回复的完整內容 <span class="tag">&lt;/<span class="name">a</span>&gt;</span>，欢迎再次光临 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span>。<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">table</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">   <span class="selector-class">.comment</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border</span>: <span class="number">0px</span> solid <span class="number">#DDD</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">15px</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">margin</span>:<span class="number">18px</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span></span><br><span class="line"><span class="css">   &#125;</span></span><br><span class="line"><span class="css"> </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<hr>
-<p>然后是效果图:</p>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/comment-mail-style评论邮件通知.jpg" alt="comment-mail-style评论邮件通知"></p>
-<hr>
-<div class="note success flat"><p>感觉还是太丑了,还是html和css的基础不太好,有时间得再好好学一学。大家有好看的模板也可以推荐给我啊😂！</p>
-</div>]]></content>
+    <title>逃避自由——弗洛姆</title>
+    <url>/2022/10/09/escapefromfreedom/</url>
+    <content><![CDATA[<p>💡 读这本书的时候最大的感受就好像这不是上个世纪四十年代写的而是最近几年内才写出来的作品，不得不惊呼一个世纪以前的西方社会已经和现代社会如此相似，也许应该换种说法：世界在这将近一百年的时间里文明毫无进步，甚至出现某些畸形的生长……</p>
+<p>💡 人或者人类文明在成长过程中通过对世界和自然的不断认识从而与<strong>原始纽带</strong>脱离，成为独立自由的个体。然而当我们完全独自地置于庞大复杂的世界中时，我们愈发感觉到自己的渺小，无能为力，尤其是现代社会垄断资本主义对中下层阶级的碾压之势下，这种感觉愈发强烈。虽然我们每个人都可以通过自己的努力得到财富，得到某种意义上的成功，但仍然存在着一股强大的力量阻拦在我们面前，我们得到的只是一个机会，仅此而已。在绝大多数人的生命中，仍然有一种笼罩整个生命过程的压力，对中国人来说房子，结婚，孩子，年老的父母等等，人们终其一生忙忙碌碌只为了这么寥寥几件事便耗尽毕生精力，卑躬屈膝，任由别人发号施令。经济情况好的时候，我们可以通过财富来麻痹自己，认为自己获得了自己想要的成功，从而避免孤独感，无能为力感。但是近几年疫情，经济肉眼可见的衰退，在这种<strong>经济政治</strong>的大环境下，人们开始倍感虚无，迫切地希望能够找到某种方式消解面对这个看起来复杂可怕社会环境带来的各种焦虑和痛苦。另一方面，现代资本主义对我们的文化带来的另一个及其危害严重的影响是：<strong>在我们无意识中，通过广告，教育，舆论，专家的虚假哄骗等各种方式让我们相信财富、成功、权利；让我们抛弃自己内心深处原本的愿望和想法，放弃自己的判断，利用我们的孤独感制造恐慌，焦虑，以至于被迫趋同，被迫追求权威。</strong>于是大家统一地希望获得更多的财富，权利，每天面带假笑，麻痹，虚伪地过着看似属于自己的日子。一旦社会整体开始出现这种倾向就陷入一种恶性循环，甚至此后的技术也开始加速这个过程（短视频、公众号等碎片化信息，推荐算法等等）。为了暂时性地消除这种日益膨胀的孤独与焦虑，一个世纪前的德国人民选择了<strong>法西斯主义</strong>，如今我们该去往何处不得而知。</p>
+<p>💡 豆瓣评论中一部分人说本书只分析了问题所在，却并未给出答案。然而本书的最后一章明确指出了我们长久有效地解决自身孤独感，无能为力感的途径：实现自我的积极主动。对个体自我来说，应当充分发挥自己的能动性，积极主动地生活，遵从自己意愿，而不是被迫趋同。首先是要意识到这一点，本书前面很长的篇幅都在阐述现代社会相当大部分人并未意识到自己所处的状态，或者意识到所处的矛盾却苦于无法找到解脱之法。当我们意识到应当积极主动地寻求自我，通过自发活动将自己与世界联系起来，即<strong>遵循自发性的意识而活动</strong>，肯定自我的独一无二性，摒弃任何凌驾于真实自我之上的权威。有两个问题，每个人都实现这样的状态需要社会的经济政治条件；完全的自我表达和摒弃权威是否会导致无政府主义，导致社会滋生阴暗，暴力犯罪。书中首先解释了第二个问题：人无所谓好坏，人生来的倾向都是为了成长，发展以及表达潜力，只有在人的生命受阻时才会自主地产生破坏欲，同时渴求权利与权威（我们暂且不论这种理论的正确性，根据本书“逃避机制”的说法，至少通过经验和心理分析，这种说法是可以得到验证的）。如果个人的自我得到充分自由的发展，他的<strong>非社会性冲动</strong>的根本原因就不复存在。于是问题的关键回到我们应该如何构建一个个人的独立自由受到全面的保障，同时又能提供给人一种自我的安全感的社会？人类社会在这条道路上已经艰难前进了数百年，这看起来似乎是一个遥不可及的目标，但本书依旧给出了我们能够坚信这样的现实实现的原因，并在宏观上给出了自己的方案——民主社会主义。首先，现代资本主义的发展已经为我们提供了解决经济上维持个人与自我独立自由的可能，我们需要重新构建社会组织，实行计划经济（虽然并非易事）从而保障每一个人的平等权利；同时政治上基于现代民主制度的基础成就进行添砖加瓦。</p>
+<p>应该说这个问题如此之复杂，以至于我们没有办法深入细致的讨论具体实行的措施，事实上这是国家机关的事情，政治学家或者社会学家只能给出一个大致方案。管理我们的依旧是一小撮精英组成的官僚机构所代表的国家权威，在通往这个理想的道路上我们还有很多的事情要做，尽管这本书已经写了将近80年，然而如今的社会比之当初的社会又好了多少呢，我们在这条道路上前进抑或是后退都是个问题。或者说如今的社会又有多少人清醒的认识到八十年前就有人指出的自己的困境呢？明白了自己所处的境地，指明了方向也不够，甚至还需要一个智者，一个权威来告诉自己到底应该走哪条路，这不是又回到了最初的权威主义的危墙之下了吗？</p>
+]]></content>
       <categories>
-        <category>资源</category>
-        <category>模板</category>
+        <category>生活</category>
+        <category>书评</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
-        <tag>web技术</tag>
+        <tag>自由</tag>
+        <tag>孤独感</tag>
+        <tag>社会心理学</tag>
       </tags>
   </entry>
   <entry>
@@ -912,7 +886,7 @@ t_{i j}\left(x-x_{N}\right) \\
 <h2 id="最小作用量原理"><a href="#最小作用量原理" class="headerlink" title="最小作用量原理"></a>最小作用量原理</h2><p>物理学关注的本质是世间万物的<strong>运动</strong>, 即系统状态随时空的演化, 抽象到数学就是微分方程系统的演化.</p>
 <p>在牛顿的世界观里, 意思是<strong>力是改变物体运动的原因</strong>, 存在力和加速度之间的表达式 $\vec{F}=ma$. 在这样的观点下, 考察物体的状态就必须要对物体进行受力分析, 但很多时候(比如存在<strong>约束</strong>的时候)我们没有办法完全确定物体所受的力(因为<strong>约束限制的是物体的运动, 它对物体作用的力会随着物体运动的不同而发生改变, 和物体的运动一样是一个待确定的量</strong>), 因此牛顿力学的诸多限制促使我们寻求另外一种对物体运动的思考方式, 这种思考方式更加接近于事物的本质, 如果说牛顿运动定律是牛顿通过自然观察总结出来的定律, 那么接下来我们讨论的就可能是万物运动所遵循的最基本的法则, 自然机器的”底层逻辑”——<strong>最小作用量原理</strong>.</p>
 <p>所谓最小作用量原理其实是一个很符合哲学概念的假设, 即万事万物的运动总是以牺牲最小的代价为原则, 这个代价在物理学上就被定义为作用量, 实际上这个概念来自自然界中各种极值现象, 比如光总是走最短的路线, 或者液滴总是呈现表面积最大的球形. 当然也可能人的经验感觉在这个概念的发展过程中起到了重要的作用, 比如让球从曲面的高处落下时通常会沿着梯度最大的方向运动, 总的来说追求极值的状态是一件自然而然的事情. 一旦我们接受了这样的原理(事实上我们也很容易就能接受这样的假设), 就会发现它似乎可以解释我们所面临的所有相关问题.</p>
-<h3 id="从能量谈起"><a href="#从能量谈起" class="headerlink" title="从能量谈起"></a>从能量谈起</h3><p>关于物体的运动或者说物体的状态, <strong>“能量”</strong> 是一个绝对绕不开的名词, 人们从日常生活中提炼的第一个深刻思想便是<strong>能量守恒</strong>, 最早追溯到莱布尼兹, 他指出: 以落体运动来说，物体升起的高度是与初速度的平方成正比，因之作用在物体上的力的效应必定是与其重量所给予的速度平方而不是速度成正比的，这就是机械能守恒的最早的形式^[<a href="https://blog.sciencenet.cn/blog-39472-1093627.html">谈谈“能量”概念的形成</a>], 即重力势能和动能的相互转化. 物理学的发展过程中提出过很多种能量的概念, 但最终回到粒子层面就只存在两种能量的形式:</p>
+<h3 id="从能量谈起"><a href="#从能量谈起" class="headerlink" title="从能量谈起"></a>从能量谈起</h3><p>关于物体的运动或者说物体的状态, <strong>“能量”</strong> 是一个绝对绕不开的名词, 人们从日常生活中提炼的第一个深刻思想便是<strong>能量守恒</strong>, 最早追溯到莱布尼兹, 他指出: 以落体运动来说，物体升起的高度是与初速度的平方成正比，因之作用在物体上的力的效应必定是与其重量所给予的速度平方而不是速度成正比的，这就是机械能守恒的最早的形式, 即重力势能和动能的相互转化. 物理学的发展过程中提出过很多种能量的概念, 但最终回到粒子层面就只存在两种能量的形式:</p>
 <ul>
 <li>动能</li>
 <li>势能</li>
@@ -955,7 +929,7 @@ t_{i j}\left(x-x_{N}\right) \\
     \begin{aligned}
         \mathcal{A} = \int_{t_0}^{t_1}\mathcal{L(q_i, \dot{q}_i,t)} \mathrm{d}t
     \end{aligned}
-\end{equation}</script><p>也就是说作用量 $\mathcal{A}$ 实际上是函数 $\mathcal$ 的积分, 通过变分法求出满足使得 $\mathcal{A}$ 得极小值的函数 $\mathcal{L}$ 即可, 其对应的运动形式就是自然在无数条轨迹中选择的那一条.</p>
+\end{equation}</script><p>也就是说作用量 $\mathcal{A}$ 实际上是函数 $\mathcal{L}$ 的积分, 通过变分法求出满足使得 $\mathcal{A}$ 得极小值的函数 $\mathcal{L}$ 即可, 其对应的运动形式就是自然在无数条轨迹中选择的那一条.</p>
 <h2 id="拉格朗日函数"><a href="#拉格朗日函数" class="headerlink" title="拉格朗日函数"></a>拉格朗日函数</h2><p>上面的内容中我们假设了世界遵循的一般规律, 即最小作用量原理, 这一部分我们就直接尝试从最小作用量原理推出物体运动的方程, 来看看世界选择的运动形式是什么样的.</p>
 <p>首先应该注意到, 我们的作用量作为函数是不依赖于时间的, 这与描述运动的 $\mathcal{L}$ 函数不同, $\mathcal{L}$ 通过 $q(t)$, $\dot{q}(t)$ 隐含了最终变量 $t$, 但是在 $\mathcal{L}$ 到作用量 $\mathcal{A}$ 的积分中, $t$ 已经被积分掉了, 因此作用量依赖的不再是时间 $t$ 而是 $q(t)$ 的函数形式, 是函数到数的映射. 对这样一个依赖于函数的函数作微分的操作来自于数学的<strong>泛函分析</strong>, 即”变分法”, 其过程和处理数到数的映射的微积分类似.</p>
 <p>现在我们要求对作用量 $\mathcal{A}$ 的变分 $\delta \mathcal{A} = 0$, 作为作用量取到极值的条件. 即我们需要挑选出满足下面两个条件的函数 $q(t)$:</p>
@@ -1001,9 +975,7 @@ t_{i j}\left(x-x_{N}\right) \\
         \frac{\partial \mathcal{L}}{\partial q_i} - \frac{\mathrm{d}}{\mathrm{d}t}\left( \frac{\partial \mathcal{L}}{\partial \dot{q}_i} \right) = 0
     \end{aligned}
 \end{equation}</script><p>对所有的 $i$ 都成立才行. 这就是 <span style='background: pink'>拉格朗日方程</span>, 它就是自然界选择的实际运动所满足的微分方程, 其中对运动进行描述的量 $\mathcal{L}$ 被称为 <span style='background: pink'><strong>拉格朗日量</strong></span> 或者 <span style='background: pink'><strong>拉格朗日函数</strong></span>. 可以指出的是, 一个拉格朗日函数对应了一个力学体系, 但一个力学体系却可以有多个拉格朗日函数来表述, 这是由于两个不同的拉格朗日函数各自得到的作用量的变分可能是一样的. 实际上表述出来为:</p>
-<blockquote>
 <p>$\mathcal{L} = \mathcal{L}(\boldsymbol{q}, \dot{\boldsymbol{q}}, t)$ 与 <script type="math/tex">\mathcal{L}^\prime = \mathcal{L}(\boldsymbol{q}, \dot{\boldsymbol{q}}, t) + \frac{\mathrm{d}}{\mathrm{d} t}f(\boldsymbol{q}, t)</script> 描述的是同一个力学系统.</p>
-</blockquote>
 <h2 id="从拉格朗日力学到牛顿力学"><a href="#从拉格朗日力学到牛顿力学" class="headerlink" title="从拉格朗日力学到牛顿力学"></a>从拉格朗日力学到牛顿力学</h2><p>上面的过程虽然给出了一个运动对应的拉格朗日函数以及它所需要满足的微分方程, 但这个函数的具体形式还尚不清楚, 对于具体的问题我们也没法直接上手分析, 所以这一部分的内容就来讨论这个函数的具体形式是什么样的, 实际上就是将拉格朗日力学与牛顿力学建立起联系的过程.</p>
 <p>参考系的选择对于一个力学体系的研究来说是非常重要的, 按照现代引力理论的观点, 引力并不是实际存在的力, 而时空的不均匀性引起的物体运动状态的改变, 即在现实的任意的参考系(地球)中, 时空的不均匀性将会导致不受外力作用的物体无法保持静止. 但是我们总能找到一个参考系, 时空间相对它来说是均匀且各向同性的, 这样的参考系称为: <span style='background: pink'><strong>惯性参考系</strong></span>, 在这样的参考系中, 自由(没有外力作用的情况下)物体将会永远保持它的运动状态.</p>
 <p>对于这样一个惯性系中自由运动的质点, 时间和空间的均匀性意味着运动对应的函数不显含时间 $t$ 和位置 $q$, 这样一来, $\mathcal{L}$ 就只能是速度 $v$ 的函数. 同时, 空间的各向同性意味着速度的方向不会影响运动, 拉格朗日量应该只取决于速度的大小, 对于速度这样一个矢量来说, 平方之后的量刚好能够满足条件, 即:</p>
@@ -1098,21 +1070,26 @@ t_{i j}\left(x-x_{N}\right) \\
       </tags>
   </entry>
   <entry>
-    <title>逃避自由——弗洛姆</title>
-    <url>/2022/10/09/escapefromfreedom/</url>
-    <content><![CDATA[<p>💡 读这本书的时候最大的感受就好像这不是上个世纪四十年代写的而是最近几年内才写出来的作品，不得不惊呼一个世纪以前的西方社会已经和现代社会如此相似，也许应该换种说法：世界在这将近一百年的时间里文明毫无进步，甚至出现某些畸形的生长……</p>
-<p>💡 人或者人类文明在成长过程中通过对世界和自然的不断认识从而与<strong>原始纽带</strong>脱离，成为独立自由的个体。然而当我们完全独自地置于庞大复杂的世界中时，我们愈发感觉到自己的渺小，无能为力，尤其是现代社会垄断资本主义对中下层阶级的碾压之势下，这种感觉愈发强烈。虽然我们每个人都可以通过自己的努力得到财富，得到某种意义上的成功，但仍然存在着一股强大的力量阻拦在我们面前，我们得到的只是一个机会，仅此而已。在绝大多数人的生命中，仍然有一种笼罩整个生命过程的压力，对中国人来说房子，结婚，孩子，年老的父母等等，人们终其一生忙忙碌碌只为了这么寥寥几件事便耗尽毕生精力，卑躬屈膝，任由别人发号施令。经济情况好的时候，我们可以通过财富来麻痹自己，认为自己获得了自己想要的成功，从而避免孤独感，无能为力感。但是近几年疫情，经济肉眼可见的衰退，在这种<strong>经济政治</strong>的大环境下，人们开始倍感虚无，迫切地希望能够找到某种方式消解面对这个看起来复杂可怕社会环境带来的各种焦虑和痛苦。另一方面，现代资本主义对我们的文化带来的另一个及其危害严重的影响是：<strong>在我们无意识中，通过广告，教育，舆论，专家的虚假哄骗等各种方式让我们相信财富、成功、权利；让我们抛弃自己内心深处原本的愿望和想法，放弃自己的判断，利用我们的孤独感制造恐慌，焦虑，以至于被迫趋同，被迫追求权威。</strong>于是大家统一地希望获得更多的财富，权利，每天面带假笑，麻痹，虚伪地过着看似属于自己的日子。一旦社会整体开始出现这种倾向就陷入一种恶性循环，甚至此后的技术也开始加速这个过程（短视频、公众号等碎片化信息，推荐算法等等）。为了暂时性地消除这种日益膨胀的孤独与焦虑，一个世纪前的德国人民选择了<strong>法西斯主义</strong>，如今我们该去往何处不得而知。</p>
-<p>💡 豆瓣评论中一部分人说本书只分析了问题所在，却并未给出答案。然而本书的最后一章明确指出了我们长久有效地解决自身孤独感，无能为力感的途径：实现自我的积极主动。对个体自我来说，应当充分发挥自己的能动性，积极主动地生活，遵从自己意愿，而不是被迫趋同。首先是要意识到这一点，本书前面很长的篇幅都在阐述现代社会相当大部分人并未意识到自己所处的状态，或者意识到所处的矛盾却苦于无法找到解脱之法。当我们意识到应当积极主动地寻求自我，通过自发活动将自己与世界联系起来，即<strong>遵循自发性的意识而活动</strong>，肯定自我的独一无二性，摒弃任何凌驾于真实自我之上的权威。有两个问题，每个人都实现这样的状态需要社会的经济政治条件；完全的自我表达和摒弃权威是否会导致无政府主义，导致社会滋生阴暗，暴力犯罪。书中首先解释了第二个问题：人无所谓好坏，人生来的倾向都是为了成长，发展以及表达潜力，只有在人的生命受阻时才会自主地产生破坏欲，同时渴求权利与权威（我们暂且不论这种理论的正确性，根据本书“逃避机制”的说法，至少通过经验和心理分析，这种说法是可以得到验证的）。如果个人的自我得到充分自由的发展，他的<strong>非社会性冲动</strong>的根本原因就不复存在。于是问题的关键回到我们应该如何构建一个个人的独立自由受到全面的保障，同时又能提供给人一种自我的安全感的社会？人类社会在这条道路上已经艰难前进了数百年，这看起来似乎是一个遥不可及的目标，但本书依旧给出了我们能够坚信这样的现实实现的原因，并在宏观上给出了自己的方案——民主社会主义。首先，现代资本主义的发展已经为我们提供了解决经济上维持个人与自我独立自由的可能，我们需要重新构建社会组织，实行计划经济（虽然并非易事）从而保障每一个人的平等权利；同时政治上基于现代民主制度的基础成就进行添砖加瓦。</p>
-<p>应该说这个问题如此之复杂，以至于我们没有办法深入细致的讨论具体实行的措施，事实上这是国家机关的事情，政治学家或者社会学家只能给出一个大致方案。管理我们的依旧是一小撮精英组成的官僚机构所代表的国家权威，在通往这个理想的道路上我们还有很多的事情要做，尽管这本书已经写了将近80年，然而如今的社会比之当初的社会又好了多少呢，我们在这条道路上前进抑或是后退都是个问题。或者说如今的社会又有多少人清醒的认识到八十年前就有人指出的自己的困境呢？明白了自己所处的境地，指明了方向也不够，甚至还需要一个智者，一个权威来告诉自己到底应该走哪条路，这不是又回到了最初的权威主义的危墙之下了吗？</p>
-]]></content>
+    <title>comment-mail-style</title>
+    <url>/2021/08/13/comment-mail-style/</url>
+    <content><![CDATA[<div class="note primary flat"><p>最近更换了评论系统为<a href="https://twikoo.js.org/">Twikoo</a>（很好用，推荐大家使用）。完了之后感觉它的评论邮件通知样式有点不太好看，于是自己折腾了一个<span class='heimu'>也不是很好看的</span>自己弄的样式，分享出来<span class='heimu'>接受批斗</span>！</p>
+</div>
+<hr>
+<p>首先上代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nui-fClear sR0&quot;</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">table</span> <span class="attr">style</span>=<span class="string">&quot;margin: auto; width: 340px; height: 500px;&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">&quot;background: #f5f7f6;padding: 10px;border-radius: 5px;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="string"><span class="tag">    display: -webkit-box;</span></span></span><br><span class="line"><span class="string"><span class="tag">    -webkit-box-pack: center;</span></span></span><br><span class="line"><span class="string"><span class="tag">&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://file.tabirstrees.top/blogfile/piano%20xun.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;haokan&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color:rgb(255, 233, 233);background-position: center;border-left: 3px solid #414040;box-shadow:0 1px 3px #AAAAAA;line-height:180%;padding:0 15px 12px;width:500px;color:#030303;font-family:&#x27;Century Gothic&#x27;,&#x27;Trebuchet MS&#x27;,&#x27;Hiragino Sans GB&#x27;,微软雅黑,&#x27;Microsoft Yahei&#x27;,Tahoma,Helvetica,Arial,&#x27;SimSun&#x27;,sans-serif;font-size:12px;margin: auto;&quot;</span>&gt;</span> </span><br><span class="line">       </span><br><span class="line">       <span class="tag">&lt;<span class="name">h2</span> <span class="attr">style</span>=<span class="string">&quot;border-bottom:1px solid rgb(0, 0, 0);font-size:14px;font-weight:normal;padding:13px 0 10px 8px;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color: #f59200;font-weight: bold;&quot;</span>&gt;</span><span class="symbol">&amp;gt;</span> <span class="tag">&lt;/<span class="name">span</span>&gt;</span>您在 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none;color: #f59200;&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span> 博客上的留言有回复啦！<span class="tag">&lt;/<span class="name">h2</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;background-color: rgb(208, 212, 247); padding:5px 12px 5px 12px;margin-top:18px;border-radius: 3px;&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;PARENT_NICK&#125; 同学，您曾在<span class="tag">&lt;<span class="name">strong</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>上发表评论:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;PARENT_COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>$&#123;NICK&#125; 给您的回复如下:<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;comment&quot;</span>&gt;</span>$&#123;COMMENT&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>您可以点击 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;POST_URL&#125;&quot;</span>&gt;</span>查看回复的完整內容 <span class="tag">&lt;/<span class="name">a</span>&gt;</span>，欢迎再次光临 <span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;text-decoration:none; color:#f59200&quot;</span> <span class="attr">href</span>=<span class="string">&quot;$&#123;SITE_URL&#125;&quot;</span>&gt;</span>$&#123;SITE_NAME&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span>。<span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span><br><span class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">table</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">   <span class="selector-class">.comment</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border</span>: <span class="number">0px</span> solid <span class="number">#DDD</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">15px</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">margin</span>:<span class="number">18px</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span></span><br><span class="line"><span class="css">   &#125;</span></span><br><span class="line"><span class="css"> </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>然后是效果图:</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/comment-mail-style评论邮件通知.jpg" alt="comment-mail-style评论邮件通知"></p>
+<hr>
+<div class="note success flat"><p>感觉还是太丑了,还是html和css的基础不太好,有时间得再好好学一学。大家有好看的模板也可以推荐给我啊😂！</p>
+</div>]]></content>
       <categories>
-        <category>生活</category>
-        <category>书评</category>
+        <category>资源</category>
+        <category>模板</category>
       </categories>
       <tags>
-        <tag>自由</tag>
-        <tag>孤独感</tag>
-        <tag>社会心理学</tag>
+        <tag>hexo</tag>
+        <tag>web技术</tag>
       </tags>
   </entry>
   <entry>
@@ -1257,6 +1234,43 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
       </tags>
   </entry>
   <entry>
+    <title>Fortran语言学习——循环</title>
+    <url>/2021/08/12/fortran-cycle/</url>
+    <content><![CDATA[<p><img src="https://file.tabirstrees.top/blogfile/logo-fortran.png" alt="logo-fortran"></p>
+<h1 id="🎉DO结构"><a href="#🎉DO结构" class="headerlink" title="🎉DO结构"></a>🎉DO结构</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210710211357.png" alt="DO结构"></p>
+<p>在我们的程序编写过程中，经常会遇到需要将一部分代码重复很多遍的情况，为了使得代码简单提高可读性，可以用循环结构来进行处理，在Fortran中最常见的循环结构就是如上图所示的DO循环.</p>
+<p>DO循环由计数器（用来决定执行循环次数的变量）的初值，终值以及增量三个部分组成（Fortran 90之后），每进行一次循环，计数器就会累加上前面设置的增量，当计数器超过终值时循环就会结束.</p>
+<p>计数器的各项设定既可以用常量也可以用变量指定.下面是使用DO循环的一个例子（计算2+4+6+8+10）</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">program</span></span> ex0602</span><br><span class="line"><span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line">    <span class="keyword">integer</span>, <span class="keyword">parameter</span> : : limit=<span class="number">10</span> <span class="comment">!计数器的上限</span></span><br><span class="line">    <span class="keyword">integer</span> counter <span class="comment">!计数器</span></span><br><span class="line">    <span class="keyword">integer</span> :: ans = <span class="number">0</span> <span class="comment">!拿来累加使用</span></span><br><span class="line">    <span class="keyword">do</span> counter=<span class="number">2</span>, limit ,<span class="number">2</span></span><br><span class="line">        ans = ans + counter</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) ans</span><br><span class="line">    <span class="keyword">stop</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>对于Fortran 77及以前版本的代码来说，没有直接使用<code>end do</code>来结束循环的说法（但是仍然有人在使用），而必须要在DO后面写清楚循环到哪一行结束.即<code>do 结束的行代码, 计数器变量初值, 终值, 增量</code>，同时在循环结束的那一行设置好行代码（通常来说这一行的代码不需要可执行的意义，正好可以用我们前一节学习的<code>continue</code>命令.）.</p>
+<p>当结构中的<strong>增量</strong>使用<strong>负数</strong>时，终值需要比初值小，并且终止条件会变成计数器的值比终值小时就会结束循环.</p>
+<p>同时，结构中初值，终值，增量等如果使用变量指定时，只会在循环开始时进行一次读取，在循环过程中改变变量的值对循环是不会产生影响的，例如：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">s=<span class="number">1</span></span><br><span class="line">e=<span class="number">10</span></span><br><span class="line">inc=<span class="number">1</span></span><br><span class="line"><span class="keyword">do</span> i=s, e, inc</span><br><span class="line">    s=<span class="number">5</span></span><br><span class="line">    e=<span class="number">1</span></span><br><span class="line">    inc=-<span class="number">1</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) i</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
+<h1 id="🎉DO-WHILE-结构"><a href="#🎉DO-WHILE-结构" class="headerlink" title="🎉DO WHILE 结构"></a>🎉DO WHILE 结构</h1><p>某些时候我们会遇到更加复杂的情况，循环变量的增加可能不是线性的，或者需要在循环过程中根据情况特别指定增加方式，这个时候我们可以使用一个逻辑判断来进行循环的指定（当该判断的逻辑值为1时则循环，逻辑值为0时停止循环，即直到不满足条件为止一直循环下去）：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> whilw (逻辑运算) <span class="comment">! 逻辑运算成立时,会一直重复执行该循环</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">! 结束循环的命令</span></span><br></pre></td></tr></table></figure>
+<p>相对于<code>DO</code>结构的循环而言,该结构最大的优势就是可以在循环过程中改变循环变量的值,这样就适应了更加复杂的情况.</p>
+<h1 id="🎊循环的流程控制"><a href="#🎊循环的流程控制" class="headerlink" title="🎊循环的流程控制"></a>🎊循环的流程控制</h1><p>主要是介绍两个与循环有关的命令:<code>CYCLE</code>,<code>EXIT</code>,类似于Python中的<code>continue</code>以及<code>break</code>.</p>
+<h2 id="🎨CYCLE"><a href="#🎨CYCLE" class="headerlink" title="🎨CYCLE"></a>🎨CYCLE</h2><p><code>CYCLE</code>命令可以直接跳过循环的某一个部分,也就是说<code>CYCLE</code>后面的代码将会不被执行而直接跳入到下一个循环中.比如:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="built_in">floor</span>=<span class="number">1</span>,<span class="number">9</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">floor</span> = <span class="number">4</span>) <span class="keyword">cycle</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="built_in">floor</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
+<p>执行结构将会列出从1到9的数字(除了4以外),因为当<strong>floor=4</strong>时被<code>cycle</code>语句跳过执行<code>write(*,*) floor</code>.</p>
+<h2 id="🎨EXIT"><a href="#🎨EXIT" class="headerlink" title="🎨EXIT"></a>🎨EXIT</h2><p>使用<code>EXIT</code>命令将跳出整个循环,也就是说当出现<code>EXIT</code>后循环将不再执行,通常出现在你并不知道需要执行多少次循环,于是设置为永久循环的情况:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="keyword">while</span>( .true. ) <span class="comment">! 如果没有exit命令程序将永远执行下去</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="string">&#x27;weight:&#x27;</span></span><br><span class="line">    read(*,*) guess</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">abs</span>(guess-weight) &lt; error ) <span class="keyword">exit</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">!前面已经预先声明好了以上出现的三个变量.</span></span><br></pre></td></tr></table></figure>
+<p>以上,当<code>guess</code>与<code>weight</code>的值相差在误差范围内时,循环结束.</p>
+<hr>
+<div class="note success flat"><p>在Fortran中还可以为循环署名,这样可以明确最后的<code>end do</code>命令是对哪一个循环执行的:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">outter: <span class="keyword">do</span> i=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为outter</span></span><br><span class="line">    inner: <span class="keyword">do</span> j=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为inner</span></span><br><span class="line">        <span class="built_in">write</span>(*,<span class="string">&quot;(&#x27;(&#x27;,i2,&#x27;,&#x27;,i2,&#x27;)&#x27;)&quot;</span>) i,j</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span> inner <span class="comment">! 结束内循环inner</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> outter <span class="comment">! 结束外循环outter</span></span><br></pre></td></tr></table></figure></p>
+</div>]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>编程</category>
+        <category>Fortran</category>
+      </categories>
+      <tags>
+        <tag>Fortran</tag>
+        <tag>编程</tag>
+        <tag>循环语法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Fortran语言学习——数组</title>
     <url>/2021/09/03/fortran-array/</url>
     <content><![CDATA[<h1 id="1-基本使用🎃"><a href="#1-基本使用🎃" class="headerlink" title="1 基本使用🎃"></a>1 基本使用🎃</h1><h2 id="1-1-一维数组"><a href="#1-1-一维数组" class="headerlink" title="1.1 一维数组"></a>1.1 一维数组</h2><p>所谓数组，实际上是一种使用数据类型的方法，通常用于配合循环使用用以处理大量的数据。简单来说，数组可以一次性申明出一长串的相同数据类型的变量。</p>
@@ -1381,45 +1395,8 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
         <category>Fortran</category>
       </categories>
       <tags>
-        <tag>编程</tag>
         <tag>Fortran</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Fortran语言学习——循环</title>
-    <url>/2021/08/12/fortran-cycle/</url>
-    <content><![CDATA[<p><img src="https://file.tabirstrees.top/blogfile/logo-fortran.png" alt="logo-fortran"></p>
-<h1 id="🎉DO结构"><a href="#🎉DO结构" class="headerlink" title="🎉DO结构"></a>🎉DO结构</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210710211357.png" alt="DO结构"></p>
-<p>在我们的程序编写过程中，经常会遇到需要将一部分代码重复很多遍的情况，为了使得代码简单提高可读性，可以用循环结构来进行处理，在Fortran中最常见的循环结构就是如上图所示的DO循环.</p>
-<p>DO循环由计数器（用来决定执行循环次数的变量）的初值，终值以及增量三个部分组成（Fortran 90之后），每进行一次循环，计数器就会累加上前面设置的增量，当计数器超过终值时循环就会结束.</p>
-<p>计数器的各项设定既可以用常量也可以用变量指定.下面是使用DO循环的一个例子（计算2+4+6+8+10）</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">program</span></span> ex0602</span><br><span class="line"><span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line">    <span class="keyword">integer</span>, <span class="keyword">parameter</span> : : limit=<span class="number">10</span> <span class="comment">!计数器的上限</span></span><br><span class="line">    <span class="keyword">integer</span> counter <span class="comment">!计数器</span></span><br><span class="line">    <span class="keyword">integer</span> :: ans = <span class="number">0</span> <span class="comment">!拿来累加使用</span></span><br><span class="line">    <span class="keyword">do</span> counter=<span class="number">2</span>, limit ,<span class="number">2</span></span><br><span class="line">        ans = ans + counter</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) ans</span><br><span class="line">    <span class="keyword">stop</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>对于Fortran 77及以前版本的代码来说，没有直接使用<code>end do</code>来结束循环的说法（但是仍然有人在使用），而必须要在DO后面写清楚循环到哪一行结束.即<code>do 结束的行代码, 计数器变量初值, 终值, 增量</code>，同时在循环结束的那一行设置好行代码（通常来说这一行的代码不需要可执行的意义，正好可以用我们前一节学习的<code>continue</code>命令.）.</p>
-<p>当结构中的<strong>增量</strong>使用<strong>负数</strong>时，终值需要比初值小，并且终止条件会变成计数器的值比终值小时就会结束循环.</p>
-<p>同时，结构中初值，终值，增量等如果使用变量指定时，只会在循环开始时进行一次读取，在循环过程中改变变量的值对循环是不会产生影响的，例如：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">s=<span class="number">1</span></span><br><span class="line">e=<span class="number">10</span></span><br><span class="line">inc=<span class="number">1</span></span><br><span class="line"><span class="keyword">do</span> i=s, e, inc</span><br><span class="line">    s=<span class="number">5</span></span><br><span class="line">    e=<span class="number">1</span></span><br><span class="line">    inc=-<span class="number">1</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) i</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
-<h1 id="🎉DO-WHILE-结构"><a href="#🎉DO-WHILE-结构" class="headerlink" title="🎉DO WHILE 结构"></a>🎉DO WHILE 结构</h1><p>某些时候我们会遇到更加复杂的情况，循环变量的增加可能不是线性的，或者需要在循环过程中根据情况特别指定增加方式，这个时候我们可以使用一个逻辑判断来进行循环的指定（当该判断的逻辑值为1时则循环，逻辑值为0时停止循环，即直到不满足条件为止一直循环下去）：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> whilw (逻辑运算) <span class="comment">! 逻辑运算成立时,会一直重复执行该循环</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">! 结束循环的命令</span></span><br></pre></td></tr></table></figure>
-<p>相对于<code>DO</code>结构的循环而言,该结构最大的优势就是可以在循环过程中改变循环变量的值,这样就适应了更加复杂的情况.</p>
-<h1 id="🎊循环的流程控制"><a href="#🎊循环的流程控制" class="headerlink" title="🎊循环的流程控制"></a>🎊循环的流程控制</h1><p>主要是介绍两个与循环有关的命令:<code>CYCLE</code>,<code>EXIT</code>,类似于Python中的<code>continue</code>以及<code>break</code>.</p>
-<h2 id="🎨CYCLE"><a href="#🎨CYCLE" class="headerlink" title="🎨CYCLE"></a>🎨CYCLE</h2><p><code>CYCLE</code>命令可以直接跳过循环的某一个部分,也就是说<code>CYCLE</code>后面的代码将会不被执行而直接跳入到下一个循环中.比如:</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="built_in">floor</span>=<span class="number">1</span>,<span class="number">9</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">floor</span> = <span class="number">4</span>) <span class="keyword">cycle</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="built_in">floor</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span></span><br></pre></td></tr></table></figure>
-<p>执行结构将会列出从1到9的数字(除了4以外),因为当<strong>floor=4</strong>时被<code>cycle</code>语句跳过执行<code>write(*,*) floor</code>.</p>
-<h2 id="🎨EXIT"><a href="#🎨EXIT" class="headerlink" title="🎨EXIT"></a>🎨EXIT</h2><p>使用<code>EXIT</code>命令将跳出整个循环,也就是说当出现<code>EXIT</code>后循环将不再执行,通常出现在你并不知道需要执行多少次循环,于是设置为永久循环的情况:</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="keyword">while</span>( .true. ) <span class="comment">! 如果没有exit命令程序将永远执行下去</span></span><br><span class="line">    <span class="built_in">write</span>(*,*) <span class="string">&#x27;weight:&#x27;</span></span><br><span class="line">    read(*,*) guess</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">abs</span>(guess-weight) &lt; error ) <span class="keyword">exit</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> <span class="comment">!前面已经预先声明好了以上出现的三个变量.</span></span><br></pre></td></tr></table></figure>
-<p>以上,当<code>guess</code>与<code>weight</code>的值相差在误差范围内时,循环结束.</p>
-<hr>
-<div class="note success flat"><p>在Fortran中还可以为循环署名,这样可以明确最后的<code>end do</code>命令是对哪一个循环执行的:<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">outter: <span class="keyword">do</span> i=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为outter</span></span><br><span class="line">    inner: <span class="keyword">do</span> j=<span class="number">1</span>,<span class="number">3</span> <span class="comment">! 该循环署名为inner</span></span><br><span class="line">        <span class="built_in">write</span>(*,<span class="string">&quot;(&#x27;(&#x27;,i2,&#x27;,&#x27;,i2,&#x27;)&#x27;)&quot;</span>) i,j</span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">do</span> inner <span class="comment">! 结束内循环inner</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">do</span> outter <span class="comment">! 结束外循环outter</span></span><br></pre></td></tr></table></figure></p>
-</div>]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>编程</category>
-        <category>Fortran</category>
-      </categories>
-      <tags>
         <tag>编程</tag>
-        <tag>Fortran</tag>
-        <tag>循环语法</tag>
       </tags>
   </entry>
   <entry>
@@ -1559,8 +1536,112 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
         <category>Fortran</category>
       </categories>
       <tags>
-        <tag>编程</tag>
         <tag>Fortran</tag>
+        <tag>编程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Fortran语言学习——流程控制与逻辑运算</title>
+    <url>/2021/07/07/fortran-logic-compute/</url>
+    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210707235432.png" alt="Fortran"></p>
+<div class="note primary flat"><p>我们假设大家都有一定的编程基础，至少知道编程过程中流程控制是什么意思（<span class="heimu">其实也没啥意思，就是条件语句之类的</span>）。另外把实际的例子的代码省去，这样更加精简的作为字典或者文档查询更加方便。</p>
+</div>
+<h1 id="1-IF语句"><a href="#1-IF语句" class="headerlink" title="1.IF语句"></a>1.IF语句</h1><p>首先第一个我们需要接触的就是if条件语句，在Fortran语言中一般这样写：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (逻辑判断式) <span class="keyword">then</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><br>举个书上的例子，我们写一个速度超过一百就会发出警报的简单程序：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(speed&gt;<span class="number">100</span>)<span class="keyword">then</span></span><br><span class="line">    <span class="comment">! speed &gt; 100时才会执行下面的语句</span></span><br><span class="line">    <span class="built_in">write</span>(*,*)<span class="string">&quot;Slow down.&quot;</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"><span class="keyword">stop</span></span><br></pre></td></tr></table></figure><br>注意该程序知识一部分而已，前面变量的申明还是要照样做的。另外除此之外还可以简写成如下的形式：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (speed&gt;<span class="number">100</span>) <span class="built_in">write</span>(*,*) <span class="string">&quot;Slow down.&quot;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h2><p>除此之外呢，我们可能还需要设置不满足条件时应该执行的语句，或者是有其他很多种情况的分支，这个时候就需要这么写：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (条件<span class="number">1</span>) <span class="keyword">then</span> <span class="comment">! 情况1</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (条件<span class="number">2</span>) <span class="keyword">then</span> <span class="comment">! 情况2</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (条件<span class="number">3</span>) <span class="keyword">then</span> <span class="comment">! 情况3</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">...</span><br><span class="line"><span class="keyword">else</span> <span class="comment">! 以上情况都不满足的情况</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br></pre></td></tr></table></figure>
+<h2 id="逻辑判断符号以及集合判断符号"><a href="#逻辑判断符号以及集合判断符号" class="headerlink" title="逻辑判断符号以及集合判断符号"></a>逻辑判断符号以及集合判断符号</h2><p>另外补充以下在Fortran中表示逻辑判断以及集合判断的方式:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">表示含义 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"> <code>==</code></td>
+<td style="text-align:center">相等 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>/=</code></td>
+<td style="text-align:center">不等于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&gt;</code></td>
+<td style="text-align:center">大于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&gt;=</code></td>
+<td style="text-align:center">大于等于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&lt;</code></td>
+<td style="text-align:center">小于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>&lt;=</code></td>
+<td style="text-align:center">小于等于 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.and.</code></td>
+<td style="text-align:center">交集 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.or.</code></td>
+<td style="text-align:center">并集 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.not.</code></td>
+<td style="text-align:center">不成立 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.eqv.</code></td>
+<td style="text-align:center">逻辑运算相等 </td>
+</tr>
+<tr>
+<td style="text-align:center"> <code>.neqv.</code></td>
+<td style="text-align:center">逻辑运算不相等 </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以上，逻辑判断的运算等级高于集合运算的等级，同时出现时先执行逻辑判断（大于小于等于之类的）的语句。</p>
+<h2 id="嵌套使用"><a href="#嵌套使用" class="headerlink" title="嵌套使用"></a>嵌套使用</h2><p>当存在if语句的嵌套使用时，可以这样：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第一层</span></span><br><span class="line">	<span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第二层</span></span><br><span class="line">		<span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第三层主条件</span></span><br><span class="line">			...</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第三层次条件</span></span><br><span class="line">			...</span><br><span class="line">		<span class="keyword">else</span> <span class="comment">! 第三层其余情况</span></span><br><span class="line">			...</span><br><span class="line">		<span class="keyword">end</span> <span class="keyword">if</span> <span class="comment">! 第三层结束</span></span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">if</span> <span class="comment">! 第二层结束</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span> <span class="comment">! 第一层结束</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-浮点数以及字符的逻辑运算"><a href="#2-浮点数以及字符的逻辑运算" class="headerlink" title="2.浮点数以及字符的逻辑运算"></a>2.浮点数以及字符的逻辑运算</h1><h2 id="浮点数的逻辑判断"><a href="#浮点数的逻辑判断" class="headerlink" title="浮点数的逻辑判断"></a>浮点数的逻辑判断</h2><p>我们知道，由于计算机运行方式以及内存情况的限制，当我们进行浮点数之间的计算时通常是带有误差的，比如：$a=\sqrt{b}^2-b = 0$在实际的运算过程中可能会出现$a$不等于0的情况，这是因为计算机在计算浮点数时的有效位数的问题造成的。举个例子，$\sqrt{3}$在计算时只能采用有限的位数来保存，这个时候就会出现误差，再将这个存在误差的数字作幂次运算，等到的结果必然不会是3，而是一个接近3的数字。</p>
+<p>如果我们需要对类似这样的情况作出判断，（判断$\sqrt{b}^2-b$是否等于0），就需要对我们的结果预留出一些误差的空间。这样，我们可以把上面的过程写成如下的形式：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">program</span></span> example</span><br><span class="line"><span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line">	<span class="keyword">real</span> :: b = <span class="number">4.0</span></span><br><span class="line">	<span class="keyword">real</span> :: a</span><br><span class="line">	<span class="keyword">real</span>, <span class="keyword">parameter</span> :: e = <span class="number">0.0001</span> <span class="comment">! 表示误差的范围</span></span><br><span class="line">	a = <span class="built_in">sqrt</span>(b)**<span class="number">2</span>-b</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">abs</span>(a-<span class="number">0.0</span>) &lt;= e) <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">write</span>(*,*) <span class="string">&quot;a等于0！&quot;</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">write</span>(*,*) <span class="string">&quot;a不等于0！&quot;</span></span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">stop</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="字符的逻辑判断"><a href="#字符的逻辑判断" class="headerlink" title="字符的逻辑判断"></a>字符的逻辑判断</h2><p>和Python一样，字符甚至字符串之间也是可以用来做逻辑判断的，这实际上使用的字符转换成ASCII码之后的数值进行的逻辑判断。比如说判断<code>&#39;A&#39; &lt; &#39;a&#39;</code>为<code>true</code>是因为a的ASCII码为97，A的ASCII码为65。</p>
+<p>需要注意的是，当字符串作比较时，实际上比较的是第一个字符的ASCII码，如果第一个字符相同就比较第二个字符，依此类推。</p>
+<h1 id="SELECT-CASE语句"><a href="#SELECT-CASE语句" class="headerlink" title="SELECT CASE语句"></a>SELECT CASE语句</h1><p>实际上，在我们需要使用多重判断时，有一种可以代替<code>IF ... ELSE IF ...</code>的语句，那就是SELECT　CASE语句，下面是该语句的用法：</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">case</span>(变量) <span class="comment">!　这里的变量是指需要进行判断的变量</span></span><br><span class="line"><span class="keyword">case</span> (数值<span class="number">1</span>)</span><br><span class="line">...... <span class="comment">! 当变量的数值等于数值1时，就执行该语句</span></span><br><span class="line"><span class="keyword">case</span> (数值<span class="number">2</span>)</span><br><span class="line">...... <span class="comment">! 变量等于数值2时，执行该语句</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">default</span></span><br><span class="line">...... <span class="comment">! 默认情况下，即变量不等于任何数值时，执行该语句</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">select</span></span><br></pre></td></tr></table></figure>
+<p><code>slecet default</code>模块不是必要的，在<code>case</code>里面的数值设置可以设置成范围，即类似<code>2：5</code>表示2~5的数值范围，同时也支持类似<code>1，3，5</code>表示变量值等于三者中的任何一个时都会执行其所属的语句。</p>
+<p>值得注意的是，使用<code>select case</code>语句会有一些限制：</p>
+<ol>
+<li>只能使用整数、字符、以及逻辑变量类型的变量，对于浮点数和复数就只能用<code>if ... else if</code>的结构；</li>
+<li>每一个case中所使用的数值必须是固定的常量，而不能是变量。</li>
+</ol>
+<h1 id="其他控制流程"><a href="#其他控制流程" class="headerlink" title="其他控制流程"></a>其他控制流程</h1><h2 id="GOTO命令"><a href="#GOTO命令" class="headerlink" title="GOTO命令"></a>GOTO命令</h2><p>实际上，GOTO语法是Fortran 77时代；留下来的“旧时代”的语法，一般不建议使用，因为它会破坏代码的结构，导致代码的阅读变得比较困难，但是某些上世纪写的程序中还会留有这样的结构，所以仍然需要了解。</p>
+<p>在Fortran语言中，可以给每一行代码赋予一个特定的编号，利用GOTO命令就可以提供给程序员一个可以使程序任意跳跃到所赋值编号的那一行程序所在位置来执行的能力。</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">	  <span class="function"><span class="keyword">PROGRAM</span></span> ex0514</span><br><span class="line">	  <span class="keyword">IMPLICIT</span> <span class="keyword">NONE</span></span><br><span class="line">	  <span class="keyword">REAL</span> height <span class="comment">! 记录身高</span></span><br><span class="line">	  <span class="keyword">REAL</span> weight <span class="comment">! 记录体重</span></span><br><span class="line"></span><br><span class="line">	  <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;height:&quot;</span></span><br><span class="line">	  READ (*,*)	height <span class="comment">! 读入身高</span></span><br><span class="line">	  <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;weight:&quot;</span></span><br><span class="line">	  READ (*,*)	weight <span class="comment">! 读入体重</span></span><br><span class="line"></span><br><span class="line">	  <span class="keyword">IF</span> ( weight &gt; height-<span class="number">100</span> ) <span class="keyword">GOTO</span> <span class="number">200</span></span><br><span class="line">	  <span class="comment">! 上面不成立，没有跳到200才会执行这里</span></span><br><span class="line"><span class="number">100</span>   <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;Under control.&quot;</span></span><br><span class="line">	  <span class="keyword">GOTO</span> <span class="number">300</span> <span class="comment">! 下一行不能执行所以要跳到300 .</span></span><br><span class="line"><span class="number">200</span>	  <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;Too fat!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="number">300</span>   <span class="keyword">STOP</span></span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+<p>如果GOTO结构可以用得比较巧妙，这样的话可以利用<code>IF</code>+<code>GOTO</code>结构来写一个类似循环的过程，或者利用类似<code>GOTO(10,20,30) a</code>（其中a表示变量，用以指代前面括号中的列表的序列切片，即1表示10，2表示20，3表示30）的结构进行有选择的跳转。<span class = "heimu">看不懂也没关系，反正就是不建议使用就对了</span></p>
+<div class="note danger flat"><p>最后再强调一遍，虽然GOTO结构看起来很强大，但是并不建议使用，因为这会使得代码的结构混乱，不便于阅读和维护。</p>
+</div>
+<h2 id="PAUSE-CONTINUE-STOP"><a href="#PAUSE-CONTINUE-STOP" class="headerlink" title="PAUSE, CONTINUE, STOP"></a>PAUSE, CONTINUE, STOP</h2><p>PAUSE 暂停，表示程序执行到该代码之后会暂停，知道用户按下Enter键之后程序才会继续执行。可以应用到程序需要做很多页的输出时，在每一页设置暂停，直到用户看完每一页的内容之后再按Enter键进行翻页。</p>
+<p>CONTINUE 继续，没什么用，Fortran 90之后就不怎么使用了，基本上可以不管，因为它没有什么实际意义，只是为了方便阅读而已。</p>
+<p>STOP 停止，很明显，执行完该代码程序就停止了，可以用来作为程序得到不合理的输入时将程序终止。</p>
+<hr>
+<p>研究生通知书到了，趁这里没人，独自高兴一波hahaha！<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1625667151163.jpg" alt="1625667151163"></p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>编程</category>
+        <category>Fortran</category>
+      </categories>
+      <tags>
+        <tag>Fortran</tag>
+        <tag>编程</tag>
       </tags>
   </entry>
   <entry>
@@ -1683,113 +1764,9 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
         <category>Fortran</category>
       </categories>
       <tags>
-        <tag>编程</tag>
         <tag>Fortran</tag>
+        <tag>编程</tag>
         <tag>函数语法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Fortran语言学习——流程控制与逻辑运算</title>
-    <url>/2021/07/07/fortran-logic-compute/</url>
-    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20210707235432.png" alt="Fortran"></p>
-<div class="note primary flat"><p>我们假设大家都有一定的编程基础，至少知道编程过程中流程控制是什么意思（<span class="heimu">其实也没啥意思，就是条件语句之类的</span>）。另外把实际的例子的代码省去，这样更加精简的作为字典或者文档查询更加方便。</p>
-</div>
-<h1 id="1-IF语句"><a href="#1-IF语句" class="headerlink" title="1.IF语句"></a>1.IF语句</h1><p>首先第一个我们需要接触的就是if条件语句，在Fortran语言中一般这样写：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (逻辑判断式) <span class="keyword">then</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><br>举个书上的例子，我们写一个速度超过一百就会发出警报的简单程序：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(speed&gt;<span class="number">100</span>)<span class="keyword">then</span></span><br><span class="line">    <span class="comment">! speed &gt; 100时才会执行下面的语句</span></span><br><span class="line">    <span class="built_in">write</span>(*,*)<span class="string">&quot;Slow down.&quot;</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"><span class="keyword">stop</span></span><br></pre></td></tr></table></figure><br>注意该程序知识一部分而已，前面变量的申明还是要照样做的。另外除此之外还可以简写成如下的形式：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (speed&gt;<span class="number">100</span>) <span class="built_in">write</span>(*,*) <span class="string">&quot;Slow down.&quot;</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h2><p>除此之外呢，我们可能还需要设置不满足条件时应该执行的语句，或者是有其他很多种情况的分支，这个时候就需要这么写：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (条件<span class="number">1</span>) <span class="keyword">then</span> <span class="comment">! 情况1</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (条件<span class="number">2</span>) <span class="keyword">then</span> <span class="comment">! 情况2</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (条件<span class="number">3</span>) <span class="keyword">then</span> <span class="comment">! 情况3</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">...</span><br><span class="line"><span class="keyword">else</span> <span class="comment">! 以上情况都不满足的情况</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br></pre></td></tr></table></figure>
-<h2 id="逻辑判断符号以及集合判断符号"><a href="#逻辑判断符号以及集合判断符号" class="headerlink" title="逻辑判断符号以及集合判断符号"></a>逻辑判断符号以及集合判断符号</h2><p>另外补充以下在Fortran中表示逻辑判断以及集合判断的方式:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">代码</th>
-<th style="text-align:center">表示含义 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"> <code>==</code></td>
-<td style="text-align:center">相等 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>/=</code></td>
-<td style="text-align:center">不等于 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>&gt;</code></td>
-<td style="text-align:center">大于 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>&gt;=</code></td>
-<td style="text-align:center">大于等于 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>&lt;</code></td>
-<td style="text-align:center">小于 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>&lt;=</code></td>
-<td style="text-align:center">小于等于 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>.and.</code></td>
-<td style="text-align:center">交集 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>.or.</code></td>
-<td style="text-align:center">并集 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>.not.</code></td>
-<td style="text-align:center">不成立 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>.eqv.</code></td>
-<td style="text-align:center">逻辑运算相等 </td>
-</tr>
-<tr>
-<td style="text-align:center"> <code>.neqv.</code></td>
-<td style="text-align:center">逻辑运算不相等 </td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>以上，逻辑判断的运算等级高于集合运算的等级，同时出现时先执行逻辑判断（大于小于等于之类的）的语句。</p>
-<h2 id="嵌套使用"><a href="#嵌套使用" class="headerlink" title="嵌套使用"></a>嵌套使用</h2><p>当存在if语句的嵌套使用时，可以这样：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第一层</span></span><br><span class="line">	<span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第二层</span></span><br><span class="line">		<span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第三层主条件</span></span><br><span class="line">			...</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (...) <span class="keyword">then</span> <span class="comment">! 第三层次条件</span></span><br><span class="line">			...</span><br><span class="line">		<span class="keyword">else</span> <span class="comment">! 第三层其余情况</span></span><br><span class="line">			...</span><br><span class="line">		<span class="keyword">end</span> <span class="keyword">if</span> <span class="comment">! 第三层结束</span></span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">if</span> <span class="comment">! 第二层结束</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span> <span class="comment">! 第一层结束</span></span><br></pre></td></tr></table></figure>
-<h1 id="2-浮点数以及字符的逻辑运算"><a href="#2-浮点数以及字符的逻辑运算" class="headerlink" title="2.浮点数以及字符的逻辑运算"></a>2.浮点数以及字符的逻辑运算</h1><h2 id="浮点数的逻辑判断"><a href="#浮点数的逻辑判断" class="headerlink" title="浮点数的逻辑判断"></a>浮点数的逻辑判断</h2><p>我们知道，由于计算机运行方式以及内存情况的限制，当我们进行浮点数之间的计算时通常是带有误差的，比如：$a=\sqrt{b}^2-b = 0$在实际的运算过程中可能会出现$a$不等于0的情况，这是因为计算机在计算浮点数时的有效位数的问题造成的。举个例子，$\sqrt{3}$在计算时只能采用有限的位数来保存，这个时候就会出现误差，再将这个存在误差的数字作幂次运算，等到的结果必然不会是3，而是一个接近3的数字。</p>
-<p>如果我们需要对类似这样的情况作出判断，（判断$\sqrt{b}^2-b$是否等于0），就需要对我们的结果预留出一些误差的空间。这样，我们可以把上面的过程写成如下的形式：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">program</span></span> example</span><br><span class="line"><span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line">	<span class="keyword">real</span> :: b = <span class="number">4.0</span></span><br><span class="line">	<span class="keyword">real</span> :: a</span><br><span class="line">	<span class="keyword">real</span>, <span class="keyword">parameter</span> :: e = <span class="number">0.0001</span> <span class="comment">! 表示误差的范围</span></span><br><span class="line">	a = <span class="built_in">sqrt</span>(b)**<span class="number">2</span>-b</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">abs</span>(a-<span class="number">0.0</span>) &lt;= e) <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">write</span>(*,*) <span class="string">&quot;a等于0！&quot;</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">write</span>(*,*) <span class="string">&quot;a不等于0！&quot;</span></span><br><span class="line">	<span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">stop</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<h2 id="字符的逻辑判断"><a href="#字符的逻辑判断" class="headerlink" title="字符的逻辑判断"></a>字符的逻辑判断</h2><p>和Python一样，字符甚至字符串之间也是可以用来做逻辑判断的，这实际上使用的字符转换成ASCII码之后的数值进行的逻辑判断。比如说判断<code>&#39;A&#39; &lt; &#39;a&#39;</code>为<code>true</code>是因为a的ASCII码为97，A的ASCII码为65。</p>
-<p>需要注意的是，当字符串作比较时，实际上比较的是第一个字符的ASCII码，如果第一个字符相同就比较第二个字符，依此类推。</p>
-<h1 id="SELECT-CASE语句"><a href="#SELECT-CASE语句" class="headerlink" title="SELECT CASE语句"></a>SELECT CASE语句</h1><p>实际上，在我们需要使用多重判断时，有一种可以代替<code>IF ... ELSE IF ...</code>的语句，那就是SELECT　CASE语句，下面是该语句的用法：</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">case</span>(变量) <span class="comment">!　这里的变量是指需要进行判断的变量</span></span><br><span class="line"><span class="keyword">case</span> (数值<span class="number">1</span>)</span><br><span class="line">...... <span class="comment">! 当变量的数值等于数值1时，就执行该语句</span></span><br><span class="line"><span class="keyword">case</span> (数值<span class="number">2</span>)</span><br><span class="line">...... <span class="comment">! 变量等于数值2时，执行该语句</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">default</span></span><br><span class="line">...... <span class="comment">! 默认情况下，即变量不等于任何数值时，执行该语句</span></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">select</span></span><br></pre></td></tr></table></figure>
-<p><code>slecet default</code>模块不是必要的，在<code>case</code>里面的数值设置可以设置成范围，即类似<code>2：5</code>表示2~5的数值范围，同时也支持类似<code>1，3，5</code>表示变量值等于三者中的任何一个时都会执行其所属的语句。</p>
-<p>值得注意的是，使用<code>select case</code>语句会有一些限制：</p>
-<ol>
-<li>只能使用整数、字符、以及逻辑变量类型的变量，对于浮点数和复数就只能用<code>if ... else if</code>的结构；</li>
-<li>每一个case中所使用的数值必须是固定的常量，而不能是变量。</li>
-</ol>
-<h1 id="其他控制流程"><a href="#其他控制流程" class="headerlink" title="其他控制流程"></a>其他控制流程</h1><h2 id="GOTO命令"><a href="#GOTO命令" class="headerlink" title="GOTO命令"></a>GOTO命令</h2><p>实际上，GOTO语法是Fortran 77时代；留下来的“旧时代”的语法，一般不建议使用，因为它会破坏代码的结构，导致代码的阅读变得比较困难，但是某些上世纪写的程序中还会留有这样的结构，所以仍然需要了解。</p>
-<p>在Fortran语言中，可以给每一行代码赋予一个特定的编号，利用GOTO命令就可以提供给程序员一个可以使程序任意跳跃到所赋值编号的那一行程序所在位置来执行的能力。</p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">	  <span class="function"><span class="keyword">PROGRAM</span></span> ex0514</span><br><span class="line">	  <span class="keyword">IMPLICIT</span> <span class="keyword">NONE</span></span><br><span class="line">	  <span class="keyword">REAL</span> height <span class="comment">! 记录身高</span></span><br><span class="line">	  <span class="keyword">REAL</span> weight <span class="comment">! 记录体重</span></span><br><span class="line"></span><br><span class="line">	  <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;height:&quot;</span></span><br><span class="line">	  READ (*,*)	height <span class="comment">! 读入身高</span></span><br><span class="line">	  <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;weight:&quot;</span></span><br><span class="line">	  READ (*,*)	weight <span class="comment">! 读入体重</span></span><br><span class="line"></span><br><span class="line">	  <span class="keyword">IF</span> ( weight &gt; height-<span class="number">100</span> ) <span class="keyword">GOTO</span> <span class="number">200</span></span><br><span class="line">	  <span class="comment">! 上面不成立，没有跳到200才会执行这里</span></span><br><span class="line"><span class="number">100</span>   <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;Under control.&quot;</span></span><br><span class="line">	  <span class="keyword">GOTO</span> <span class="number">300</span> <span class="comment">! 下一行不能执行所以要跳到300 .</span></span><br><span class="line"><span class="number">200</span>	  <span class="built_in">WRITE</span>(*,*) <span class="string">&quot;Too fat!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="number">300</span>   <span class="keyword">STOP</span></span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
-<p>如果GOTO结构可以用得比较巧妙，这样的话可以利用<code>IF</code>+<code>GOTO</code>结构来写一个类似循环的过程，或者利用类似<code>GOTO(10,20,30) a</code>（其中a表示变量，用以指代前面括号中的列表的序列切片，即1表示10，2表示20，3表示30）的结构进行有选择的跳转。<span class = "heimu">看不懂也没关系，反正就是不建议使用就对了</span></p>
-<div class="note danger flat"><p>最后再强调一遍，虽然GOTO结构看起来很强大，但是并不建议使用，因为这会使得代码的结构混乱，不便于阅读和维护。</p>
-</div>
-<h2 id="PAUSE-CONTINUE-STOP"><a href="#PAUSE-CONTINUE-STOP" class="headerlink" title="PAUSE, CONTINUE, STOP"></a>PAUSE, CONTINUE, STOP</h2><p>PAUSE 暂停，表示程序执行到该代码之后会暂停，知道用户按下Enter键之后程序才会继续执行。可以应用到程序需要做很多页的输出时，在每一页设置暂停，直到用户看完每一页的内容之后再按Enter键进行翻页。</p>
-<p>CONTINUE 继续，没什么用，Fortran 90之后就不怎么使用了，基本上可以不管，因为它没有什么实际意义，只是为了方便阅读而已。</p>
-<p>STOP 停止，很明显，执行完该代码程序就停止了，可以用来作为程序得到不合理的输入时将程序终止。</p>
-<hr>
-<p>研究生通知书到了，趁这里没人，独自高兴一波hahaha！<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1625667151163.jpg" alt="1625667151163"></p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>编程</category>
-        <category>Fortran</category>
-      </categories>
-      <tags>
-        <tag>编程</tag>
-        <tag>Fortran</tag>
       </tags>
   </entry>
   <entry>
@@ -2900,39 +2877,6 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
       </tags>
   </entry>
   <entry>
-    <title>hexo+fluid主题添加二级导航</title>
-    <url>/2020/05/14/hexo-fluid%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E4%BA%8C%E7%BA%A7%E5%AF%BC%E8%88%AA/</url>
-    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/6418A1E7501871AF561B89A22AB13D3F.png" alt="6418A1E7501871AF561B89A22AB13D3F"></p>
-<hr>
-<div class="note info flat"><p>使用hexo博客的fluid主题已经有一段时间了，因为打算写的内容很杂，所从很早开始就想要做一个二级导航出来，这段时间一直在折腾这个东西！前几天给网站加上了豆瓣的📕书评和🎦电影栏目，发现这样要是以后再加点什么东西导航栏就放不下了。所以痛定思痛决定开始弄二级导航（<del>鬼知道我为了做这个东西连即将要到来的考试和难到爆炸的课程设计都不管了</del>）</p>
-</div>
-<h1 id="开始搞事情😄O-∩-∩-O"><a href="#开始搞事情😄O-∩-∩-O" class="headerlink" title="开始搞事情😄O(∩_∩)O"></a>开始搞事情😄O(∩_∩)O</h1><p>emmmmm，首先<del>其实差不多只有这一步啦</del>我们要做的就是更改文章生成的模板，fluid主题的话就打开主题目录下的<code>layout</code>文件夹中的<code>nav.ejs</code>文件，修改为如下的样式（其中注释的位置就是修改的主要位置，也是导航栏内容所在，你也可以按照自己的想法修改这个地方的内容）：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">id</span>=<span class="string">&quot;navbar&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;navbar-brand&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for() %&gt;&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>&lt;%- theme.navbar.blog_title || config.title %&gt;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;navbar-toggler-btn&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar-toggler&quot;</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;collapse&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">data-target</span>=<span class="string">&quot;#navbarSupportedContent&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">aria-controls</span>=<span class="string">&quot;navbarSupportedContent&quot;</span> <span class="attr">aria-expanded</span>=<span class="string">&quot;false&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;Toggle navigation&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;animated-icon&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Collapsible content --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;collapse navbar-collapse&quot;</span> <span class="attr">id</span>=<span class="string">&quot;navbarSupportedContent&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;navbar-nav ml-auto text-center&quot;</span>&gt;</span></span><br><span class="line">        &lt;% for(const each of theme.navbar.menu) &#123; %&gt;</span><br><span class="line">          &lt;% if (!each.link) continue %&gt;</span><br><span class="line">          &lt;% var text = each.name || __(each.key + &#x27;.title&#x27;) %&gt;</span><br><span class="line">          &lt;% if (text.indexOf(&#x27;.title&#x27;) !== -1) &#123;</span><br><span class="line">            text = each.key</span><br><span class="line">          &#125; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%= url_for(each.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">              &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + each.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">              &lt;%- text %&gt;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--以上的部分是一级导航的部分--&gt;</span></span><br><span class="line">              <span class="comment">&lt;!--这里判断有没有二级菜单，有的话遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">              &lt;% if (each.submenu) &#123; %&gt;</span><br><span class="line">                <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;sub-menu&quot;</span>&gt;</span></span><br><span class="line">                  <span class="comment">&lt;!--//遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">                  &lt;% for (const submenu of each.submenu)&#123; %&gt;</span><br><span class="line">                    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">                      <span class="comment">&lt;!--//a标签里当然是输出二级菜单的路径咯--&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for(submenu.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--//i标签里输出二级菜单的icon的class咯--&gt;</span></span><br><span class="line">                        &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + submenu.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">                        <span class="comment">&lt;!--//这里输出二级菜单名咯--&gt;</span></span><br><span class="line">                        &lt;%= submenu.key %&gt;</span><br><span class="line">                      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                  &lt;% &#125; %&gt;</span><br><span class="line">                <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">              &lt;% &#125; %&gt;</span><br><span class="line"></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">        &lt;% if(theme.search.enable) &#123; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span> <span class="attr">id</span>=<span class="string">&quot;search-btn&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;modal&quot;</span> <span class="attr">data-target</span>=<span class="string">&quot;#modalSearch&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">i</span></span></span><br><span class="line"><span class="tag">                <span class="attr">class</span>=<span class="string">&quot;iconfont icon-search&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h1 id="修改css配置，让它好看点"><a href="#修改css配置，让它好看点" class="headerlink" title="修改css配置，让它好看点"></a>修改css配置，让它好看点</h1><p>如果不修改css配置其实也是可以的，只不过很丑就对了。</p>
-<p>所以我们打开主题目录下<code>source/css/mian.styl</code>，本来应该在子项对应的部分添加，但是考虑到（<del>好吧，╮(╯-╰)╭，其实是我懒</del>）慢慢找实在是太麻烦了，所以我们直接在main文件里添加（这部分你可以先<code>hexo s</code>打开浏览器进行调试到你喜欢的样式，然后再复制相应的样式表到文件中）如下代码：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0px</span> <span class="number">8px</span> <span class="number">16px</span> <span class="number">0px</span> <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-right</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">width</span>: auto;</span><br><span class="line">    <span class="attribute">height</span>: auto;</span><br><span class="line">    <span class="attribute">box-shadow</span>: -<span class="number">6px</span> <span class="number">6px</span> <span class="number">8px</span> black;</span><br><span class="line">&#125;</span><br><span class="line">// 以上是控制二级菜单呼出的形式</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.sub-menu</span> <span class="selector-class">.li</span> &#123;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.nav-item</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line">// 控制鼠标停留在一级菜单上时呼出二级菜单</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">li</span><span class="selector-class">.nav-item</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">15px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们的基本的配置就算是完成了，接下来就是二级菜单的写法！</p>
-<h1 id="配置文件中二级菜单的写法"><a href="#配置文件中二级菜单的写法" class="headerlink" title="配置文件中二级菜单的写法"></a>配置文件中二级菜单的写法</h1><p>打开主题配置文件<code>fluid_config.yml</code>，在菜单部分以“_分类_”菜单为例我们做如下的改动<br>submenu指定二级菜单，和一级菜单类似，<strong>最后用[]括起来！！！</strong></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">navbar:</span></span><br><span class="line">  <span class="attr">blog_title:</span>  <span class="comment"># 导航栏左侧的标题，为空则按 hexo config.title 显示</span></span><br><span class="line">  <span class="attr">menu:</span>  <span class="comment"># 可自行增减，key 用来关联 languages/*.yml，如不存在关联则显示 key 本身的值；icon 是 css class，可以省略；增加 name 可以强制显示指定名称；submenu指定二级菜单，和一级菜单类似，最后用[]括起来！！！</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;home&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-home-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;archive&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/archives/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-archive-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;category&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;#&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-category-fill&#x27;</span>, <span class="attr">submenu:</span> [</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;全部&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-abc&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;生活&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/生活/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-love&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;🖊笔记&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/笔记/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-notebook&#x27;</span> &#125;</span><br><span class="line">    ]&#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;tag&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/tags/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-tags-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;about&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/about/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-user-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="comment">#- &#123; key: &#x27;links&#x27;, link: &#x27;/links/&#x27;, icon: &#x27;iconfont icon-link-fill&#x27; &#125; # 友链页，把前面#去掉即可展示</span></span><br></pre></td></tr></table></figure>
-<p>这样我们就完成了一个主题的二级导航自定义，当然这样其实还是不太好看，可以自己用css进行调整。此外，针对不同的主题配置<code>config.yml</code>的不同写法情况，其实都是大同小异的，<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">可以点我去往某个大佬的空间看看，以作参考！！！&lt;(￣︶￣)↗[GO!]</a>。</p>
-<p>以我的网站为例最终实现就是这样的效果：<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170113.png" alt="20200514170113"><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170146.png" alt="20200514170146"></p>
-<p>哈哈哈哈，我觉得还是可以的！！！😁😁😁<br><div class="note success flat"><p>参考：</p>
-<p>yaml基本语法及实现Hexo二级导航栏功能<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/</a></p>
-<p>为博客网站增加一个二级目录菜单<a href="https://sunhwee.com/posts/65d7181d.html">https://sunhwee.com/posts/65d7181d.html</a></p>
-<p>如何通过html和css完成下拉菜单的制作？<a href="https://www.zhihu.com/question/36356940">https://www.zhihu.com/question/36356940</a></p>
-<p>and so on ……</p>
-</div></p>
-]]></content>
-      <categories>
-        <category>资源</category>
-        <category>模板</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>web技术</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>非线性动力学-概论</title>
     <url>/2022/04/30/nonlineardynamics1/</url>
     <content><![CDATA[<div class="note primary flat"><p><strong>动力学</strong>——一门研究系统随时间演化的学科，它告诉我们所考虑的系统是稳定到平衡点，做重复的周期运动还是做更复杂的随机运动。<span class='heimu'>世界的规律是简单的，但世界却是复杂的。越是深入的了解我们身处的这个世界，我们就越深刻的认识到世界的复杂性，并且这些出乎意料的复杂性往往来源于我们所熟知的某些简单的规律。也许，有时候从简单到复杂之间的规律才是对我们来说至关重要的东西。</span></p>
@@ -3099,6 +3043,39 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
       </tags>
   </entry>
   <entry>
+    <title>hexo+fluid主题添加二级导航</title>
+    <url>/2020/05/14/hexo-fluid%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E4%BA%8C%E7%BA%A7%E5%AF%BC%E8%88%AA/</url>
+    <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/6418A1E7501871AF561B89A22AB13D3F.png" alt="6418A1E7501871AF561B89A22AB13D3F"></p>
+<hr>
+<div class="note info flat"><p>使用hexo博客的fluid主题已经有一段时间了，因为打算写的内容很杂，所从很早开始就想要做一个二级导航出来，这段时间一直在折腾这个东西！前几天给网站加上了豆瓣的📕书评和🎦电影栏目，发现这样要是以后再加点什么东西导航栏就放不下了。所以痛定思痛决定开始弄二级导航（<del>鬼知道我为了做这个东西连即将要到来的考试和难到爆炸的课程设计都不管了</del>）</p>
+</div>
+<h1 id="开始搞事情😄O-∩-∩-O"><a href="#开始搞事情😄O-∩-∩-O" class="headerlink" title="开始搞事情😄O(∩_∩)O"></a>开始搞事情😄O(∩_∩)O</h1><p>emmmmm，首先<del>其实差不多只有这一步啦</del>我们要做的就是更改文章生成的模板，fluid主题的话就打开主题目录下的<code>layout</code>文件夹中的<code>nav.ejs</code>文件，修改为如下的样式（其中注释的位置就是修改的主要位置，也是导航栏内容所在，你也可以按照自己的想法修改这个地方的内容）：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">id</span>=<span class="string">&quot;navbar&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;navbar-brand&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for() %&gt;&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>&lt;%- theme.navbar.blog_title || config.title %&gt;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;navbar-toggler-btn&quot;</span> <span class="attr">class</span>=<span class="string">&quot;navbar-toggler&quot;</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;collapse&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">data-target</span>=<span class="string">&quot;#navbarSupportedContent&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">aria-controls</span>=<span class="string">&quot;navbarSupportedContent&quot;</span> <span class="attr">aria-expanded</span>=<span class="string">&quot;false&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;Toggle navigation&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;animated-icon&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Collapsible content --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;collapse navbar-collapse&quot;</span> <span class="attr">id</span>=<span class="string">&quot;navbarSupportedContent&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;navbar-nav ml-auto text-center&quot;</span>&gt;</span></span><br><span class="line">        &lt;% for(const each of theme.navbar.menu) &#123; %&gt;</span><br><span class="line">          &lt;% if (!each.link) continue %&gt;</span><br><span class="line">          &lt;% var text = each.name || __(each.key + &#x27;.title&#x27;) %&gt;</span><br><span class="line">          &lt;% if (text.indexOf(&#x27;.title&#x27;) !== -1) &#123;</span><br><span class="line">            text = each.key</span><br><span class="line">          &#125; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%= url_for(each.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">              &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + each.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">              &lt;%- text %&gt;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--以上的部分是一级导航的部分--&gt;</span></span><br><span class="line">              <span class="comment">&lt;!--这里判断有没有二级菜单，有的话遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">              &lt;% if (each.submenu) &#123; %&gt;</span><br><span class="line">                <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;sub-menu&quot;</span>&gt;</span></span><br><span class="line">                  <span class="comment">&lt;!--//遍历出二级菜单（就是竖着的那部分）--&gt;</span></span><br><span class="line">                  &lt;% for (const submenu of each.submenu)&#123; %&gt;</span><br><span class="line">                    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">                      <span class="comment">&lt;!--//a标签里当然是输出二级菜单的路径咯--&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&lt;%- url_for(submenu.link) %&gt;&quot;</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--//i标签里输出二级菜单的icon的class咯--&gt;</span></span><br><span class="line">                        &lt;%- each.icon ? &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;&#x27; + submenu.icon + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27; : &#x27;&#x27; %&gt;</span><br><span class="line">                        <span class="comment">&lt;!--//这里输出二级菜单名咯--&gt;</span></span><br><span class="line">                        &lt;%= submenu.key %&gt;</span><br><span class="line">                      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                  &lt;% &#125; %&gt;</span><br><span class="line">                <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">              &lt;% &#125; %&gt;</span><br><span class="line"></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">        &lt;% if(theme.search.enable) &#123; %&gt;</span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span> <span class="attr">id</span>=<span class="string">&quot;search-btn&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">data-toggle</span>=<span class="string">&quot;modal&quot;</span> <span class="attr">data-target</span>=<span class="string">&quot;#modalSearch&quot;</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;<span class="name">i</span></span></span><br><span class="line"><span class="tag">                <span class="attr">class</span>=<span class="string">&quot;iconfont icon-search&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="修改css配置，让它好看点"><a href="#修改css配置，让它好看点" class="headerlink" title="修改css配置，让它好看点"></a>修改css配置，让它好看点</h1><p>如果不修改css配置其实也是可以的，只不过很丑就对了。</p>
+<p>所以我们打开主题目录下<code>source/css/mian.styl</code>，本来应该在子项对应的部分添加，但是考虑到（<del>好吧，╮(╯-╰)╭，其实是我懒</del>）慢慢找实在是太麻烦了，所以我们直接在main文件里添加（这部分你可以先<code>hexo s</code>打开浏览器进行调试到你喜欢的样式，然后再复制相应的样式表到文件中）如下代码：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0px</span> <span class="number">8px</span> <span class="number">16px</span> <span class="number">0px</span> <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.2</span>);</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-right</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">width</span>: auto;</span><br><span class="line">    <span class="attribute">height</span>: auto;</span><br><span class="line">    <span class="attribute">box-shadow</span>: -<span class="number">6px</span> <span class="number">6px</span> <span class="number">8px</span> black;</span><br><span class="line">&#125;</span><br><span class="line">// 以上是控制二级菜单呼出的形式</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.sub-menu</span> <span class="selector-class">.li</span> &#123;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.nav-item</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.sub-menu</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line">// 控制鼠标停留在一级菜单上时呼出二级菜单</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">li</span><span class="selector-class">.nav-item</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">15px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们的基本的配置就算是完成了，接下来就是二级菜单的写法！</p>
+<h1 id="配置文件中二级菜单的写法"><a href="#配置文件中二级菜单的写法" class="headerlink" title="配置文件中二级菜单的写法"></a>配置文件中二级菜单的写法</h1><p>打开主题配置文件<code>fluid_config.yml</code>，在菜单部分以“_分类_”菜单为例我们做如下的改动<br>submenu指定二级菜单，和一级菜单类似，<strong>最后用[]括起来！！！</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">navbar:</span></span><br><span class="line">  <span class="attr">blog_title:</span>  <span class="comment"># 导航栏左侧的标题，为空则按 hexo config.title 显示</span></span><br><span class="line">  <span class="attr">menu:</span>  <span class="comment"># 可自行增减，key 用来关联 languages/*.yml，如不存在关联则显示 key 本身的值；icon 是 css class，可以省略；增加 name 可以强制显示指定名称；submenu指定二级菜单，和一级菜单类似，最后用[]括起来！！！</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;home&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-home-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;archive&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/archives/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-archive-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;category&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;#&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-category-fill&#x27;</span>, <span class="attr">submenu:</span> [</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;全部&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-abc&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;生活&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/生活/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-love&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">key:</span> <span class="string">&#x27;🖊笔记&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/categories/笔记/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;icofont-notebook&#x27;</span> &#125;</span><br><span class="line">    ]&#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;tag&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/tags/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-tags-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">key:</span> <span class="string">&#x27;about&#x27;</span>, <span class="attr">link:</span> <span class="string">&#x27;/about/&#x27;</span>, <span class="attr">icon:</span> <span class="string">&#x27;iconfont icon-user-fill&#x27;</span> &#125;</span><br><span class="line">    <span class="comment">#- &#123; key: &#x27;links&#x27;, link: &#x27;/links/&#x27;, icon: &#x27;iconfont icon-link-fill&#x27; &#125; # 友链页，把前面#去掉即可展示</span></span><br></pre></td></tr></table></figure>
+<p>这样我们就完成了一个主题的二级导航自定义，当然这样其实还是不太好看，可以自己用css进行调整。此外，针对不同的主题配置<code>config.yml</code>的不同写法情况，其实都是大同小异的，<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">可以点我去往某个大佬的空间看看，以作参考！！！&lt;(￣︶￣)↗[GO!]</a>。</p>
+<p>以我的网站为例最终实现就是这样的效果：<br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170113.png" alt="20200514170113"><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200514170146.png" alt="20200514170146"></p>
+<p>哈哈哈哈，我觉得还是可以的！！！😁😁😁<br><div class="note success flat"><p>参考：</p>
+<p>yaml基本语法及实现Hexo二级导航栏功能<a href="https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/">https://www.hojun.cn/2019/01/08/ck8irvkwx009qdwtu8ejla2mg/</a></p>
+<p>为博客网站增加一个二级目录菜单<a href="https://sunhwee.com/posts/65d7181d.html">https://sunhwee.com/posts/65d7181d.html</a></p>
+<p>如何通过html和css完成下拉菜单的制作？<a href="https://www.zhihu.com/question/36356940">https://www.zhihu.com/question/36356940</a></p>
+<p>and so on ……</p>
+</div></p>
+]]></content>
+      <categories>
+        <category>资源</category>
+        <category>模板</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>web技术</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>A Short Introduction to Plasma Physics</title>
     <url>/2021/08/19/plasma-introduction-translate/</url>
     <content><![CDATA[<h1 id="摘要🍒"><a href="#摘要🍒" class="headerlink" title="摘要🍒"></a>摘要🍒</h1><div class="note primary flat"><p>本文包括了对等离子体现象的某些物理基础的讨论。在第二部分我们介绍了等离子体的关键特性，例如准中性、屏蔽（拜德屏蔽？）、粒子输运过程以及等离子体鞘的形成。在第三部分中我们描述了最简单的等离子体模型：从单粒子轨迹和等离子体流体动力学的基本原理推导出的集体现象（漂移）。最后讨论了均匀无界的冷等离子体的波动现象。</p>
@@ -3211,112 +3188,6 @@ b_{\mathrm{e}}=\left\langle 1 / m_{\mathrm{e}} v_{\mathrm{en}}\right\rangle=\lef
         <tag>Plasma</tag>
         <tag>物理</tag>
         <tag>文献翻译</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Latex 论文排版相关学习</title>
-    <url>/2020/08/28/texstudy/</url>
-    <content><![CDATA[<h1 id="1-一点点关于Latex的介绍"><a href="#1-一点点关于Latex的介绍" class="headerlink" title="1. 一点点关于Latex的介绍"></a>1. 一点点关于Latex的介绍</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828160435.png" alt="20200828160435"></p>
-<p>Latex是一款排版软件，诸如教材、报纸、书信等纸质印刷相关的排版都是可以做的。一般人使用Latex最多的地方是论文的写作，特别是涉及到大量公式的数学物理方面的科技论文，这方面目前有很多网上流行的模板，我们只需要在了解简单的Latex基础操作的基础上带入模板就好，所以还是非常方便的。</p>
-<blockquote>
-<p>有很多 Geeks 或者 LaTeX’s Fanatical Fans 过分地强调了 LaTeX 的一些并非重点的特性，以至于很多初学者会觉得 LaTeX 很神秘很复杂，从而引发了初学者的畏难情绪甚至是负面情绪。尽管这些 Fans 说得并没有错，我是说在事实上，但是他们的表达方式和内心态度却间接阻碍了 LaTeX 的发展，我想这也是和他们的初衷相悖的。————Liam Huang<sup><a href="#fn_1" id="reffn_1">1</a></sup></p>
-</blockquote>
-<h1 id="2-Latex写作的进行"><a href="#2-Latex写作的进行" class="headerlink" title="2. Latex写作的进行"></a>2. Latex写作的进行</h1><h2 id="2-1-准备知识"><a href="#2-1-准备知识" class="headerlink" title="2.1 准备知识"></a>2.1 准备知识</h2><p>Latex中以<code>%</code>作为注释开头，也就是不会输出<code>%</code>后直到行末的所有内容，同时不会影响最终的排版效果，仅供人们在阅读源代码是的注释。至于数学意义上的“%”字符，需要在<code>%</code>之前加上<code>\</code>进行转义（escape）。即：<code>\%</code>。除此之外还有很多特殊字符的使用需要各位注意:</p>
-<blockquote>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828115548.png" alt="20200828115548"></p>
-</blockquote>
-<p>当我们需要对我们的内容做出明确控制时，我们需要调用控制序列来解决问题，类似于其他编程语言中的函数。比如我们需要在第一行指明文档类型，需要使用:<code>\documentclass[]&#123;article&#125;</code>，这就是一个控制序列（命令、标记），以<code>\</code>开头，以第一个<strong>空格或者非字母的字符</strong>结束的一串文字。<code>&#123;&#125;</code>中是这个控制序列的必要参数(此处为‘article’，其作用是调用名为“article”的文档类），部分控制序列还会有方括号<code>[]</code>，表示可选参数。</p>
-<blockquote>
-<p>所谓的文档类，是TeX系统预设或者用户自己给定的一些格式的集合，不同的文档类对应了不同的输出效果。</p>
-</blockquote>
-<p>TeX中的控制序列包括了两种，一种是一个控制序列单独使用，例如<code>\documentclass[]&#123;&#125;</code>等；另一种是需要两个配套的控制序列成对出现，通常是<code>\begin</code>和<code>\end</code>，这两个控制序列以及其中间的内容被称为_环境_。他们之后的第一个必要参数总是一致的，被称为环境名。<br>只有在<code>document</code><strong>环境</strong>中的内容才能够被输出到文档中去或是作为控制序列对文档产生影响。也就是说，在<code>\end&#123;document&#125;</code>之后插入的内容都是无效的。</p>
-<p>在从<code>\documentclass&#123;article&#125;</code>到<code>\begin&#123;document&#125;</code>之间的部分被称为“导言区(preamble)”，你可以将导言区理解为使用某些特殊的控制序列对整篇文章的格式进行设置的区域，比如我们可以在导言区引用一些额外的宏包以及设置页面大小、页眉页脚、章节标题样式等等<sup><a href="#fn_2" id="reffn_2">2</a></sup>。</p>
-<p>另外，类似于markdown文件，TeX中换行是需要两次换行才能起效（需要一个空行），否则会被处理成一个简单的空格，且命令后面的空格会被忽略，需要使用<code>\</code>进行转义。为了将命令（控制序列）的范围进行限制，需要使用<code>&#123;&#125;</code>将命令内容包括起来<sup><a href="#fn_3" id="reffn_3">3</a></sup>，如：<code>\frac&#123;a&#125;&#123;b&#125;</code>表示：</p>
-<script type="math/tex; mode=display">\frac{a}{b}</script><h2 id="2-2-导言区控制序列"><a href="#2-2-导言区控制序列" class="headerlink" title="2.2 导言区控制序列"></a>2.2 导言区控制序列</h2><ul>
-<li><code>\documentclass[]&#123;&#125;</code>规定了使用的文档模板，是文件必须的命令，可供选择的必要参数有：article、book、report、beamer等TeX自带模板或使用者自己准备的一系列模板；可选参数主要定义打印输出时的编码、纸张等条件。如：<code>\documentclass[UTF8,a4paper]&#123;article&#125;</code></li>
-<li><code>\usepackage&#123;&#125;</code>可以用来引用宏包，常用的有：<code>graphicx</code>——插图；<code>amsmath</code>——一些方便的公式、符号命令等”</li>
-<li>除此之外还涉及到标题、作者以及日期等等分别用以下的控制序列进行控制：<code>\title&#123;&#125;</code>、<code>\author&#123;&#125;</code>、<code>\date&#123;&#125;</code>，这些内容在导言区设置好后可以利用<code>\maketitle</code>控制序列在环境区域内按照特定格式输出</li>
-</ul>
-<p>以下是演示：<br><figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line"><span class="symbol">\d</span>ocumentclass[UTF8]&#123;ctexart&#125;</span><br><span class="line"><span class="symbol">\t</span>itle&#123;你好，world!&#125;</span><br><span class="line"><span class="symbol">\a</span>uthor&#123;Liam&#125;</span><br><span class="line"><span class="symbol">\d</span>ate&#123;<span class="symbol">\t</span>oday&#125;</span><br><span class="line"><span class="symbol">\b</span>egin&#123;document&#125;</span><br><span class="line"><span class="symbol">\m</span>aketitle</span><br><span class="line">你好，world!</span><br><span class="line"><span class="symbol">\e</span>nd&#123;document&#125;</span><br></pre></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828144122.png" alt="20200828144122"></p>
-<h2 id="2-3-章节和段落"><a href="#2-3-章节和段落" class="headerlink" title="2.3 章节和段落"></a>2.3 章节和段落</h2><p>在文档类 “article/ctexart” 中，定义了五个控制序列来调整行文组织结构。他们分别是</p>
-<ul>
-<li><code>section&#123;&#125;</code></li>
-<li><code>subsection&#123;&#125;</code></li>
-<li><code>subsubsection&#123;&#125;</code></li>
-<li><code>paragraph&#123;&#125;</code></li>
-<li><code>subparagraph&#123;&#125;</code></li>
-</ul>
-<p>在”report/ctexrep”文档类中，还有<code>\chapter&#123;·&#125;</code>；”book/ctexbook”文档类中，还定义了<code>\part&#123;·&#125;</code>。取决于各种文档类（模板）中所定义的章节控制序列。</p>
-<p>以下是演示：<br><figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="string">\documentclass[UTF8]&#123;ctexart&#125;</span></span><br><span class="line"><span class="string">\title&#123;你好，world!&#125;</span></span><br><span class="line"><span class="string">\author&#123;Liam&#125;</span></span><br><span class="line"><span class="string">\date&#123;\today&#125;</span></span><br><span class="line"><span class="string">\begin&#123;document&#125;</span></span><br><span class="line"><span class="string">\maketitle</span></span><br><span class="line"><span class="string">\section&#123;你好中国&#125;</span></span><br><span class="line">中国在East Asia.</span><br><span class="line"><span class="string">\subsection&#123;Hello</span> Beijing&#125;</span><br><span class="line">北京是capital <span class="keyword">of</span> China.</span><br><span class="line"><span class="string">\subsubsection&#123;Hello</span> Dongcheng District&#125;</span><br><span class="line"><span class="string">\paragraph&#123;Tian&#x27;anmen</span> Square&#125;</span><br><span class="line"><span class="keyword">is</span> <span class="keyword">in</span> the center <span class="keyword">of</span> Beijing</span><br><span class="line"><span class="string">\subparagraph&#123;Chairman</span> Mao&#125;</span><br><span class="line"><span class="keyword">is</span> <span class="keyword">in</span> the center <span class="keyword">of</span> 天安门广场。</span><br><span class="line"><span class="string">\subsection&#123;Hello</span> 山东&#125;</span><br><span class="line"><span class="string">\paragraph&#123;山东大学&#125;</span> <span class="keyword">is</span> one <span class="keyword">of</span> the best university <span class="keyword">in</span> 山东。</span><br><span class="line"><span class="string">\end&#123;document&#125;</span></span><br></pre></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828145319.png" alt="20200828145319"></p>
-<h2 id="2-4-插入数学公式、图片或表格"><a href="#2-4-插入数学公式、图片或表格" class="headerlink" title="2.4 插入数学公式、图片或表格"></a>2.4 插入数学公式、图片或表格</h2><h3 id="2-4-1-数学公式插入"><a href="#2-4-1-数学公式插入" class="headerlink" title="2.4.1 数学公式插入"></a>2.4.1 数学公式插入</h3><p>LaTex相对于Word最优秀的地方莫过于他对于数学公式的渲染非常出色，不用我们刻意去调整数学公式的排版，只需要我们输入类似于编程语言的伪代码，系统便可以自己将伪代码转化为我们需要的数学表达。同时大部分的数值计算软件或者编程软件都自带了可以将计算结果转化为TeX语言的函数，甚至可以在Latex系统中嵌入Mathematica进行科学计算，不过这都是进阶内容了。目前姑且还用不到。以上这些足以说明Tex在论文排版中的优越地位！</p>
-<p>数学公式或者图片的插入需要在导言区引用之前提到过的宏包，即：<br><figure class="highlight dust"><table><tr><td class="code"><pre><span class="line"><span class="xml">\uespackage</span><span class="template-variable">&#123;amsmath&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>文本中数学公式的引用主要有两种方式：行内模式 (inline) 和行间模式 (display)。前者在正文的行文中，插入数学公式；后者独立排列单独成行，并自动居中。</p>
-<ul>
-<li>行内公式：<ul>
-<li><script type="math/tex; mode=display">...</script></li>
-<li><code>\(...\)</code></li>
-<li><code>\begin&#123;math&#125; ... \end&#123;math&#125;</code></li>
-</ul>
-</li>
-<li>行间公式：<ul>
-<li><code>\[ ... \]</code>     （无编号）</li>
-<li>$$$ … $$$     （无编号，会改变行文的默认行间距，不推荐）</li>
-<li><code>\begin&#123;displaymath&#125; ... \end&#123;displaymath&#125;</code>     （无编号）</li>
-<li><code>\begin&#123;equation*&#125; ... \end&#123;equation*&#125;</code>     （无编号）</li>
-<li><code>\begin&#123;equation&#125;...\end&#123;equation&#125;</code>     （有编号）</li>
-</ul>
-</li>
-</ul>
-<p>至于各种数学符号的表达以及特殊字符的控制序列由于太多，不好整理，可以参看<a href="https://blog.csdn.net/GarfieldEr007/article/details/51646604">此处</a>或者<a href="https://blog.csdn.net/lanxuezaipiao/article/details/44341645">这里</a>。</p>
-<h3 id="2-4-2-图片插入"><a href="#2-4-2-图片插入" class="headerlink" title="2.4.2 图片插入"></a>2.4.2 图片插入</h3><p>插入图片的方式比较多，这里推荐上述graphicx宏包中的<code>\includegraphics</code>命令进行操作：</p>
-<figure class="highlight dust"><table><tr><td class="code"><pre><span class="line"><span class="xml">\documentclass</span><span class="template-variable">&#123;article&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">\usepackage</span><span class="template-variable">&#123;graphicx&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">\begin</span><span class="template-variable">&#123;document&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">\includegraphics</span><span class="template-variable">&#123;a.jpg&#125;</span><span class="xml"> % 名为“a.jpg”的文件与TeX源文件同目录</span></span><br><span class="line"><span class="xml">\end</span><span class="template-variable">&#123;document&#125;</span></span><br></pre></td></tr></table></figure>
-<p>如果图片超过了输出文件的纸张大小，或者效果不太好的时候可以用 <code>\includegraphics</code> 控制序列的可选参数来控制。比如：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">\includegraphics<span class="selector-attr">[width = .8\textwidth]</span>&#123;<span class="selector-tag">a</span><span class="selector-class">.jpg</span>&#125;</span><br></pre></td></tr></table></figure>
-<p>在<a href="http://texdoc.net/texmf-dist/doc/latex/graphics/graphicx.pdf">此处</a>可以获取到关于上述宏包的文档。</p>
-<h3 id="2-4-3-表格插入"><a href="#2-4-3-表格插入" class="headerlink" title="2.4.3 表格插入"></a>2.4.3 表格插入</h3><p>tabular 环境提供了最简单的表格功能。它用 \hline 命令表示横线，在列格式中用 | 表示竖线；用 &amp; 来分列，用 \\ 来换行；每列可以采用居左、居中、居右等横向对齐方式，分别用 l、c、r 来表示<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
-<p>以下是演示：<br><figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="string">\begin&#123;tabular&#125;&#123;|l|c|r|&#125;</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">操作系统&amp; 发行版&amp; 编辑器<span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">Windows &amp; MikTeX &amp; TexMakerX <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">Unix/Linux &amp; teTeX &amp; Kile <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">Mac OS &amp; MacTeX &amp; TeXShop <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">通用&amp; TeX Live &amp; TeXworks <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line"><span class="string">\end&#123;tabular&#125;</span></span><br></pre></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828153609.png" alt="20200828153609"></p>
-<p>有时候我们会遇到表格或者图片的位置不好确定，这个时候我们可以把它们设置为“浮动体”，具体可以参见<a href="https://liam.page/2014/09/08/latex-introduction/#%E6%B5%AE%E5%8A%A8%E4%BD%93">此处</a></p>
-<h1 id="3-版面调整"><a href="#3-版面调整" class="headerlink" title="3. 版面调整"></a>3. 版面调整</h1><p>版面设置一般采用各种宏包进行设置，使用较多的包有：<code>geometry</code>（页边距）、<code>fancyhdr</code>（页眉页脚）、<code>indentfirst</code>（首行缩进）以及<code>setspace</code>（行间距）。一些自带的控制序列也可以用来进行版面设置，比如段间距的设置可以用<code>\parskip</code>调整。</p>
-<p>诸如此类的版面调整的命令由于各位大佬做的宏包太多，加上每个人使用系统或者习惯上的区别，整理起来有很大的困难，最好的办法是边用边学，并且逐渐形成自己的习惯。正所谓熟能生巧，在不断运用的过程中就能够找到最适合自己的哪一种办法，这里提供一些可以达到目的的简单方法。另外提供一下相关方面的博客以供参考。</p>
-<ul>
-<li><a href="https://liam.page/2014/09/08/latex-introduction/#%E7%89%88%E9%9D%A2%E8%AE%BE%E7%BD%AE">一份其实很短的Latex文档——Liam Huang </a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/56405574">LaTeX入门(七)——页面设置——勥巭炛</a></li>
-<li><a href="https://www.jianshu.com/p/da10bc1c497a">17LaTeX学习系列之—-LaTeX的版面设计——张一根</a></li>
-</ul>
-<h1 id="4-参考文献（文档）"><a href="#4-参考文献（文档）" class="headerlink" title="4. 参考文献（文档）"></a>4. 参考文献（文档）</h1><blockquote id="fn_1">
-<sup>1</sup>. <a href="https://liam.page/2014/09/08/latex-introduction/">https://liam.page/2014/09/08/latex-introduction/</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_2">
-<sup>2</sup>. <a href="http://liuchengxu.org/blog-cn/posts/quick-latex/">http://liuchengxu.org/blog-cn/posts/quick-latex/</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_3">
-<sup>3</sup>. <a href="http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf">http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_4">
-<sup>4</sup>. <a href="https://www.jianshu.com/p/da10bc1c497a">https://www.jianshu.com/p/da10bc1c497a</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_5">
-<sup>5</sup>. <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjQueDxs73rAhVOqZ4KHSD_BMgQFjACegQIBRAB&amp;url=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F56405574&amp;usg=AOvVaw1j3bECgHAB5XTcdABhOEDL">https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjQueDxs73rAhVOqZ4KHSD_BMgQFjACegQIBRAB&amp;url=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F56405574&amp;usg=AOvVaw1j3bECgHAB5XTcdABhOEDL</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
-</blockquote>
-<div class="note success flat"><ol>
-<li><a href="https://liam.page/2014/09/08/latex-introduction/">https://liam.page/2014/09/08/latex-introduction/</a></li>
-<li><a href="http://liuchengxu.org/blog-cn/posts/quick-latex/">http://liuchengxu.org/blog-cn/posts/quick-latex/</a></li>
-<li><a href="http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf">http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf</a></li>
-<li><a href="https://www.jianshu.com/p/da10bc1c497a">https://www.jianshu.com/p/da10bc1c497a</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/56405574">https://zhuanlan.zhihu.com/p/56405574</a></li>
-</ol>
-</div>
-<h1 id="5-补张图"><a href="#5-补张图" class="headerlink" title="5. 补张图"></a>5. 补张图</h1><p>哈哈哈哈哈O(∩_∩)O😎😎😎</p>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1598496066545.jpeg" alt="1598496066545"></p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-        <category>编程</category>
-        <category>LaTex</category>
-      </categories>
-      <tags>
-        <tag>Latex</tag>
-        <tag>论文排版</tag>
       </tags>
   </entry>
   <entry>
@@ -3480,6 +3351,112 @@ b_{\mathrm{e}}=\left\langle 1 / m_{\mathrm{e}} v_{\mathrm{en}}\right\rangle=\lef
         <tag>色散关系</tag>
         <tag>Alfven wave</tag>
         <tag>等离子体波动</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Latex 论文排版相关学习</title>
+    <url>/2020/08/28/texstudy/</url>
+    <content><![CDATA[<h1 id="1-一点点关于Latex的介绍"><a href="#1-一点点关于Latex的介绍" class="headerlink" title="1. 一点点关于Latex的介绍"></a>1. 一点点关于Latex的介绍</h1><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828160435.png" alt="20200828160435"></p>
+<p>Latex是一款排版软件，诸如教材、报纸、书信等纸质印刷相关的排版都是可以做的。一般人使用Latex最多的地方是论文的写作，特别是涉及到大量公式的数学物理方面的科技论文，这方面目前有很多网上流行的模板，我们只需要在了解简单的Latex基础操作的基础上带入模板就好，所以还是非常方便的。</p>
+<blockquote>
+<p>有很多 Geeks 或者 LaTeX’s Fanatical Fans 过分地强调了 LaTeX 的一些并非重点的特性，以至于很多初学者会觉得 LaTeX 很神秘很复杂，从而引发了初学者的畏难情绪甚至是负面情绪。尽管这些 Fans 说得并没有错，我是说在事实上，但是他们的表达方式和内心态度却间接阻碍了 LaTeX 的发展，我想这也是和他们的初衷相悖的。————Liam Huang<sup><a href="#fn_1" id="reffn_1">1</a></sup></p>
+</blockquote>
+<h1 id="2-Latex写作的进行"><a href="#2-Latex写作的进行" class="headerlink" title="2. Latex写作的进行"></a>2. Latex写作的进行</h1><h2 id="2-1-准备知识"><a href="#2-1-准备知识" class="headerlink" title="2.1 准备知识"></a>2.1 准备知识</h2><p>Latex中以<code>%</code>作为注释开头，也就是不会输出<code>%</code>后直到行末的所有内容，同时不会影响最终的排版效果，仅供人们在阅读源代码是的注释。至于数学意义上的“%”字符，需要在<code>%</code>之前加上<code>\</code>进行转义（escape）。即：<code>\%</code>。除此之外还有很多特殊字符的使用需要各位注意:</p>
+<blockquote>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828115548.png" alt="20200828115548"></p>
+</blockquote>
+<p>当我们需要对我们的内容做出明确控制时，我们需要调用控制序列来解决问题，类似于其他编程语言中的函数。比如我们需要在第一行指明文档类型，需要使用:<code>\documentclass[]&#123;article&#125;</code>，这就是一个控制序列（命令、标记），以<code>\</code>开头，以第一个<strong>空格或者非字母的字符</strong>结束的一串文字。<code>&#123;&#125;</code>中是这个控制序列的必要参数(此处为‘article’，其作用是调用名为“article”的文档类），部分控制序列还会有方括号<code>[]</code>，表示可选参数。</p>
+<blockquote>
+<p>所谓的文档类，是TeX系统预设或者用户自己给定的一些格式的集合，不同的文档类对应了不同的输出效果。</p>
+</blockquote>
+<p>TeX中的控制序列包括了两种，一种是一个控制序列单独使用，例如<code>\documentclass[]&#123;&#125;</code>等；另一种是需要两个配套的控制序列成对出现，通常是<code>\begin</code>和<code>\end</code>，这两个控制序列以及其中间的内容被称为_环境_。他们之后的第一个必要参数总是一致的，被称为环境名。<br>只有在<code>document</code><strong>环境</strong>中的内容才能够被输出到文档中去或是作为控制序列对文档产生影响。也就是说，在<code>\end&#123;document&#125;</code>之后插入的内容都是无效的。</p>
+<p>在从<code>\documentclass&#123;article&#125;</code>到<code>\begin&#123;document&#125;</code>之间的部分被称为“导言区(preamble)”，你可以将导言区理解为使用某些特殊的控制序列对整篇文章的格式进行设置的区域，比如我们可以在导言区引用一些额外的宏包以及设置页面大小、页眉页脚、章节标题样式等等<sup><a href="#fn_2" id="reffn_2">2</a></sup>。</p>
+<p>另外，类似于markdown文件，TeX中换行是需要两次换行才能起效（需要一个空行），否则会被处理成一个简单的空格，且命令后面的空格会被忽略，需要使用<code>\</code>进行转义。为了将命令（控制序列）的范围进行限制，需要使用<code>&#123;&#125;</code>将命令内容包括起来<sup><a href="#fn_3" id="reffn_3">3</a></sup>，如：<code>\frac&#123;a&#125;&#123;b&#125;</code>表示：</p>
+<script type="math/tex; mode=display">\frac{a}{b}</script><h2 id="2-2-导言区控制序列"><a href="#2-2-导言区控制序列" class="headerlink" title="2.2 导言区控制序列"></a>2.2 导言区控制序列</h2><ul>
+<li><code>\documentclass[]&#123;&#125;</code>规定了使用的文档模板，是文件必须的命令，可供选择的必要参数有：article、book、report、beamer等TeX自带模板或使用者自己准备的一系列模板；可选参数主要定义打印输出时的编码、纸张等条件。如：<code>\documentclass[UTF8,a4paper]&#123;article&#125;</code></li>
+<li><code>\usepackage&#123;&#125;</code>可以用来引用宏包，常用的有：<code>graphicx</code>——插图；<code>amsmath</code>——一些方便的公式、符号命令等”</li>
+<li>除此之外还涉及到标题、作者以及日期等等分别用以下的控制序列进行控制：<code>\title&#123;&#125;</code>、<code>\author&#123;&#125;</code>、<code>\date&#123;&#125;</code>，这些内容在导言区设置好后可以利用<code>\maketitle</code>控制序列在环境区域内按照特定格式输出</li>
+</ul>
+<p>以下是演示：<br><figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line"><span class="symbol">\d</span>ocumentclass[UTF8]&#123;ctexart&#125;</span><br><span class="line"><span class="symbol">\t</span>itle&#123;你好，world!&#125;</span><br><span class="line"><span class="symbol">\a</span>uthor&#123;Liam&#125;</span><br><span class="line"><span class="symbol">\d</span>ate&#123;<span class="symbol">\t</span>oday&#125;</span><br><span class="line"><span class="symbol">\b</span>egin&#123;document&#125;</span><br><span class="line"><span class="symbol">\m</span>aketitle</span><br><span class="line">你好，world!</span><br><span class="line"><span class="symbol">\e</span>nd&#123;document&#125;</span><br></pre></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828144122.png" alt="20200828144122"></p>
+<h2 id="2-3-章节和段落"><a href="#2-3-章节和段落" class="headerlink" title="2.3 章节和段落"></a>2.3 章节和段落</h2><p>在文档类 “article/ctexart” 中，定义了五个控制序列来调整行文组织结构。他们分别是</p>
+<ul>
+<li><code>section&#123;&#125;</code></li>
+<li><code>subsection&#123;&#125;</code></li>
+<li><code>subsubsection&#123;&#125;</code></li>
+<li><code>paragraph&#123;&#125;</code></li>
+<li><code>subparagraph&#123;&#125;</code></li>
+</ul>
+<p>在”report/ctexrep”文档类中，还有<code>\chapter&#123;·&#125;</code>；”book/ctexbook”文档类中，还定义了<code>\part&#123;·&#125;</code>。取决于各种文档类（模板）中所定义的章节控制序列。</p>
+<p>以下是演示：<br><figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="string">\documentclass[UTF8]&#123;ctexart&#125;</span></span><br><span class="line"><span class="string">\title&#123;你好，world!&#125;</span></span><br><span class="line"><span class="string">\author&#123;Liam&#125;</span></span><br><span class="line"><span class="string">\date&#123;\today&#125;</span></span><br><span class="line"><span class="string">\begin&#123;document&#125;</span></span><br><span class="line"><span class="string">\maketitle</span></span><br><span class="line"><span class="string">\section&#123;你好中国&#125;</span></span><br><span class="line">中国在East Asia.</span><br><span class="line"><span class="string">\subsection&#123;Hello</span> Beijing&#125;</span><br><span class="line">北京是capital <span class="keyword">of</span> China.</span><br><span class="line"><span class="string">\subsubsection&#123;Hello</span> Dongcheng District&#125;</span><br><span class="line"><span class="string">\paragraph&#123;Tian&#x27;anmen</span> Square&#125;</span><br><span class="line"><span class="keyword">is</span> <span class="keyword">in</span> the center <span class="keyword">of</span> Beijing</span><br><span class="line"><span class="string">\subparagraph&#123;Chairman</span> Mao&#125;</span><br><span class="line"><span class="keyword">is</span> <span class="keyword">in</span> the center <span class="keyword">of</span> 天安门广场。</span><br><span class="line"><span class="string">\subsection&#123;Hello</span> 山东&#125;</span><br><span class="line"><span class="string">\paragraph&#123;山东大学&#125;</span> <span class="keyword">is</span> one <span class="keyword">of</span> the best university <span class="keyword">in</span> 山东。</span><br><span class="line"><span class="string">\end&#123;document&#125;</span></span><br></pre></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828145319.png" alt="20200828145319"></p>
+<h2 id="2-4-插入数学公式、图片或表格"><a href="#2-4-插入数学公式、图片或表格" class="headerlink" title="2.4 插入数学公式、图片或表格"></a>2.4 插入数学公式、图片或表格</h2><h3 id="2-4-1-数学公式插入"><a href="#2-4-1-数学公式插入" class="headerlink" title="2.4.1 数学公式插入"></a>2.4.1 数学公式插入</h3><p>LaTex相对于Word最优秀的地方莫过于他对于数学公式的渲染非常出色，不用我们刻意去调整数学公式的排版，只需要我们输入类似于编程语言的伪代码，系统便可以自己将伪代码转化为我们需要的数学表达。同时大部分的数值计算软件或者编程软件都自带了可以将计算结果转化为TeX语言的函数，甚至可以在Latex系统中嵌入Mathematica进行科学计算，不过这都是进阶内容了。目前姑且还用不到。以上这些足以说明Tex在论文排版中的优越地位！</p>
+<p>数学公式或者图片的插入需要在导言区引用之前提到过的宏包，即：<br><figure class="highlight dust"><table><tr><td class="code"><pre><span class="line"><span class="xml">\uespackage</span><span class="template-variable">&#123;amsmath&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>文本中数学公式的引用主要有两种方式：行内模式 (inline) 和行间模式 (display)。前者在正文的行文中，插入数学公式；后者独立排列单独成行，并自动居中。</p>
+<ul>
+<li>行内公式：<ul>
+<li><script type="math/tex; mode=display">...</script></li>
+<li><code>\(...\)</code></li>
+<li><code>\begin&#123;math&#125; ... \end&#123;math&#125;</code></li>
+</ul>
+</li>
+<li>行间公式：<ul>
+<li><code>\[ ... \]</code>     （无编号）</li>
+<li>$$$ … $$$     （无编号，会改变行文的默认行间距，不推荐）</li>
+<li><code>\begin&#123;displaymath&#125; ... \end&#123;displaymath&#125;</code>     （无编号）</li>
+<li><code>\begin&#123;equation*&#125; ... \end&#123;equation*&#125;</code>     （无编号）</li>
+<li><code>\begin&#123;equation&#125;...\end&#123;equation&#125;</code>     （有编号）</li>
+</ul>
+</li>
+</ul>
+<p>至于各种数学符号的表达以及特殊字符的控制序列由于太多，不好整理，可以参看<a href="https://blog.csdn.net/GarfieldEr007/article/details/51646604">此处</a>或者<a href="https://blog.csdn.net/lanxuezaipiao/article/details/44341645">这里</a>。</p>
+<h3 id="2-4-2-图片插入"><a href="#2-4-2-图片插入" class="headerlink" title="2.4.2 图片插入"></a>2.4.2 图片插入</h3><p>插入图片的方式比较多，这里推荐上述graphicx宏包中的<code>\includegraphics</code>命令进行操作：</p>
+<figure class="highlight dust"><table><tr><td class="code"><pre><span class="line"><span class="xml">\documentclass</span><span class="template-variable">&#123;article&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">\usepackage</span><span class="template-variable">&#123;graphicx&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">\begin</span><span class="template-variable">&#123;document&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">\includegraphics</span><span class="template-variable">&#123;a.jpg&#125;</span><span class="xml"> % 名为“a.jpg”的文件与TeX源文件同目录</span></span><br><span class="line"><span class="xml">\end</span><span class="template-variable">&#123;document&#125;</span></span><br></pre></td></tr></table></figure>
+<p>如果图片超过了输出文件的纸张大小，或者效果不太好的时候可以用 <code>\includegraphics</code> 控制序列的可选参数来控制。比如：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">\includegraphics<span class="selector-attr">[width = .8\textwidth]</span>&#123;<span class="selector-tag">a</span><span class="selector-class">.jpg</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>在<a href="http://texdoc.net/texmf-dist/doc/latex/graphics/graphicx.pdf">此处</a>可以获取到关于上述宏包的文档。</p>
+<h3 id="2-4-3-表格插入"><a href="#2-4-3-表格插入" class="headerlink" title="2.4.3 表格插入"></a>2.4.3 表格插入</h3><p>tabular 环境提供了最简单的表格功能。它用 \hline 命令表示横线，在列格式中用 | 表示竖线；用 &amp; 来分列，用 \\ 来换行；每列可以采用居左、居中、居右等横向对齐方式，分别用 l、c、r 来表示<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
+<p>以下是演示：<br><figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="string">\begin&#123;tabular&#125;&#123;|l|c|r|&#125;</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">操作系统&amp; 发行版&amp; 编辑器<span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">Windows &amp; MikTeX &amp; TexMakerX <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">Unix/Linux &amp; teTeX &amp; Kile <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">Mac OS &amp; MacTeX &amp; TeXShop <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line">通用&amp; TeX Live &amp; TeXworks <span class="string">\\</span></span><br><span class="line"> <span class="string">\hline</span></span><br><span class="line"><span class="string">\end&#123;tabular&#125;</span></span><br></pre></td></tr></table></figure><br><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200828153609.png" alt="20200828153609"></p>
+<p>有时候我们会遇到表格或者图片的位置不好确定，这个时候我们可以把它们设置为“浮动体”，具体可以参见<a href="https://liam.page/2014/09/08/latex-introduction/#%E6%B5%AE%E5%8A%A8%E4%BD%93">此处</a></p>
+<h1 id="3-版面调整"><a href="#3-版面调整" class="headerlink" title="3. 版面调整"></a>3. 版面调整</h1><p>版面设置一般采用各种宏包进行设置，使用较多的包有：<code>geometry</code>（页边距）、<code>fancyhdr</code>（页眉页脚）、<code>indentfirst</code>（首行缩进）以及<code>setspace</code>（行间距）。一些自带的控制序列也可以用来进行版面设置，比如段间距的设置可以用<code>\parskip</code>调整。</p>
+<p>诸如此类的版面调整的命令由于各位大佬做的宏包太多，加上每个人使用系统或者习惯上的区别，整理起来有很大的困难，最好的办法是边用边学，并且逐渐形成自己的习惯。正所谓熟能生巧，在不断运用的过程中就能够找到最适合自己的哪一种办法，这里提供一些可以达到目的的简单方法。另外提供一下相关方面的博客以供参考。</p>
+<ul>
+<li><a href="https://liam.page/2014/09/08/latex-introduction/#%E7%89%88%E9%9D%A2%E8%AE%BE%E7%BD%AE">一份其实很短的Latex文档——Liam Huang </a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/56405574">LaTeX入门(七)——页面设置——勥巭炛</a></li>
+<li><a href="https://www.jianshu.com/p/da10bc1c497a">17LaTeX学习系列之—-LaTeX的版面设计——张一根</a></li>
+</ul>
+<h1 id="4-参考文献（文档）"><a href="#4-参考文献（文档）" class="headerlink" title="4. 参考文献（文档）"></a>4. 参考文献（文档）</h1><blockquote id="fn_1">
+<sup>1</sup>. <a href="https://liam.page/2014/09/08/latex-introduction/">https://liam.page/2014/09/08/latex-introduction/</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. <a href="http://liuchengxu.org/blog-cn/posts/quick-latex/">http://liuchengxu.org/blog-cn/posts/quick-latex/</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <a href="http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf">http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. <a href="https://www.jianshu.com/p/da10bc1c497a">https://www.jianshu.com/p/da10bc1c497a</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjQueDxs73rAhVOqZ4KHSD_BMgQFjACegQIBRAB&amp;url=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F56405574&amp;usg=AOvVaw1j3bECgHAB5XTcdABhOEDL">https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjQueDxs73rAhVOqZ4KHSD_BMgQFjACegQIBRAB&amp;url=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F56405574&amp;usg=AOvVaw1j3bECgHAB5XTcdABhOEDL</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<div class="note success flat"><ol>
+<li><a href="https://liam.page/2014/09/08/latex-introduction/">https://liam.page/2014/09/08/latex-introduction/</a></li>
+<li><a href="http://liuchengxu.org/blog-cn/posts/quick-latex/">http://liuchengxu.org/blog-cn/posts/quick-latex/</a></li>
+<li><a href="http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf">http://www.math.pku.edu.cn/teachers/lidf/docs/textrick/tricks.pdf</a></li>
+<li><a href="https://www.jianshu.com/p/da10bc1c497a">https://www.jianshu.com/p/da10bc1c497a</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/56405574">https://zhuanlan.zhihu.com/p/56405574</a></li>
+</ol>
+</div>
+<h1 id="5-补张图"><a href="#5-补张图" class="headerlink" title="5. 补张图"></a>5. 补张图</h1><p>哈哈哈哈哈O(∩_∩)O😎😎😎</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1598496066545.jpeg" alt="1598496066545"></p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>编程</category>
+        <category>LaTex</category>
+      </categories>
+      <tags>
+        <tag>Latex</tag>
+        <tag>论文排版</tag>
       </tags>
   </entry>
   <entry>
