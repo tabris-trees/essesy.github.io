@@ -1,0 +1,784 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>理想磁流体平衡 | Stars and Trees</title><meta name="keywords" content="等离子体物理,磁流体力学,磁约束核聚变"><meta name="author" content="Tabris Trees Severus"><meta name="copyright" content="Tabris Trees Severus"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于王晓钢老师的《等离子体物理》第二章的内容对磁流体平衡的内容进行简单介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理想磁流体平衡">
+<meta property="og:url" content="http://tabirstrees.top/2023/02/07/PPB-idelMHDequi/index.html">
+<meta property="og:site_name" content="Stars and Trees">
+<meta property="og:description" content="基于王晓钢老师的《等离子体物理》第二章的内容对磁流体平衡的内容进行简单介绍">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/MHD-E-20221013234420.png">
+<meta property="article:published_time" content="2023-02-07T06:31:45.000Z">
+<meta property="article:modified_time" content="2023-09-11T14:48:11.135Z">
+<meta property="article:author" content="Tabris Trees Severus">
+<meta property="article:tag" content="等离子体物理">
+<meta property="article:tag" content="磁流体力学">
+<meta property="article:tag" content="磁约束核聚变">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/MHD-E-20221013234420.png"><link rel="shortcut icon" href="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/1.png"><link rel="canonical" href="http://tabirstrees.top/2023/02/07/PPB-idelMHDequi/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-166333226-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-166333226-1');
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":200,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '理想磁流体平衡',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-11 22:48:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tabris-trees/blogdepot/fonts.css" /> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tabris-trees/blogdepot/styles.css" /> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.min.css" /> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" /> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.1.0/style.css" /> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-tc-webfont@1.0.0/style.css" /> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" /><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/20200429094050.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">65</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">30</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 分享(构建中...)</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.travellings.cn/go.html"><i class="fa-fw fas fa-subway"></i><span> 开往</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/MHD-E-20221013234420.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Stars and Trees</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 分享(构建中...)</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.travellings.cn/go.html"><i class="fa-fw fas fa-subway"></i><span> 开往</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">理想磁流体平衡</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-07T06:31:45.000Z" title="发表于 2023-02-07 14:31:45">2023-02-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-11T14:48:11.135Z" title="更新于 2023-09-11 22:48:11">2023-09-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E7%89%A9%E7%90%86/">等离子体物理</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>26分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="理想磁流体平衡"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><center><h1>理想磁流体平衡</h1></center>
+
+<div class="note info flat"><p>本文是王晓刚老师《等离子体物理基础》第二章内容的笔记整理，方便此后查阅</p>
+</div>
+<p>从物理上来看，一个系统总是趋于能量最低的平衡状态，此时的运动形式相对简单。一般来说，我们将磁流体的平衡指的是<strong>力学平衡（磁流体力学的平衡）</strong>，而非热力学平衡（速度分布的平衡，对应的是动理学理论的平衡）。这种平衡对于可控核聚变来说是非常重要的，我们需要将温度极高的等离子体通过外部力场约束在固定范围内以提供聚变产生的原材料，完成这一目标的首要条件就是做到磁流体平衡。</p>
+<h2 id="磁场的一般表示"><a href="#磁场的一般表示" class="headerlink" title="磁场的一般表示"></a>磁场的一般表示</h2><p>根据Maxwell方程组中的高斯定理我们知道：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \cdot \mathbfit{B} = \frac{\partial B_x}{\partial x}+\frac{\partial B_y}{\partial y}+\frac{\partial B_z}{\partial z} = 0
+    \end{aligned}
+\end{equation}</script><p>这就是说磁场的三个分量并非独立的，因此实际上磁场可以只用两个分量来表示。通过矢量恒等式：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \cdot (\vec{A} \times \vec{B}) = (\nabla \times \vec{A} ) \cdot \vec{B} - \vec{A} \cdot (\nabla \times \vec{B})
+    \end{aligned}
+\end{equation}</script><p>再者一个矢量可以写成标量的梯度形式，因此我们选择将描述磁场的两个分量表示成 $\nabla \alpha $, $ \nabla \beta$，有：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \cdot (\nabla \times \vec{A}) = 0 \implies \mathbfit{B} = \nabla \alpha \times \nabla \beta
+    \end{aligned}
+\end{equation}</script><p>考虑直角坐标系下的磁力线方程（磁场$\mathbfit{B}$与磁力线的方向是一致的）：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}x}{B_x} = \frac{\mathrm{d}y}{B_y} = \frac{\mathrm{\,d}z}{B_z}
+    \end{aligned}
+\end{equation}</script><p>上述方程可以提取出两个独立的方程：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}y}{\mathrm{d}x} = \frac{B_y}{B_x}, \frac{\mathrm{d}z}{\mathrm{d}x} = \frac{B_z}{B_x}
+    \end{aligned}
+\end{equation}</script><p>这两个方程的解分别对应了两个三维空间中的曲面，曲面的交线（两个曲面方向导数的叉乘 $\mathbfit{B} = \nabla \alpha \times \nabla \beta$ ，这就正好对应了前面提到的描述磁场只需要两个独立的变量，即曲面 $C_{\alpha}, C_{\beta}$ ）即是磁力线。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-EBC5A2913971E69F7D1376D20F6F7EF4.jpg" alt = "PPB-idelMHDequi-f1" width = "300"></p>
+<center id='f1'><span style='font-weight:bold'>Fig 1 上述过程的几何描述</span></center>
+
+<p>这两个曲面的选择可以是任意的，所以同一个磁场可能对应多种不同的选择进行描述。因此，我们进一步可以把磁场写成：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \mathbfit{B} = F(\psi) \nabla \zeta + \nabla \psi \times \nabla \zeta
+    \end{aligned}
+    \label{eq:bfield}
+\end{equation}</script><p>这样就变成了一个正交曲线坐标系($\nabla \psi, \nabla \zeta, \nabla \chi = \nabla \psi \times \nabla \zeta$)所表示的磁场, 于是我们可以把磁力线方程写成:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}l}{B} = \frac{\mathrm{d}\psi}{\mathbfit{B} \cdot \nabla \psi} = \frac{\mathrm{d}\chi}{\mathbfit{B} \cdot \nabla \chi} = \frac{\mathrm{d}\zeta}{\mathbfit{B} \cdot \nabla \zeta}
+    \end{aligned}
+\end{equation}</script><p>的形式. 如果我们选取聚变中常用的”托卡马克环坐标系($\psi(r), \theta, z$)”, 则有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}l}{B}  = \left(\frac{\mathrm{d}\psi}{B_r \mathrm{\,d}\psi/\mathrm{\,d}r} = \right) \frac{\mathrm{d}r}{B_r} = \frac{r \mathrm{d}\theta}{B_{\theta}} = \frac{\mathrm{d}z}{B_z}
+    \end{aligned}
+\end{equation}</script><h2 id="磁约束等离子体的力学平衡"><a href="#磁约束等离子体的力学平衡" class="headerlink" title="磁约束等离子体的力学平衡"></a>磁约束等离子体的力学平衡</h2><p>所谓力学平衡就是说等离子体的运动状态不随时间改变, 即 $\partial/\partial t = 0$. 我们通常所说的等离子体平衡就是指这种力学平衡(在运动状态不变的情况下, $\mathbfit{u} \not = 0$ 称为”稳态平衡”, $\mathbfit{u} = 0$ 称为”静态平衡”).</p>
+<p>根据理想磁流体方程:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        n m_i \left(\frac{\partial \mathbfit{u}}{\partial t} + \mathbfit{u} \cdot \nabla \mathbfit{u}\right) = -\nabla p + \frac{(\nabla \times \mathbfit{B}) \times \mathbfit{B}}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>等离子体平衡时有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \rho_m (\mathbfit{u} \cdot \nabla \mathbfit{u}) = - \nabla p + \frac{(\nabla \times \mathbfit{B}) \times \mathbfit{B}}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>如果是静态平衡则变成:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla p = \frac{(\nabla \times \mathbfit{B}) \times \mathbfit{B}}{4\pi} = \frac{\mathbfit{J} \times \mathbfit{B}}{c}\ (\text{忽略位移电流项})
+    \end{aligned}
+    \label{eq:1}
+\end{equation}</script><p>这个时候我们看到这种两个叉乘在一起的一般都会利用矢量恒等式进行化简, 回去翻翻矢量恒等式的列表, 发现有 $\nabla (\mathbfit{A} \cdot \mathbfit{B}) = \mathbfit{A} \times (\nabla \times \mathbfit{B}) + \mathbfit{B} \times (\nabla \times \mathbfit{A}) + \mathbfit{A} \cdot \nabla \mathbfit{B} + \mathbfit{B} \cdot \nabla \mathbfit{A}$. 把这里的磁场带进去就有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        (\nabla \times \mathbfit{B}) \times \mathbfit{B} = - \frac{\nabla B^2}{2} + \mathbfit{B} \cdot \nabla \mathbfit{B}
+    \end{aligned}
+\end{equation}</script><p>结合公式 $\eqref{eq:1}$ 于是我们可以得到在静态平衡下</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \left(p + \frac{B^2}{8\pi}\right) = \frac{\mathbfit{B} \cdot \nabla \mathbfit{B}}{4\pi} = \hat{b} \nabla_{\parallel} \left(\frac{B^2}{8\pi}\right) + \pmb{\kappa} \frac{B^2}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>其中, 磁场单位矢量 $\hat{b} \equiv \mathbfit{B}/B$, 平行磁场的梯度 $\nabla_{\parallel} \equiv \hat{b} \cdot \nabla$, $\pmb{\kappa} \equiv \hat{b} \cdot \nabla \hat{b} = \nabla_{\parallel} \hat{b}$. 根据矢量与张量的点乘运算</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        &\mathbf{A} \cdot \mathbfit{A} = \sum_{ij} T_{ij}\mathbfit{e}_i\mathbfit{e}_j \cdot \sum_{l} f_l\mathbfit{e}_l = \sum_{ijl} T_{ij}f_{l}\mathbfit{e}_{i} \delta_{jl} = \sum _{ij} T_{ij} f_{j} e_{i}, \\
+        &\mathbfit{A} \cdot \mathbf{A} = \sum _{ij} f_{i} T_{ij} e_{j}
+    \end{aligned}
+\end{equation}</script><p>所有带有平行分量的张量都会消失, 所以很明显 $\pmb{\kappa}$ 是垂直磁场方向的. 于是上式还可以写成是分量的形式:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla_{\perp} \left(p + \frac{B^2}{8\pi}\right) = \pmb{\kappa} \frac{B^{2}}{4\pi},\ \nabla_{\parallel} p = 0
+    \end{aligned}
+    \label{eq:15}
+\end{equation}</script><h2 id="磁面和磁通函数"><a href="#磁面和磁通函数" class="headerlink" title="磁面和磁通函数"></a>磁面和磁通函数</h2><p>对于任意变量都可以写成 $f = f(x,y)$ 形式的平板模型(slab model), 我们可以将 $\ref{eq:bfield}$ 取 $\zeta = -z, \psi = \psi(x,y)$ 来表示磁场:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \mathbfit{B} = -F(\psi) \hat{z} + \hat{z} \times \nabla \psi \equiv B_z(\psi) \hat{z} + \hat{z} \times \nabla \psi
+    \end{aligned}
+    \label{eq:B2}
+\end{equation}</script><p>这里我们可以看到, $z$ 方向是和 $\psi$ 有关的量, 同时垂直与 $z$ 方向的矢量取到的是 $\nabla \psi$, 这样很明显可以看出 $\psi = \psi(x, y)$ 是磁矢势的 $z$ 方向分量, 我们可以将其称为<strong>磁通函数</strong>. </p>
+<div class="note info flat"><p>关于为什么要这样取值, 我们考虑磁场表示形式公式 $\ref{eq:bfield}$, $\psi$ 和 $\zeta$ 所表示的定义于 $(x, y, z)$ 坐标上的两个曲面是相互垂直的, 平板模型中一个曲面定义在 $(x, y)$ 坐标上, 另一个必然定义于 $z$ 坐标. 而 $\zeta$ 在两项中都是梯度项 $\nabla \zeta$, 这样自然是将 $\zeta$ 取成和 $z$ 相关, 至于正负号的选择就直接带进去试一试, 然后取简单的那一种形式就OK了. <span class='mohu'>个人理解, 仅供参考!</span></p>
+</div>
+<p>然后我们再回到原本的”正交磁力线坐标”, 即 $(x, y, z) \to (\psi, \chi, z)$. 这里 $\chi$ 坐标满足 $\nabla \chi \parallel \hat{z} \times \nabla \psi$ (之前说过 $\psi, \chi, \zeta = -z$ 之间是相互垂直的). 那么很显然地必然会有磁场的分量在 $\nabla \chi$ 方向上, 即 $\mathbfit{B}_{\chi}$. 换句话说, 在 $(x, y)$ 平面内必然会有磁力线在 $\psi(x, y) = C(\text{常数})$ 的曲线上(三维空间中这条曲线沿着 $z$ 方向延伸成一个曲面, 实际上就是类似于等势面, 只不过只是磁势的一个分量的等势). 这样, 在两条曲线 $\psi = \psi_{1}, \psi = \psi_{2}$ 上随便找两个点连起来, 穿过这条连线(同样在三维空间中是一个曲面)的磁力线根数被定义为<strong>极向磁通量</strong>:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint_{\psi_{1} \to \psi_{2}} \mathbfit{B}_{x} \cdot \mathrm{\,d}\mathbfit{S}_{\psi, z} = \Psi_{\psi, \chi}
+    \end{aligned}
+\end{equation}</script><p>固定的 $\psi_{1}, \psi_{2}$ 之间的任意连线的极向磁通量一定相等. 这样我们在 $\psi_{1}$ 上选取 $x_{1}$, 在 $\psi_{2}$ 上选取 $x_{2}$, 完成对 $z$ 方向的积分后可以得到:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint _{\psi_{1} \to \psi_{2}} \mathbfit{B}_{x} \cdot \mathrm{\,d}\mathbfit{S}_{\psi, z} &= \underbrace{L_{z} \int_{x_{1}}^{x_{2}} B_y \mathrm{\,d}x = L_{z} \int_{x_{1}}^{x_{2}} \frac{\partial \psi}{\partial y} \mathrm{\,d}x}_{\text{因为}\psi\text{是磁势的}\hat{z}\text{分量}} \\
+        &= L_{z} \int _{\psi_{1}}^{\psi_{2}} \mathrm{\,d}\psi = L_{z} (\psi_{2}-\psi_{1})
+    \end{aligned}
+\end{equation}</script><p>很显然我们可以得出结论: 磁通函数 $\psi(x, y)$ 是 $\hat{z}$ 方向上单位长度上的极向磁通量.</p>
+<p>根据Maxwell方程组以及之前得到的理想磁流体平衡方程, 结合磁场表示式 $\ref{eq:B2}$ 还可以得到:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \mathbfit{J} &= \frac{c}{4\pi} \nabla \times \mathbfit{B} = \frac{c}{4\pi} \left(\frac{\mathrm{d}F}{\mathrm{d}\psi} \hat{z} \times \nabla \psi + \hat{z} \nabla ^{2} \psi\right), \\
+        \nabla p &= \frac{\mathbfit{J} \times \mathbfit{B}}{c} = -\left(\nabla ^{2} \psi + F \frac{\mathrm{d}F}{\mathrm{d}\psi}\right) \frac{\nabla \psi}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>可以看到, $\nabla p$ 仅仅只与 $\psi$ 有关, 上述方程的解应该有着 $p = p(\psi)$ 的形式, 那么在 $p = \text{常数}$ 的”面”上, 我们有磁通函数 $\psi = \text{常数}$ 的结论. 所以我们可以将这个曲面称为 <strong>“磁面”</strong>.</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-510bfbf51e28127ee5780c63602a27a.jpg" alt="PPB-idelMHDequi-磁通量" width = "300"></p>
+<center id='f2'><span style='font-weight:bold'>Fig 2. 上述过程的图像表示</span></center>
+
+<p>利用 $p = p(\psi)$, 上述的方程可以进一步化简:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        &\frac{4\pi \nabla p(\psi)}{\nabla \psi} = -\nabla ^{2} \psi - F(\psi) \frac{\mathrm{d}F(\psi)}{\mathrm{d}\psi} \\
+        &\implies \nabla ^{2} \psi = -4\pi \left(\frac{\nabla p(\psi)}{\nabla \psi} + F(\psi)\frac{\mathrm{d}F(\psi)}{4\pi \mathrm{d}\psi}\right) \\
+        &\because \nabla p(\psi) = \frac{\mathrm{d}p}{\mathrm{d}\psi} \nabla \psi, F(\psi)\frac{\mathrm{d}F(\psi)}{\mathrm{d}\psi} = \frac{\mathrm{d}}{\mathrm{d}\psi} \frac{F(\psi)^{2}}{2} \\ 
+        &\implies \nabla ^{2} \psi = -4\pi \frac{\mathrm{d}}{\mathrm{d}\psi} \left(p(\psi) + \frac{F(\psi)^{2}}{8\pi}\right) \\
+    \end{aligned}
+\end{equation}</script><p>再加上 $F(\psi)$ 是磁场的 $-z$ 分量(式 $\ref{eq:B2}$), 有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla ^{2} \psi = -4\pi \frac{\mathrm{d}}{\mathrm{d}\psi} \left[p + \frac{B_{z}^{2}}{8\pi}\right]
+    \end{aligned}
+\end{equation}</script><p>我们称这个方程为 <strong>磁面方程</strong>, 其适用于各种坐标系.</p>
+<p>事实上, 从式 $\ref{eq:15}$ 中我们可以得到: 沿着一条磁力线有 $p = \text{常数}$. 如果这个磁力线卷曲成一个曲面, 曲面上处处都有同一个 $p$, 曲面的法线由 $\nabla p = \nabla _{\perp} p$ 给出. 同时, 根据静态平衡的方程我们可以有: $\mathbfit{B} \perp \nabla p, \mathbfit{J} \perp \nabla p$, 所以电流也在这个表面上, 也就是磁面上.</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-f3.jpg" alt="PPB-idelMHDequi-f3" width = "300"></p>
+<center id='f3'><span style='font-weight:bold'>Fig 3. 磁面, 压强梯度以及电流分布</span></center>
+
+<h2 id="磁冻结"><a href="#磁冻结" class="headerlink" title="磁冻结"></a>磁冻结</h2><p>在流体力学中存在涡旋方程: $\partial \mathbfit{\omega}/\partial t = \nabla \times (\mathbfit{u} \times \mathbfit{\omega})$, 同时我们可以证明”涡旋”是冻结在流体中的, 即涡旋是和流体一起运动的. 在理想磁流体模型中, 磁场满足的磁感应方程具有和涡旋方程一致的形式: $\partial \mathbfit{B}/\partial t = \nabla \times (\mathbfit{u} \times \mathbfit{B})$. 我们可以合理的做出推测磁力线也是”冻结”在等离子当中的.</p>
+<details class="toggle" style="border: 1px solid bg"><summary class="toggle-button" style="background-color: bg;color: color">王晓刚老师书中磁冻结效应的推导(没怎么看明白)</summary><div class="toggle-content"><p>将磁场的一般表示形式带入到磁感应方程中可以得到, 方程左边：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\partial \mathbfit{B}}{\partial t} = \nabla \frac{\partial \alpha}{\partial t} \times \nabla \beta + \nabla \alpha \times \nabla \frac{\partial \beta}{\partial t} = \nabla \times \left(\frac{\partial \alpha}{\partial t} \nabla \beta - \frac{\partial \beta}{\partial t}\nabla \alpha\right)
+    \end{aligned}
+\end{equation}</script><p>方程右边: </p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \times (\mathbfit{u} \times \mathbfit{B}) &= \nabla \times \left[\mathbfit{u} \times \left(\nabla \alpha \times \nabla \beta\right)\right] \\
+        &= \nabla \times \left[\nabla \alpha (\mathbfit{u} \cdot \nabla \beta) - \nabla \beta (\mathbfit{u} \cdot \nabla \alpha)\right]
+    \end{aligned}
+\end{equation}</script><p>其中 $\mathbfit{u} \cdot \nabla \alpha(\beta)$ 得到一个标量, 再乘上 $\alpha$, 上式实际上是对一个标量的梯度做叉乘, 最终的结果为 0(很容易证明, 基础的高等数学场论知识). 于是有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \times \left(\frac{\mathrm{d} \alpha}{\mathrm{d} t} \nabla \beta - \frac{\mathrm{d}  \beta}{\mathrm{d} t} \nabla \alpha\right) = 0
+    \end{aligned}
+\end{equation}</script><p>也就是说:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d} \alpha}{\mathrm{d} t} \nabla \beta - \frac{\mathrm{d}  \beta}{\mathrm{d} t} \nabla \alpha = \nabla \Psi
+    \end{aligned}
+\end{equation}</script><p><span class='mohu'>因为对一个标量的梯度求旋度必然等于零.</span></p>
+<p>这里我们选择合适的度规, 使得 $\nabla \Psi = 0$. 此时由于 $\nabla \beta$ 以及 $\nabla \alpha$ 不会为零, 则必然会有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d} \alpha}{\mathrm{d} t} = \frac{\mathrm{d} \beta}{\mathrm{d} t} = 0
+    \end{aligned}
+\end{equation}</script><p>这也就表明确定磁力线的两组曲面 $\alpha(x, y, z) = C_\alpha, \beta(x, y, z) = C_{\beta}$ 都是随着流体元运动的守恒量, 因此其交线——磁力线也随着流体元运动不变.</p>
+</div></details>
+<p>由于上述的这个方式对于我们这种物理小白来说实在是不太友好, 所以我们这里考虑另外一种磁冻结效应的证明方式:</p>
+<p>根据 $\partial \mathbfit{B}/\partial t = \nabla \times (\mathbfit{u} \times \mathbfit{B})$, 我们知道:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\partial \mathbfit{B}}{\partial t} - \nabla \times (\mathbfit{u} \times \mathbfit{B}) = 0
+    \end{aligned}
+\end{equation}</script><p>同时, 磁通量可以通过磁场的面积分(即通过的磁力线的多少)得到, 也就是: $\Phi = \iint_{S} \mathbfit{B} \cdot  \mathrm{\,d}\mathbfit{S}$, 于是我们考虑对 $(27)$ 式的两边做一个面积分:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint_{S} \frac{\partial \mathbfit{B}}{\partial t} \cdot \mathrm{\,d}\mathbfit{S} = \frac{\partial \iint_{S} \mathbfit{B} \cdot \mathrm{\,d}\mathbfit{S}}{\partial t} = \frac{\partial \Phi}{\partial t}
+    \end{aligned}
+\end{equation}</script><script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint_{S} \nabla \times (\mathbfit{u} \times \mathbfit{B}) \cdot \mathrm{\,d}S = -\oint _{\partial S} (\mathbfit{B} \times \mathbfit{u}) \cdot \mathrm{\,d}\mathbfit{l} = -\oint _{\partial S} \mathbfit{B} \cdot  \mathbfit{u} \times  \mathrm{\,d}\mathbfit{l}
+    \end{aligned}
+\end{equation}</script><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-F76F245C16BE2A5CDE7D336666709101.png" alt="磁冻结示意图" width = "500"></p>
+<center id='f4'><span style='font-weight:bold'>Fig 4. 磁冻结示意图</span></center>
+
+<p>根据上图我们可以知道 $(29)$ 式实际上是磁流体流动引起的磁通量变化, 加上 $(28)$ 式表示的原本的磁通量就是理想磁流体中总的磁通量随时间的变化. 即:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}\Phi}{\mathrm{d}t} &= \frac{\partial \Phi}{\partial t} + \oint _{\partial S} \mathbfit{B} \cdot  \mathbfit{u} \times  \mathrm{\,d}\mathbfit{l} \\
+        &=\iint _{S} \frac{\partial \mathbfit{B}}{\partial t} - \nabla \times (\mathbfit{u} \times \mathbfit{B}) \cdot \mathrm{\,d}S \\ &= 0
+    \end{aligned}
+\end{equation}</script><p>这就证明了一个固定的流体元的磁通量是随时间不变的, 也就是磁场冻结在流体中.</p>
+<p>从微观角度来看, 一般来说磁冻结意味着带电粒子沿着磁力线作回旋运动. 然而系统中存在的各种物理量的梯度会导致粒子在不同的磁力线之间作横越磁力线的漂移运动, 那么磁冻结的图像应该怎么理解就是一个需要仔细讨论的问题. 从静态平衡的方程出发:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \nabla _{\perp p} = \frac{\mathbfit{J}_{\perp} \times \mathbfit{B}}{c}
+    \end{aligned}
+\end{equation}</script><p>或者是:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{J}_{\perp} = - \frac{c \nabla _{\perp p} \times \mathbfit{B}}{B^{2}}
+    \end{aligned}
+\end{equation}</script><p>也就是说, 等离子体电流是由静态平衡下的压强梯度漂移导致的. 很明显这个电流的存在会减弱原本的磁场, 因此被称为<strong>抗磁漂移</strong>. 前面的讨论我们已经知道电流是在磁面上存在的, 所以带电粒子实际上是在磁面上被 “冻结” 的. 而磁面是磁力线卷曲而成的曲面, 所以我们也可以说带电粒子实际上还是被冻结在同一条磁力线上.</p>
+<p>要说的是, 磁流体近似下的电流是由压强梯度引起的, 而各种梯度运动的本质都是 Larmor 半径效应引起的, 所以磁流体电流的物理图像是 Larmor 半径的最低阶近似.</p>
+<h2 id="Z-箍缩-theta-箍缩"><a href="#Z-箍缩-theta-箍缩" class="headerlink" title="Z - 箍缩, $\theta$ - 箍缩"></a>Z - 箍缩, $\theta$ - 箍缩</h2><p>磁约束平衡问题是理想磁流体平衡的一个重要的应用研究, 下面针对几个简单的几何位型作一些介绍, 比如类似单个直线导体中的电流或者螺线管线圈中电流产生的磁场对等离子体的约束.</p>
+<h3 id="Z-箍缩"><a href="#Z-箍缩" class="headerlink" title="Z - 箍缩"></a>Z - 箍缩</h3><p>首先是第一种情况, 电流沿着柱对称几何的轴向(z 方向), 产生的磁场可以表示为 $\mathbfit{B} = \hat{\theta}B_{\theta}(r)$, 即图5所示. 根据之前的平衡方程我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        &\frac{\mathrm{d}}{\mathrm{d}r}\left(p + \frac{B_{\theta}^{2}}{8\pi}\right) = -\frac{B_{\theta}^{2}}{4 \pi r} \\
+        &\frac{\mathrm{d}p}{\mathrm{d}r} = -\frac{1}{8 \pi r^{2}}\frac{\mathrm{d}}{\mathrm{d}r}(r^{2} B_{\theta}^{2})
+    \end{aligned}
+\end{equation}</script><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-20230908170735.png" alt="Z - 箍缩" width = "500"></p>
+<center id='f5'><span style='font-weight:bold'>Fig 5. Z - 箍缩</span></center>
+
+<p>这样, 我们就可以更具需要的等离子体压强分布计算应该采用什么样的电流分布, 或者根据已有的电流分布计算会得到什么样的等离子体压强分布.</p>
+<p>在这种位型下, $B_{z} = 0$, 这意味着等离子体是不稳定的(后面会讨论). 在强电工程技术的研究中会需要利用这种不稳定性来设计具有”自然”的快速响应性质的过载保护开关. 惯性约束聚变中, 也可以采用这种方案: 在非常细的丝状导线上同非常强的电流使导线融化成等离子体, 电流产生的洛伦兹力 $\mathbfit{J} \times \mathbfit{B}$ 会朝着中心来”箍缩”这些等离子体, 从而产生高能量粒子和 X 射线引发聚变. 这种装置作为强 X 射线源以及强脉冲聚变中子源也有着广泛的应用前景.</p>
+<h3 id="theta-箍缩"><a href="#theta-箍缩" class="headerlink" title="$\theta$ 箍缩"></a>$\theta$ 箍缩</h3><p>如果电流方向在 $\theta$ 方向, 则产生的磁场为 $\mathbfit{B} = \hat{z}B_{z}(r)$, 如图6所示.</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-20230908190542.png" alt="θ - 箍缩" width="300"></p>
+<center id='f6'><span style='font-weight:bold'>Fig 6. θ - 箍缩</span></center>
+
+<p>同样的, 我们可以利用平衡方程得到以下的关系:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \left(p + \frac{B^{2}}{8 \pi}\right)_{r < a} = \frac{B^{2}(a)}{8 \pi}
+    \end{aligned}
+\end{equation}</script><p>$r = a$ 表示等离子体的边界, 同样的我们需要从电流分布计算压强分布, 或者根据压强分布计算所需的电流分布. 同时, 在这种位型下 $B_{\theta} = 0$, 等离子体”非常安全(稳定)”, 其稳定性我们也放到下一节中论述. 这也意味着该位型下没有轴向的约束(单粒子运动中平行于磁场方向是不会受到力的), 磁镜和环形约束可以用来解决这一问题.</p>
+<h3 id="磁镜"><a href="#磁镜" class="headerlink" title="磁镜"></a>磁镜</h3><p>将 $\theta$ - 箍缩中等离子体柱两端的磁场 $B_{z}$, 我们就可以得到一个”磁镜”位型, 如图7所示.</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-20230908195732.png" alt="磁镜" width="300"></p>
+<center id='f7'><span style='font-weight:bold'>Fig 7. 磁镜</span></center>
+
+<p>这种位型通常被称为”线性装置”, 曾经是磁约束等离子体研究的最重要装置. 伴随磁镜装置的还有一个很重要的概念, “绝热不变量”. 磁镜装置的第一个不变量是”磁矩不变量”, 即带电粒子在围绕磁力线做高频回旋运动时, 在长时间尺度上我们可以认为粒子单位质量的回旋运动产生的磁矩</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mu = \frac{v_{\perp}^2}{2 B}
+    \end{aligned}
+\end{equation}</script><p>是一个近似的守恒量, 沿着磁力线 $l$, 粒子单位质量的动能可以写成:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \varepsilon = \mu B(l) + \frac{1}{2} v_{\parallel}^{2}
+    \end{aligned}
+\end{equation}</script><p>这可以看成带电粒子沿着磁力线在”磁势阱” $\mu B(l)$ 中的运动. 在磁场的极小值 $B_{\min }$ 两侧如果有一个极大值 $B_{\max }$, 那么对于 $\varepsilon \leq \mu B(l)$ 的粒子会被磁势阱捕获, 从而在两个极大值之间”弹跳(bounce)”. 对于更长的时间, 这个弹跳的周期运动会给我们第二个绝热不变量:”弹跳不变量”. 再加上磁场曲率的存在, 带电粒子会在跨越磁力线的方向上存在漂移, 这个运动近似是一个围绕磁镜圆形截面的周期运动. 在非常长的时间尺度下, 我们将得到有关漂移的第三个绝热不变量. 一般来说, 磁约束等离子体中很少用到后面一种不变量. 另外, 地球磁场的偶极磁场也可以近似地看成是一个磁镜系统, 并且这三种绝热不变量在地球磁层等离子体中的研究是非常重要的. 由于磁势阱的存在, 这种磁约束位型下, 带电粒子的速度空间存在”损失锥(loss cone)”不稳定性, 这将大大影响等离子体约束的时间.</p>
+<h3 id="环形约束和托卡马克"><a href="#环形约束和托卡马克" class="headerlink" title="环形约束和托卡马克"></a>环形约束和托卡马克</h3><p>为了解决轴向上没有约束的问题, 我们将 $\theta$ - 约束中的环形线圈围成一个圆环(图8绿色部分), 但此时由 $B_{z}$ 弯成的环向场在环内侧比环外侧强, 导致指向环内测的磁场梯度. 根据单粒子运动的结论, 这会导致垂直于这个梯度方向的漂移. 因此, 为了消除这个漂移, 我们需要在原本的场上叠加一个极向场(图8的中心螺管线). 这就是托卡马克装置的设计思路.</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-tokamak.png" alt="托卡马克(绿色的是环形线圈)" width="300"></p>
+<center id='f8'><span style='font-weight:bold'>Fig 8. 托卡马克(绿色的是环形线圈)</span></center>
+
+<p>很显然的, 环向场要比极向场强得多, 极向场的引入使得磁面拓扑呈环状, 每条磁力线都会经历环的内侧和外侧, 而因为向环内的磁场梯度的存在, 使得一条磁力线上会有环内侧的强场区和环外侧的弱场区, 这构成了一个”磁镜”位型, 这种特殊的磁镜效应对粒子的捕获是托卡马克等离子体的一个非常重要的性质. 这种环形约束的平衡是一种二维平衡, 接下来就讨论二维平衡位型满足的条件.</p>
+<h2 id="一维平衡-螺旋箍缩"><a href="#一维平衡-螺旋箍缩" class="headerlink" title="一维平衡, 螺旋箍缩"></a>一维平衡, 螺旋箍缩</h2><h3 id="一维圆柱等离子体的平衡"><a href="#一维圆柱等离子体的平衡" class="headerlink" title="一维圆柱等离子体的平衡"></a>一维圆柱等离子体的平衡</h3><p>我们知道轴对称的柱状等离子体($\theta$ - 箍缩)的物理量具有 $f = f(r)$ 的形式, 并且 $B_{r} = 0$. 因此, 磁面方程可以写成 $r = r_{0}$ 的形式. 根据静态平衡方程我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}r} \left(p + \frac{B^{2}}{8 \pi}\right) = \frac{B^{2}}{4 \pi} \kappa(r) = -\frac{B_{\theta}^{2}}{4 \pi r} \left(\text{因为圆的曲率为} -\frac{1}{r}\right)
+    \end{aligned}
+\end{equation}</script><p>如果既有环向场($\theta$), 又有极向场($z$), 也就是说磁场可以被写成: $\mathbfit{B} = \hat{\theta} B_{\theta}(r) + \hat{z} B_{z}(r)$, 那么静态平衡得到的结果将会变成:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}r} \left(p + \frac{B_{\theta}^{2}}{8 \pi} + \frac{B_{z}^{2}}{8 \pi}\right) = \frac{B_{\theta}^{2}}{4 \pi r}
+    \end{aligned}
+\end{equation}</script><p>由于这种位型的磁力线和电流都是螺旋形的, 所以我们一般称之为”螺旋箍缩”. 在这种平衡下, $\nabla \cdot \mathbfit{B} = 0$ 显然是满足的(因为没有 $B_{r}$, 即没有向外发射的无法闭合的磁力线). 因此我们需要通过一个方程(式 38)来决定三个未知函数($p, B_{\theta}, B_{z}$), 其中轴向(z 方向)和环向(θ 方向)自由度由周期条件来确定; 另外一个则可以用 r 的两个边界条件($r = 0$ 和 $r = a$)来确定.</p>
+<h3 id="安全因子"><a href="#安全因子" class="headerlink" title="安全因子"></a>安全因子</h3><p>现在我们来看磁场的两个分量是如何绕成磁面的, 在这样的螺旋形磁场位型中, 一根磁力线需要同时经过大小两个半径(主半径 R 以及小半径 r)的圆(图9所示, 红色为小圆, 蓝色为大圆, 这两个圆分别对应着极向和环向的磁场, 大小半径的概念在托卡马克核聚变的研究中也经常使用).</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-螺旋箍缩.png" alt="螺旋箍缩" width="500"></p>
+<center id='f9'><span style='font-weight:bold'>Fig 9. 螺旋箍缩</span></center>
+
+<p>根据最开始的托卡马克坐标(θ, r, z)磁力线的方程, 我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{r \mathrm{d}\theta}{\mathrm{d}z} &= \frac{B_{\theta}}{B_{z}} \\
+        \Rightarrow \frac{r \mathrm{d}\theta}{\mathrm{d}z} &= \frac{B_{\theta} 2 \pi R}{B_{z} 2 \pi R} \\
+        \Rightarrow \frac{2 \pi R \mathrm{\,d}\theta}{\mathrm{\,d}z} &= \frac{B_{\theta} 2 \pi R}{B_{z} r} \\
+        \Rightarrow \frac{\mathrm{\,d}z}{2 \pi R} &= \frac{B_{z} r}{B_{\theta} 2 \pi R \mathrm{\,d}\theta}
+    \end{aligned}
+\end{equation}</script><p>这里我们一个叫”安全因子(safety factor)”的量, 也就是:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        q(r) \equiv \frac{r B_{z}(r)}{R B_{\theta}(r)}
+    \end{aligned}
+\end{equation}</script><p>其中由于 $B_{\theta}$ 以及 $B_{z}$ 都会随着 r 变化, 所以安全因子也会随着 r 进行变化. 有了安全因子的定义之后我们可以得到: </p>
+<script type="math/tex; mode=display">(\Delta z)_{\Delta \theta = 2 \pi} = q(r) 2 \pi R</script><p>这也就意味着实际上安全因子表示磁力线在 $\hat{\theta}$ 方向上转完一整圈时在 $\hat{z}$ 方向上转过的圈数(也可以说是走过的周期数). 在下一节中我们可以看到安全因子和等离子体平衡的稳定性有关系, 这也是安全因子这个名字的原因. 在 z - 箍缩中, 由于 $B_{z} = 0$, 安全因子为 0, 等离子体是不安全的, 也就是说不稳定的. 而在 θ - 箍缩下, $B_{\theta} = 0$, $q \to  \infty$, 等离子体是很安全的, 也就是说是”绝对稳定”的.</p>
+<p>另外, 由于 $q(r)$ 是连续变化的, 因此对于 $q(r)$ 我们可以取到无穷多分段连续的无理数, 也可以取到无穷多个”分立”的有理数(也就是有理数在数轴上的分布是分立的). 当我们取到有理数 $q(r) = m/n$ 的磁面(有理磁面)时, 磁力线环绕大圆 m 圈, 绕小圆 n 圈后会回到最开始的地方首尾相接, 这也就意味着此时的磁力线是无法铺满整个磁面的. 实际上就是有理磁面上的磁力线总是在重复之前的轨迹, 一条磁力线是没法遍历磁面上所有的点, 但无理磁面上的磁力线因为不会回到原来的起点, 不会重复之前走过的路, 所以会在磁面上遍历所有的位置. 从测度上来说, 有理磁面上的磁力线所占据的区域测度为零, 物理上来说这个磁面是”软”的, 容易出现不稳定性. 因此相对来说, 无理磁面具有很好的物理性质. 关于这个问题, 王晓钢老师的<a target="_blank" rel="noopener" href="https://blog.sciencenet.cn/blog-39346-286012.html">博客</a>有更详细的解释(<span class='mohu'>实际上也差不多, 哈哈哈哈哈</span>).</p>
+<h2 id="Grad-Shafranov-方程"><a href="#Grad-Shafranov-方程" class="headerlink" title="Grad - Shafranov 方程"></a>Grad - Shafranov 方程</h2><p>接下来考虑更复杂的环形约束等离子体的二维平衡分布及其性质, 二维平衡满足的方程为 Grad - Shafranov 方程, 用来研究托卡马克等离子体, 这里我们先进一步引入托卡马克坐标系.</p>
+<h3 id="托卡马克-Tokamak-坐标系"><a href="#托卡马克-Tokamak-坐标系" class="headerlink" title="托卡马克(Tokamak)坐标系"></a>托卡马克(Tokamak)坐标系</h3><p>一般由于托卡马克甜甜圈形状的特征我们可以采用柱坐标($R, \zeta, Z$)或者环坐标($r, \theta, z$)来描述托卡马克位型, 其中 $\hat{z}$ 为弧长的方向.</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-托卡马克坐标系.png" alt="托卡马克坐标系" width="400"></p>
+<center id='f10'><span style='font-weight:bold'>Fig 10. 托卡马克坐标系</span></center>
+
+<p>我们可以很轻松地给出这两个坐标系之间的关系:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        R &= R_{0} + r \cos \theta \\
+        \zeta &= -\frac{z}{R_{0}} \\
+        Z &= r \sin \theta
+    \end{aligned}
+\end{equation}</script><p>很显然的, 这样的平衡是轴对称的, 也就是 $\mathrm{d}/\mathrm{d}\zeta = 0$. 取磁通量 $\psi = \psi(R, Z)$, 根据磁场的表达式 $\ref{eq:bfield}$, $\ref{eq:B2}$ (用 $\hat{\zeta}/R$ 取代 $\hat{z}$),我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{B} &= \frac{F(\psi)}{R} \hat{\zeta} - \frac{\hat{\zeta}}{R} \times \nabla \psi \\
+        &= \mathbfit{B}_{\zeta} - \frac{\hat{\zeta}}{R} \times \nabla \psi
+    \end{aligned}
+\end{equation}</script></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://tabirstrees.top">Tabris Trees Severus</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://tabirstrees.top/2023/02/07/PPB-idelMHDequi/">http://tabirstrees.top/2023/02/07/PPB-idelMHDequi/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://tabirstrees.top" target="_blank">Stars and Trees</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E7%89%A9%E7%90%86/">等离子体物理</a><a class="post-meta__tags" href="/tags/%E7%A3%81%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6/">磁流体力学</a><a class="post-meta__tags" href="/tags/%E7%A3%81%E7%BA%A6%E6%9D%9F%E6%A0%B8%E8%81%9A%E5%8F%98/">磁约束核聚变</a></div><div class="post_share"><div class="social-share" data-image="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/MHD-E-20221013234420.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/06/22/TORIC/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-20230622161043.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">TORIC 简单介绍</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/06/classical-mechanics-1/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/classical-mechanics-1-cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">理论物理速成——经典力学 I</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/10/13/PPB-MHD-E/" title="磁流体力学方程组的推导"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/MHD-E-20221013234420.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-02-07</div><div class="title">磁流体力学方程组的推导</div></div></a></div><div><a href="/2022/07/08/KappaDistribution/" title="Kappa 分布简单介绍"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/4.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2022-07-08</div><div class="title">Kappa 分布简单介绍</div></div></a></div><div><a href="/2021/08/19/plasma-introduction-translate/" title="A Short Introduction to Plasma Physics"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/plasma-introduction-translateindex-img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2021-10-05</div><div class="title">A Short Introduction to Plasma Physics</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">摸鱼🐟ing...</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">理想磁流体平衡</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E5%9C%BA%E7%9A%84%E4%B8%80%E8%88%AC%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.1.</span> <span class="toc-text">磁场的一般表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E7%BA%A6%E6%9D%9F%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E7%9A%84%E5%8A%9B%E5%AD%A6%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.2.</span> <span class="toc-text">磁约束等离子体的力学平衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E9%9D%A2%E5%92%8C%E7%A3%81%E9%80%9A%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">磁面和磁通函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E5%86%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">磁冻结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Z-%E7%AE%8D%E7%BC%A9-theta-%E7%AE%8D%E7%BC%A9"><span class="toc-number">1.5.</span> <span class="toc-text">Z - 箍缩, $\theta$ - 箍缩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Z-%E7%AE%8D%E7%BC%A9"><span class="toc-number">1.5.1.</span> <span class="toc-text">Z - 箍缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#theta-%E7%AE%8D%E7%BC%A9"><span class="toc-number">1.5.2.</span> <span class="toc-text">$\theta$ 箍缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E9%95%9C"><span class="toc-number">1.5.3.</span> <span class="toc-text">磁镜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%BD%A2%E7%BA%A6%E6%9D%9F%E5%92%8C%E6%89%98%E5%8D%A1%E9%A9%AC%E5%85%8B"><span class="toc-number">1.5.4.</span> <span class="toc-text">环形约束和托卡马克</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E5%B9%B3%E8%A1%A1-%E8%9E%BA%E6%97%8B%E7%AE%8D%E7%BC%A9"><span class="toc-number">1.6.</span> <span class="toc-text">一维平衡, 螺旋箍缩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E5%9C%86%E6%9F%B1%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E7%9A%84%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.6.1.</span> <span class="toc-text">一维圆柱等离子体的平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%9B%A0%E5%AD%90"><span class="toc-number">1.6.2.</span> <span class="toc-text">安全因子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Grad-Shafranov-%E6%96%B9%E7%A8%8B"><span class="toc-number">1.7.</span> <span class="toc-text">Grad - Shafranov 方程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%98%E5%8D%A1%E9%A9%AC%E5%85%8B-Tokamak-%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="toc-number">1.7.1.</span> <span class="toc-text">托卡马克(Tokamak)坐标系</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Tabris Trees Severus</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.tabirstrees.top/',
+      region: 'ap-shanghai',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, "window.location.pathname"))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.tabirstrees.top/',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.tabirstrees.top/',
+        region: 'ap-shanghai',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/1f64a5e9.js","daovoice")
+</script><script>var isChatBtn = true
+daovoice('init', {
+  app_id: '1f64a5e9',},{
+  launcher: { 
+     disableLauncherIcon: isChatBtn // 悬浮 ICON 是否显示
+  },
+});
+daovoice('update');
+
+if (isChatBtn) {
+  var chatBtnFn = () => {
+    var chatBtn = document.getElementById("chat_btn")
+    chatBtn.addEventListener("click", function(){
+      daovoice('show')
+    });
+  }
+  chatBtnFn()
+} else {
+  if (true) {
+    function chatBtnHide () {
+      daovoice('update', {},{
+        launcher: { 
+        disableLauncherIcon: true // 悬浮 ICON 是否显示
+        },
+      });
+    }
+    function chatBtnShow () {
+      daovoice('update', {},{
+        launcher: { 
+        disableLauncherIcon: false // 悬浮 ICON 是否显示
+        },
+      });
+    }
+  }
+}</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: true,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', 'UA-166333226-1', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,6 +1,887 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>TRANSP 软件使用学习</title>
+    <url>/2023/11/08/transp/</url>
+    <content><![CDATA[<h1 id="TRANSP-软件使用学习"><a href="#TRANSP-软件使用学习" class="headerlink" title="TRANSP 软件使用学习"></a>TRANSP 软件使用学习</h1><h2 id="关于-TRANSP-软件的简单介绍"><a href="#关于-TRANSP-软件的简单介绍" class="headerlink" title="关于 TRANSP 软件的简单介绍"></a>关于 TRANSP 软件的简单介绍</h2><p><a href="https://transp.pppl.gov/">TRANSP</a> 是美国普林斯顿大学等离子体物理实验室（PPPL）开发的一款为了进行托卡马克实验数据分析的程序，是目前世界范围内应用最广泛的托卡马克实验数据分析程序之一。能够进行托卡马克非圆截面磁位型下 1½ 维度的输运与约束分析，以及托卡马克数据的诊断模拟。(这一段就是到处抄来的，反正大差不差，主要就是用来干这些事情的，不了解的人估计也不会用到这些软件)。</p>
+<p><span style='background: yellow'>值得一提的是，本文是根据运行在等离子体所的集群 SHENMA 服务器上的 TRANSP 软件进行学习的，所以有可能并不适用所有的情况。</span></p>
+<h2 id="使用准备"><a href="#使用准备" class="headerlink" title="使用准备"></a>使用准备</h2><p>在开始使用 TRANSP 软件之前需要准备软件所需的数据文件，因为这个软件开发的时候使用名为 <code>ufile</code> 的文件格式，这里我们可能需要用到一个名为 <code>ufileGen</code> 以及 <code>scrunch2</code> 的小程序来完成文件的准备工作。为了能够将这个软件完整地运行起来，至少需要用到的数据包括 ip, vloop, R*Bt 以及 ne, te, ti 等，其中前面三种为一维数据，后面三种为二维数据，另外还需要磁场位形数据，一般是 <code>gfile</code> 文件。</p>
+<h3 id="一维或者二维数据文件"><a href="#一维或者二维数据文件" class="headerlink" title="一维或者二维数据文件"></a>一维或者二维数据文件</h3><p>首先需要准备一个 <code>.txt</code> 格式的文本文件（实际上格式应该也不重要，只要是文本文件就可以，比如说 <code>.dat</code> 文件）。文件内容应该按照以下的格式存放数据：</p>
+<ul>
+<li>第一行为时间点</li>
+<li>第二行开始为正式数据，其中第一列是数据的径向坐标位置，然后是对应时间点，坐标点上的物理量数据</li>
+<li>要求时间跨度合适（将软件计算的时间包括在内），采样率合适</li>
+<li>如果是一维数据则直接第一列时间点，第二列为时间对应的物理量数据</li>
+</ul>
+<center><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/transp-fig1.png" width="600" /></center><center id='f1'><span style='font-weight:bold'>Fig 1. 数据文件示例，左边为二维数据电子密度，右边为一维数据大半径乘上环向磁通。</span></center>
+
+<p>具体的操作可以参考下面的 gif 图片：</p>
+<center><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/transp-fig2.gif" alt="transp-fig2"></center><center id='f2'><span style='font-weight:bold'>Fig 2. 操作示例，以电子密度为例。</span></center>
+
+<p>最后得到的数据文件 <code>ufile</code> 格式为：</p>
+<center><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/transp-fig3.png" alt="transp-fig3"></center><center id='f3'><span style='font-weight:bold'>Fig 3. 执行操作后的 ufile 文件内容如图</span></center>
+
+<h3 id="磁场位型数据"><a href="#磁场位型数据" class="headerlink" title="磁场位型数据"></a>磁场位型数据</h3><p>一般来说我们用的最多的是 <code>gfile</code> 类型的磁场位形数据，因此需要用到名为 <code>scrunch2</code> 的程序进行格式转换。将所需要的磁场位形数据拷贝到目录中，并建立一个名为 <code>index.dat</code> 的只是文件，给程序指示不同时间点的磁场位形文件是哪一个（以及文件储存的路径！！！），如下图所示：</p>
+<center><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/transp-fig4.png" alt="transp-fig4"></center><center id='f4'><span style='font-weight:bold'>Fig 4. index.dat 文件的示例。</span></center>
+
+<blockquote>
+<p>值得注意的是配置运行 TRANSP 软件的步骤需要在名为 <code>Singularity</code> 的容器中进行，而我们需要准备的 <code>ufile</code> 文件中，一二维数据文件可以直接在容器外面用相关的小程序直接进行，但是平衡文件的转化程序 <code>scrunch2</code> 需要进入到容器中之后才能使用。</p>
+</blockquote>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>为了能够顺利的进入容器，这里需要对我们神马集群上的账号进行环境变量的配置，在 home 目录下打开 <code>.bashrc</code> 文件，将其中的内容改为：<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> .bashrc</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Source global definitions</span></span><br><span class="line">if [ -f /etc/bashrc ]; then</span><br><span class="line">        . /etc/bashrc</span><br><span class="line">fi</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> User specific aliases and <span class="built_in">functions</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">######module for transp singularity container</span></span></span><br><span class="line">export SINGULARITY_TMPDIR=/scratch/users/transp/tmp</span><br><span class="line">ulimit -l unlimited</span><br><span class="line">ulimit -s unlimited</span><br></pre></td></tr></table></figure><br>其中 <code>users</code> 记得换成自己的账号名。这个意思是将 <code>singularity</code> 的临时文件保存到有自己可操作权限的文件夹中。</p>
+<hr>
+<p>进行完上述操作后，进入我们存放数据的文件夹中，在神马上有一个专门用于存放 TRANSP 运行文件的文件夹，我这边的示例为：<code>/gpfs/scratch/lijc/transp/Runs/EAST/11473</code>，<code>lijc</code> 对应你自己的账号名，<code>Runs</code> 中存放需要运行的数据，实际上上文存放临时文件的位置也是在和 <code>Runs</code> 并列的 <code>tmp</code> 文件夹中。数据应该尽量按照装置和炮号放置在不同目录下。</p>
+<h2 id="配置并进入容器"><a href="#配置并进入容器" class="headerlink" title="配置并进入容器"></a>配置并进入容器</h2><p>首先切换到 110 节点，<span class='mohu'>实测不切换的话是进入不了容器的，会提示找不到文件的位置</span>。<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh login110</span><br></pre></td></tr></table></figure><br>然后进入存放数据的文件夹，加载需要使用的 modules 并进入容器配置：<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /gpfs/scratch/users/transp/Runs/XXXX/XXXXX</span><br><span class="line">module use /gpfs/fuyun/modules/all</span><br><span class="line">module load singularity/3.8.1-Go-1.14.1</span><br><span class="line">singularity run --app environ /gpfs/fuyun/containers/singularity/transp_21.2.sif</span><br></pre></td></tr></table></figure><br>这里 singularity 也可以使用 21.4 版本的 TRANSP ，但是这个版本的 <code>scrunch2</code> 工具不知道为什么使用不了所以推荐 21.2 版本。进入容器后会让你进行交互，通过以下的配置（我自己的例子）可以生成一个执行程序的环境配置文件 <code>transp-bashrc</code> ：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[lijc@login110 11473]$ singularity run --app environ /gpfs/fuyun/containers/singularity/transp_21.2.sif</span><br><span class="line">INFO:    Converting SIF file to temporary sandbox...</span><br><span class="line">Singularity container for TRANSP v21.2.</span><br><span class="line">app: environ</span><br><span class="line">Enter RESULTDIR path: /scratch/transp/result/lijc/</span><br><span class="line">Enter DATADIR path: /scratch/lijc/transp/data</span><br><span class="line">Enter TMPDIR path: /scratch/lijc/transp/tmp</span><br><span class="line">Use standard ADAS table [y/n]? n</span><br><span class="line">Enter ADAS path: /opt/adas</span><br><span class="line">Use standard PREACT table [y/n]? n</span><br><span class="line">Enter PREACT path: /opt/preact</span><br><span class="line">Set NPROCS: 8</span><br><span class="line">Set NBI_NPROCS: 8</span><br><span class="line">Set NTOR_NPROCS: 0</span><br><span class="line">Set NPTR_NPROCS: 0</span><br><span class="line">Set NGEN_NPROCS: 0</span><br><span class="line">Set NCQL3D_NPROCS: 0</span><br><span class="line">Finished configuring TRANSP environment.</span><br><span class="line">INFO:    Cleaning up image...</span><br><span class="line">ERROR:   failed to delete container image tempDir /scratch/lijc/transp/tmp/rootfs-689595348: unlinkat /scratch/lijc/transp/tmp/rootfs-689595348/root/root/.tcshrc: permission denied</span><br><span class="line">[lijc@login110 11473]$</span><br></pre></td></tr></table></figure><br>下面那个 ERROR 可以不用管，不影响使用。</p>
+<p>随后将这个环境配置文件以当前目录并进入容器内部：<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mv ~/transp-bashrc .</span><br><span class="line">singularity run   -B `pwd`:`pwd` -B /opt/tsce4/:/opt/tsce4  -B /project/transp/public/transp/codesys/pbs:/opt/transp/codesys/pbs -B  /scratch/users/transp:/scratch/users/transp -B /scratch/transp/result:/scratch/transp/result /gpfs/fuyun/containers/singularity/transp_21.2.sif</span><br></pre></td></tr></table></figure><br>记得将 <code>users</code> 改成自己的用户名。此时，如果还没有转换过平衡文件需要用 <code>scrunch2</code> 转化平衡文件。</p>
+<center><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/transp-fig5.gif" alt="transp-fig5"></center><center id='f5'><span style='font-weight:bold'>Fig 5. scrunch2 工具的使用示例。</span></center>
+
+<p>打开准备好的 namelist 文件（ xxxxxTR.DAT ），修改选项，注意文件和数据的路径（一般来说是第二行，不排除有其他指定的位置）要修改到自己的路径，因为一般是拷贝的别人的 namelist 文件，很多地方都需要修改，注意不要遗漏。准备好之后开始在容器内打包可执行文件：<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">source transp-bashrc # 使环境配置生效</span><br><span class="line">pretr MPI XXXXXXXX # 确认炮号，检查文件</span><br><span class="line">trdat XXXXXXXX # 生成统一的物理量文件</span><br><span class="line">w</span><br><span class="line">q</span><br><span class="line">label XXXXXXXX # 建立连接</span><br><span class="line">copy_expert_for XXXXXXXX</span><br><span class="line">uplink XXXXXXXXtr nolib # 生成可执行文件</span><br><span class="line">exit</span><br></pre></td></tr></table></figure><br>最后将 <code>transp-exec.sh</code> 文件中的炮号改成自己使用的炮号，再提交 <code>transp-qsub-once.psb</code> 文件的任务就可以执行 TRANSP 软件了。<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">qsub transp-qsub-once.psb</span><br><span class="line">qstat</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://slideum.com/doc/176845/transp%E5%8F%91%E5%B8%83%E4%BC%9A---%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97%E9%9B%86%E7%BE%A4%E2%80%9C%E7%A5%9E%E9%A9%AC%E2%80%9D-%E2%80%94-%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E6%89%80">https://slideum.com/doc/176845/transp%E5%8F%91%E5%B8%83%E4%BC%9A---%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97%E9%9B%86%E7%BE%A4%E2%80%9C%E7%A5%9E%E9%A9%AC%E2%80%9D-%E2%80%94-%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93%E6%89%80</a></li>
+<li><a href="https://transp.pppl.gov/">https://transp.pppl.gov/</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>科研</category>
+        <category>等离子体物理</category>
+        <category>模拟</category>
+      </categories>
+      <tags>
+        <tag>聚变</tag>
+        <tag>离子回旋加热</tag>
+        <tag>数值模拟</tag>
+        <tag>程序</tag>
+        <tag>NBI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CPP-PPPL 暑期学校课程 1 计算等离子体物理简介</title>
+    <url>/2023/06/27/CPP-PPPL1/</url>
+    <content><![CDATA[<div class="note info flat"><p>这是对2021年 PPPL(Princeton Plasma Physics Laboratory) 暑期学校教授等离子体计算方法的课件进行学习整理之后的笔记.</p>
+</div>
+<blockquote>
+<p>These are notes, lecture slides and code for use in PPPL’s Graduate Summer School, Computational Methods in Plasma Physics mini-course. All material is copyrighted by Ammar Hakim and released under the Creative Commons CC BY License.</p>
+</blockquote>
+<center><h1>计算等离子体物理简介</h1></center>
+
+<p>动理学作为从微观层面出发解释宏观效应的理论是等离子体物理一个非常有用但复杂的工具, 即使考虑最简单的 Vlasvo-Maxwell 方程也足够描述相当大部分的物理现象.</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial f_{s}}{\partial t} + \nabla_{x} \cdot \left(v f_{s}\right) + \nabla_{v} \cdot \left(\mathbfit{F}_{s} f_{s}\right) = \left(\frac{\partial f_{s}}{\partial t}\right)_{c}
+    \end{aligned}
+\end{equation}</script><p>其中, $\mathbfit{F}_{s} = q_{s}/m_{s} (\mathbfit{E} + v \times \mathbfit{B})$, 再加上描述电磁场的 Maxwellian 方程:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial \mathbfit{B}}{\partial t}+\nabla \times \mathbfit{E} & =0 \\ \epsilon_{0} \mu_{0} \frac{\partial \mathbfit{E}}{\partial t}-\nabla \times \mathbfit{B} & =-\mu_{0} \sum_{s} q_{s} \int_{-\infty}^{\infty} {v} f_{s} \mathrm{\,d} {v}^{3}
+    \end{aligned}
+\end{equation}</script><p>这是一个高度非线性的方程组, 场决定了粒子的运动, 粒子的运动反过来产生新的电磁场. 我们做了很多努力来对这个方程组进行精确约化或者在某些特定情况下求解解析值. <span class='mohu'>中科院数学与系统科学研究所的学术报告中就有很多是关于该方程求解的工作.</span></p>
+<p>那么, 为什么求解 Vlasov-Maxwell 方程如此困难:</p>
+<ul>
+<li>场和粒子之间的高阶非线性耦合, 以及不同粒子之间通过长程力作用的小角度碰撞;</li>
+<li>多维相空间的参数以及大质量比(电子和离子的质量比为 $m_{e}/m_{p} \approx 1/1836$)的大量粒子种类(会导致计算精度丢失);</li>
+<li>从光速到电子等离子体振荡, 从电子回旋到离子回旋, 从介观的流体演化到宏观的平衡态演化, 方程中各种时间和空间上的尺度相差14个数量级.</li>
+</ul>
+<p>我们这么关心这些方程的数值求解主要是理论上对未知保持好奇, 另外更加重要的是应用上包括磁约束聚变, 等温等离子体等工程应用时求解方程的需要:</p>
+<ul>
+<li>应用数学和理论物理要求我们开发更加高效的数值方案来求解描述自然的各种复杂方程;</li>
+<li>数值方法学科本身的发展, 包括数值能够多大程度的还原物理或者多大程序的利用计算机, 以及研究一些更加先进的数值算法(保结构算法);</li>
+<li>更深入的理解描述世界的方程, 更深入的理解世界.</li>
+</ul>
+<p><span class='mohu'>比较大, 比较空, 但确实是驱动我们科学技术发展的深层次动机.</span></p>
+<ul>
+<li>计算机提供给了我们一个好的工具理解/设计实验和观测, 我们要利用好这项技术;</li>
+<li>大规模的数值计算预实验需要在实际操作之前确定出一条准确可行的方案(避免大型装置实验失败的巨大风险, 生命财产多方面的).</li>
+</ul>
+<p>课件的目的(当然也是本文章的目的)是介绍一下现代等离子体计算的概念, 尤其是建立起方程中<strong>连续(解析)</strong>和<strong>离散(数值)</strong>性质之间的连接. 主要是以下的两个方面:</p>
+<ol>
+<li><span style='background: yellow'>说明必须要包含在离散的数值系统当中的物理, 包括不那么直接的性质, 高精确度以及方案求解的阶数;</span></li>
+<li><span style='background: yellow'>对求解方案的动理学方程, PIC(Particle in Cell)以及 Vlasov 方程的连续解的一个总体概览</span></li>
+</ol>
+<div class="note warnning flat"><p>下面就是课件的主题内容, 因为是课件的笔记, 所以将仅仅只是简单精要的总结, 不会有更多的理解, 后面可能会有一个全局的总结来谈谈我学习完之后的一些理解, 这样也能做的更加深入一些.</p>
+</div>
+<h2 id="离散方程所包含的物理"><a href="#离散方程所包含的物理" class="headerlink" title="离散方程所包含的物理"></a>离散方程所包含的物理</h2><blockquote>
+<p>One view of computational physics: we are studying the physics of discretized equations and not really “Nature” itself. Not obvious that these are the same (as measure by some metric).</p>
+</blockquote>
+<p>很多的物理性质是不那么明显的(indirect), 最简单的例子:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial f}{\partial t} + \frac{\partial f}{\partial x} = 0
+    \end{aligned}
+\end{equation}</script><div class="note info flat"><p>这是没有外加电磁场, 没有碰撞项, 没有初始速度的经过简化版的一维 Vlasov 方程, 实际上它描述了静态平衡(分布是守恒的)</p>
+</div>
+<p>从这个式子我们可以推出其 $L_{2}$ 范数是守恒的, 也就是:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial}{\partial t} \frac{1}{2} f^{2} + \frac{\partial }{\partial x} \frac{1}{2} f^{2} = 0
+    \end{aligned}
+\end{equation}</script><p>这是一个不那么明显的性质, 有时候甚至意识不到它应该是守恒的.</p>
+<p>对 Maxwell 方程同样有很重要的 _indirect_ 性质: 能量和动量的守恒, 比如能量守恒可以描述为:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial }{\partial t} \left(\frac{\mathbfit{B}^{2}}{2 \mu_{0}} + \frac{\epsilon_{0} \mathbfit{E}^{2}}{2}\right) + \frac{1}{\mu_{0}} \nabla \cdot \left(\mathbfit{E} \times \mathbfit{B}\right) = - \mathbfit{E} \cdot \mathbfit{J} 
+    \end{aligned}
+\end{equation}</script><details class="toggle" ><summary class="toggle-button" style="">电磁场能量守恒的推导</summary><div class="toggle-content"><p>这是电动力学的基本结果, 高中知识可以得到, 电磁场作用物体实际上不是作用物体本身, 而是作用于电荷或者电流, 同时磁场对运动电荷(电流)产生的力总是与电荷运动的方向垂直的(不做功), 那么我只需要算电场对运动电荷所做的功即可, 也就是:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \int \mathbfit{E} \cdot \rho \mathrm{\,d}\tau \mathrm{\,d}\mathbfit{l}
+    \end{aligned}
+\end{equation}</script><p>$l$ 是电荷在电场作用下运动的距离. 考虑对时间的微分形式:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{\,d}W}{\mathrm{\,d}t} &= \int \mathbfit{E} \cdot \rho \mathrm{\,d}\tau \mathrm{\,d}\mathbfit{l}/\mathrm{\,d}t \\
+        & = \int \mathbfit{E} \cdot \rho \mathbfit{v} \mathrm{\,d}\tau \\
+        &= \int \mathbfit{E} \cdot \mathbfit{j} \mathrm{\,d}\tau
+    \end{aligned}
+\end{equation}</script><p>然后根据 Maxwell 方程的第四项:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        &\mathbfit{j} = \frac{1}{\mu_{0}} (\nabla \times \mathbfit{B}) - \epsilon_{0} \frac{\partial \mathbfit{E}}{\partial t} \\
+        &\Rightarrow \mathbfit{j} \cdot \mathbfit{E}  = \frac{1}{\mu_{0}} (\nabla \times \mathbfit{B}) \cdot \mathbfit{E} - \frac{\epsilon_{0}}{2} \frac{\partial \mathbfit{E}^{2}}{\partial t}
+    \end{aligned}
+\end{equation}</script><p>根据矢量恒等式: $\nabla \cdot (\mathbfit{B} \times \mathbfit{E}) = E \cdot (\nabla \times \mathbfit{B}) - \mathbfit{B} \cdot (\nabla \times \mathbfit{E})$ 可以得到</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{j} \cdot \mathbfit{E} = \frac{1}{\mu_{0}} \nabla \cdot \left(\mathbfit{B} \times \mathbfit{E}\right) + \frac{1}{\mu_{0}} \mathbfit{B} \cdot (\nabla \times \mathbfit{E}) - \frac{\epsilon_{0}}{2}\frac{\partial \mathbfit{E}^{2}}{\partial t}
+    \end{aligned}
+\end{equation}</script><p>再利用 $\nabla \times \mathbfit{E} = -\frac{\partial \mathbfit{B}}{\partial t}$ 经过简单化简就能得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{E} \cdot \mathbfit{j} = -\frac{1}{\mu_{0}} \nabla \cdot (\mathbfit{E} \times \mathbfit{B}) - \frac{1}{2 \mu_{0}}\frac{\partial \mathbfit{B}^{2}}{\partial t} - \frac{\epsilon_{0}}{2} \frac{\partial \mathbfit{E}^{2}}{\partial t}
+    \end{aligned}
+\end{equation}</script><p>也就是上面正文中的式子, 可以证明这就是电磁场的能量守恒表达式.</p>
+</div></details>
+<p>但是这是连续的情况下得到结论, 当我们做数值离散的时候保持能量守恒这个特性是需要面对的一个问题.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/Compute methods in plasma-20230625210600.png" alt="Compute methods in plasma-20230625210600"></p>
+<center id='f1'><span style='font-weight:bold'>Fig 1. Energy conserving scheme for Maxwell equations (purple) compared to non-conservative scheme (black). Conservation of energy means there is no damping of spurious high-k modes.</span></center>
+
+<p>如果将 Vlasov 方程考虑进去能量守恒还需要加上粒子的动能, 同时体系变成封闭体系, 即:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}t} \sum _{s} \int _{K} \frac{1}{2} m \left|v\right|^{2} f \mathrm{\,d}z + \frac{\mathrm{d}}{\mathrm{d}t} \int _{\Omega} \left(\frac{\epsilon_{0}}{2} \left|\mathbfit{E}\right|^{2} + \frac{1}{2\mu_{0}} \left|\mathbfit{B}\right|^{2}\right)\mathrm{\,d}^{3}x = 0
+    \end{aligned}
+\end{equation}</script><p>但是对于离散的数值方案来说这个性质并不是那么明显成立的, 相似的问题在哈密顿方程描述等离子体的数值方案中同样也存在.</p>
+<p>除了能量和动量守恒外, Vlasov-Maxwell 方程或者一些其他方程还有着熵在无碰撞情况下是守恒的, 碰撞情况下是单调递增等性质, 这些性质在我们的数值方案中也并不是可以确定存在的.</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}t} \int _{K} -f \ln(f) \geq 0
+    \end{aligned}
+\end{equation}</script><p>总能量守恒我们都知道, 一个典型的流体力学代码也包含了总能量守恒这一性质, 但是如果只考虑动能的演化呢? 通常我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial }{\partial t} \int _{\Omega} \frac{1}{2} \rho \mathbfit{u}^{2} \mathrm{\,d}x + \oint _{\partial \Omega} \left(\frac{1}{2} \rho \mathbfit{u}^{2} + \mathbfit{p}\right) \mathbfit{u} \cdot \mathrm{\,d}\mathbfit{s} - \int _{\Omega} \mathbfit{p} \nabla \cdot \mathbfit{u} \mathrm{\,d}x = 0
+    \end{aligned}
+\end{equation}</script><p>这个式子展示了动能变化来自流体的可压缩性. 在等离子体中 $\mathbfit{J} \cdot \mathbfit{E}$ 这一项也展示了粒子与场之间的能量交换. 但是数值方案中有这个性质吗, 有什么奇怪的交换项将能量在不同项之间的分配给搞砸了吗, 这是一个需要思考的问题. 不正确的离散交换会引起高阶模错误的能量交换行为, 这些模式的精确性将会影响我们理解湍流的本质.</p>
+<h2 id="计算等离子体中的一些常见方案"><a href="#计算等离子体中的一些常见方案" class="headerlink" title="计算等离子体中的一些常见方案"></a>计算等离子体中的一些常见方案</h2><h3 id="电磁场中的单粒子运动"><a href="#电磁场中的单粒子运动" class="headerlink" title="电磁场中的单粒子运动"></a>电磁场中的单粒子运动</h3><p>PIC 模拟实际上是在拉格朗日框架下的相空间中求解 Vlasov-Maxwell 方程, 此时的分布函数将会沿着相空间的特征(characteristics)保持不变. 这些特征(characteristics)满足洛伦兹力作用下粒子运动的常微分方程:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}\mathbfit{x}}{\mathrm{d}t} &= \mathbfit{v} \\
+        \frac{\mathrm{d}\mathbfit{v}}{\mathrm{d}t} &= \frac{q}{m} (\mathbfit{E}(x,t) + \mathbfit{v} \times \mathbfit{B}(x,t))
+    \end{aligned}
+\end{equation}</script><p>我们先关注单个粒子的运动方程, 之后再将其与电磁场以及其他粒子耦合起来.</p>
+<h3 id="简单谐振子"><a href="#简单谐振子" class="headerlink" title="简单谐振子"></a>简单谐振子</h3><p>首先考虑一个简单谐振子:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}^{2}z}{\mathrm{d}t^{2}} = -\omega^{2} z
+    \end{aligned}
+\end{equation}</script><p>对这样的方程我们有一个精确的解的形式(<span class='mohu'>高等数学中已经学过</span>) $z = a \cos(\omega t) + b \sin(\omega t)$. 写成一阶常微分方程的形式:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}z}{\mathrm{d}t} = v;\ \frac{\mathrm{d}v}{\mathrm{d}t} = -\omega^{2} z
+    \end{aligned}
+\end{equation}</script><p>这样, 这个简单谐振子的相空间就由坐标 $(z,v)$ 构建起来, 类比到实际物理中这就是牛顿力学的具体表述, 现在我们将 $v$ 乘到第二个式子中以得到动能的形式:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        &\frac{\mathrm{d}}{\mathrm{d}t} \frac{1}{2} v^{2} = -\omega^{2} z \frac{\mathrm{d}z}{\mathrm{d}t} \\
+        \Rightarrow &\frac{\mathrm{d}}{\mathrm{d}t} \left(\frac{1}{2} v^{2} + \frac{1}{2} \omega^{2} z^{2}\right) = 0
+    \end{aligned}
+\end{equation}</script><p>这就是简单谐振子这个系统中能量守恒的表达. 问题是我们怎么在离散的数值方案中保证这个性质也是成立的呢?</p>
+<h3 id="前向欧拉方法"><a href="#前向欧拉方法" class="headerlink" title="前向欧拉方法"></a>前向欧拉方法</h3><p>最简单的方案, 采用用差分代替微分的思路:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{z^{n+1} - z^{n}}{\Delta t} = v^{n};\ \frac{v^{n+1}-v^{n}}{\Delta t} = -\omega^{2} z^{n}
+    \end{aligned}
+\end{equation}</script><p>或者</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        z^{n+1} = z^{n}+\Delta t v^{n};\ v^{n+1} = v^{n}-\Delta t \omega^{2} z^{n}
+    \end{aligned}
+\end{equation}</script><p>利用这种递推公式可以得出后一时刻的前面的总能量形式为:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \left(v^{n+1}\right)^{2}+\omega^{2}\left(z^{n+1}\right)^{2}=\left(1+\omega^{2} \Delta t^{2}\right)\left(\left(v^{n}\right)^{2}+\omega^{2}\left(z^{n}\right)^{2}\right)
+    \end{aligned}
+\end{equation}</script><p>可以看到, 如果能量守恒后者应该是 $\left(v^{n}\right)^{2}+\omega^{2}\left(z^{n}\right)^{2}$, 但这种方法多出了一个 $\omega^{2} \Delta t^{2}$, 因此这种前向欧拉方法是不具有能量守恒性质的, 实际上每多走一步系统的能量是在增加的. 更近一步地, 我们可以把上面的差分式子写成矩阵形式:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \left[\begin{array}{l}z^{n+1} \\ v^{n+1}\end{array}\right]=\underbrace{\left[\begin{array}{cc}1 & \Delta t \\ -\omega^{2} \Delta t & 1\end{array}\right]}_{\text {Jacobian, } J}\left[\begin{array}{l}z^{n} \\ v^{n}\end{array}\right]
+    \end{aligned}
+\end{equation}</script><p>把前面的矩阵称作 Jacobian 矩阵, 其行列式为: $\det(\mathbfit{J}) = (1+\omega^{2}\Delta t^{2})$, 这正好就是前面能量关系中出现的因子, 于是我们可以很自然地得到结论:</p>
+<div class="note success flat"><p>如果某个数值方案的雅可比(Jacobian)矩阵的行列式 $\det(\mathbfit{J}) = 1$, 那么这种方案具有能量守恒的性质, 我们称之为 <strong>“保体积方法”</strong>, 因为这种方法可以保证相空间体积是不变的.</p>
+</div>
+<h3 id="中点法-Mid-point-Scheme"><a href="#中点法-Mid-point-Scheme" class="headerlink" title="中点法(Mid-point Scheme)"></a>中点法(Mid-point Scheme)</h3><p>另一种更好的方案可能是中点平均格式的数值方法, 其递推公式变成:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{z^{n+1}-z^{n}}{\Delta t} &= \frac{v^{n}+v^{n+1}}{2} \\
+        \frac{v^{n+1}-v^{n}}{\Delta t} &= -\omega^{2} \frac{z^{n}+z^{n+1}}{2}
+    \end{aligned}
+\end{equation}</script><p>这是一种隐式格式的算法, 这意味着下一步的解不仅依赖于当前步的值, 也依赖于下一步的值. 类似的我们也可以写成矩阵形式:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \left[\begin{array}{c}z^{n+1} \\ v^{n+1}\end{array}\right]=\frac{1}{1+\omega^{2} \Delta t^{2} / 4}\left[\begin{array}{cc}1-\omega^{2} \Delta t^{2} / 4 & \Delta t \\ -\omega^{2} \Delta t & 1-\omega^{2} \Delta t^{2} / 4\end{array}\right]\left[\begin{array}{c}z^{n} \\ v^{n}\end{array}\right]
+    \end{aligned}
+\end{equation}</script><p>可以算出对于这种方法 $\det(\mathbfit{J}) = 1$, 因此这是一种相空间体积守恒的方法, 同时你也可以通过代数计算出:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        (v^{n+1})^{2} + \omega^{2} (z^{n+1})^{2} = (v^{n})^{2} + \omega^{2} (z^{n})^{2}
+    \end{aligned}
+\end{equation}</script><p>这表示这个方法具有能量守恒的特性.</p>
+<p>对于简单谐振子来说一个更加严格的约束是 Jacobian 矩阵应该是一个辛矩阵, 满足以下的关系:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{J}^{T} \sigma \mathbfit{J} = \sigma
+    \end{aligned}
+\end{equation}</script><p>其中 $\sigma$ 是单位辛矩阵:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \sigma = \left[\begin{array}{cc}0 & 1 \\ -1 & 0\end{array}\right]
+    \end{aligned}
+\end{equation}</script><p>可以证明的是中点方法确实满足这一条件, 应该注意的是一个保体积算法并不一定是具有辛对偶特性的.</p>
+<h3 id="精确度和稳定性"><a href="#精确度和稳定性" class="headerlink" title="精确度和稳定性"></a>精确度和稳定性</h3><p>学习精确度以及稳定性的问题一般用下面的一阶常微分方程来入手:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}z}{\mathrm{d}t} = - \gamma z
+    \end{aligned}
+\end{equation}</script><p>其中, $\gamma = \omega + i \lambda$ 是复频率, 这个方程的严格解为: $z(t) = z_{0} e^{-\gamma t}$, 这表明解会存在一个阻尼 $\lambda &lt; 0$ 或者增长 $\lambda &gt; 0$ 的振荡模式. 对于这个方程, 前向欧拉方法为:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        z^{n+1}=z^{n}-\Delta t \gamma z^{n}=(1-\Delta t \gamma) z^{n}
+    \end{aligned}
+\end{equation}</script><p>中点方法为:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        z^{n+1}&=\left(\frac{1-\gamma \Delta t / 2}{1+\gamma \Delta t / 2}\right) z^{n} \\
+        &= z^{n} \left(1-\Delta t \gamma - \frac{1}{2} \gamma^{2} \Delta t^{2} - \frac{1}{4} \gamma^{3} \Delta t^{3} + \ldots\right)
+    \end{aligned}
+\end{equation}</script><p>通常我们检查方案的精确度是看其与严格解的差分形式泰勒展开有多少项是相同的, 在这个例子中泰勒展开如下:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        z\left(t^{n+1}\right)=z\left(t^{n}\right)\left(1-\gamma \Delta t+\frac{1}{2} \gamma^{2} \Delta t^{2}-\frac{1}{6} \gamma^{3} \Delta t^{3}+\ldots\right)
+    \end{aligned}
+\end{equation}</script><p>可以看出前向欧拉方法只有一阶的精度, 而中点方法却有三阶的精度.</p>
+<p>如果对于某个问题的数值方案产生的误差不会随着时间的迭代而增加我们就称这个数值方法是 <strong>稳定的</strong>. 可以用一个简单的数(amplification factor)来判断:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \left|\frac{e^{n+1}}{e^{n}}\right| = \left|\frac{z^{n+1} - z_{\star}^{n+1}}{z^{n} - z_{\star}^{n}}\right| = \left|\frac{D(z^{n})-D(z_{\star}^{n})}{z^{n} - z_{\star}^{n}}\right|
+    \end{aligned}
+\end{equation}</script><p>其中, $z_{\star}^{n}$ 表示当前步的精确解, $D(z^{n})$ 表示数值方案对应的差分关系. 在这个例子中(我们这里只考虑 $\lambda = 0$ 的情况, 即没有阻尼或者增长的情况), 前向欧拉格式对应的 amplification factor 为 $1 - \Delta t \omega$. 要保证数值误差不增长( $\omega &gt; 0$ ), 需要 $\Delta t \leq \frac{2}{\omega}$. 所以我们说前向欧拉方法是<strong>条件稳定的</strong>. 如果是中点方法, amplification factor 很明显为 1, 也就是说用中点法数值求解这个方程是 <strong>无条件稳定的</strong>, 这意味着你可以取一个很大的计算步长而不会引起误差的爆炸 <span class='mohu'>Of course, the error will increase with the large $\Delta t$</span>.</p>
+<p>虽然前向欧拉方法是条件稳定的算法, 但是我们依旧可以在它的基础上开发更稳定更精确的算法. 前面提到的两种算法都是单步算法, 只需要计算一次就可以得到结果, 实际计算的时候我们还可以采用多步算法(multi-stage), 比如龙格库塔方法(Runge-Kutta methods), 这种方法具有较高的精度以及较强的稳定性. 值得注意的是这些龙格库塔方法对简单谐振子来说并不能保证能量守恒, 反而会导致能量的衰减, 如果要保证物理性质不丢失, 还需要检验算法的相关特性.</p>
+<h3 id="电磁场中的单粒子运动数值计算"><a href="#电磁场中的单粒子运动数值计算" class="headerlink" title="电磁场中的单粒子运动数值计算"></a>电磁场中的单粒子运动数值计算</h3><p>前面已经给出了带电粒子在电磁场中的运动方程, 很明显, 如果没有电场存在系统的动能将会是一个常数:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{1}{2} \left|\mathbfit{v}\right|^{2} = \text{constant}
+    \end{aligned}
+\end{equation}</script><p>这意味着在几何上, 没有电场存在时速度矢量将会始终落在在空间中的一个球面上.</p>
+<p>这里我们给出带电粒子运动方程的中点格式:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathbfit{x}^{n+1}-\mathbfit{x}^{n}}{\Delta t}&=\frac{\mathbfit{v}^{n+1}+\mathbfit{v}^{n}}{2} \\ \frac{\mathbfit{v}^{n+1}-\mathbfit{v}^{n}}{\Delta t}&=\frac{q}{m}\left(\overline{\mathbfit{E}}(\mathbfit{x}, t)+\frac{\mathbfit{v}^{n+1}+\mathbfit{v}^{n}}{2} \times \overline{\mathbfit{B}}(\mathbfit{x}, t)\right)
+    \end{aligned}
+\end{equation}</script><p>overbar 表示新旧位置电磁场的平均, 一般来说, 这会使我们的数值方法变得非线性. 我们也可以使用一种交错式(或者也称之为<strong>蛙跳格式</strong>)的推进方法:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathbfit{x}^{n+1}-\mathbfit{x}^{n}}{\Delta t} & =\mathbfit{v}^{n+1 / 2} \\ \frac{\mathbfit{v}^{n+1 / 2}-\mathbfit{v}^{n-1 / 2}}{\Delta t} & =\frac{q}{m}\left(\mathbfit{E}\left(\mathbfit{x}^{n}, t^{n}\right)+\frac{\mathbfit{v}^{n+1 / 2}+\mathbfit{v}^{n-1 / 2}}{2} \times \mathbfit{B}\left(\mathbfit{x}^{n}, t^{n}\right)\right)
+    \end{aligned}
+\end{equation}</script><p>这看起来是一种隐式格式的方法, 通常是构建一个 $3 \times 3$ 的线性系统来代表这个方程, 然后通过取逆的方式来决定 $\mathbfit{v}^{n+1}$. Boris 算法采用以下的步骤来更新这个方程:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{v}^{-} & =\mathbfit{v}^{n-1 / 2}+\frac{q}{m} \mathbfit{E}^{n} \frac{\Delta t}{2} \\ \frac{\mathbfit{v}^{+}-\mathbfit{v}^{-}}{\Delta t} & =\frac{q}{2 m}\left(\mathbfit{v}^{+}+\mathbfit{v}^{-}\right) \times \mathbfit{B}^{n} \\ \mathbfit{v}^{n+1 / 2} & =\mathbfit{v}^{+}+\frac{q}{m} \mathbfit{E}^{n} \frac{\Delta t}{2}
+    \end{aligned}
+\end{equation}</script><p>这个过程中, 需要进行两次电场对速度的推进以及一次磁场对速度的旋转<sup><a href="#fn_1" id="reffn_1">1</a></sup>. 一旦速度通过这种方式计算出来之后, 我们可以很轻松的更新出下一时刻的位置. 其中磁场对粒子速度的旋转被分成两个步骤进行:</p>
+<ol>
+<li>计算 $\mathbfit{s}$ 和 $\mathbfit{t}$ 这两个中间矢量<script type="math/tex; mode=display">
+t = \frac{q \mathbfit{B}}{m} \frac{\Delta t}{2} \\ s= \frac{2 t}{1+\left|t\right|^{2}}</script></li>
+<li>计算 $v^{\prime} = v^{-}+v^{-} \times \mathbfit{t}$, 然后 $v^{+} = v^{-} + v^{\prime} \times \mathbfit{s}$.</li>
+</ol>
+<p>一些具体的细节还可以参考 Birdsall 和 Langdon 的书 4-3 以及 4-4 部分<sup><a href="#fn_2" id="reffn_2">2</a></sup>. 如果没有电场存在的情况下 Boris 方法计算的动能是守恒的, 另一些 Boris 计算方式的优点可以看 Qin et al. (2013) 的文章<sup><a href="#fn_3" id="reffn_3">3</a></sup>.</p>
+<h3 id="求解-Maxwell-方程组"><a href="#求解-Maxwell-方程组" class="headerlink" title="求解 Maxwell 方程组"></a>求解 Maxwell 方程组</h3><p>解决完电磁场中带电粒子的推进, 我们还需要通过计算 Maxwell 方程组来考虑场与电流电荷之间的自洽. 首先考虑真空中的 Maxwell 方程组:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial \mathbfit{B}}{\partial t}+\nabla \times \mathbfit{E}=0 \\ \epsilon_{0} \mu_{0} \frac{\partial \mathbfit{E}}{\partial t}-\nabla \times \mathbfit{B}=0
+    \end{aligned}
+\end{equation}</script><p>于是我们可以得到两条守恒定律:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{d}{d t} \int_{\Omega} \mathbfit{E} \times \mathbfit{B} d^{3} \mathbfit{x}=0 \\ \frac{d}{d t} \int_{\Omega}\left(\frac{\epsilon_{0}}{2}|\mathbfit{E}|^{2}+\frac{1}{2 \mu_{0}}|\mathbfit{~B}|^{2}\right) d^{3} x=0
+    \end{aligned}
+\end{equation}</script><p>注意这些守恒律都是全局的, 我们也可以写出带有能量通量的局部守恒律. 如果有效的计算这些方程并保留其守恒特性呢? 考虑到 Maxwell 方程具有以下几个特性: </p>
+<ul>
+<li>特殊的几何结构, 电场 $\mathbfit{E}$ 是矢量, 但磁场 $\mathbfit{B}$ 是二重向量(bivector)<sup><a href="#fn_4" id="reffn_4">4</a></sup><sup><a href="#fn_5" id="reffn_5">5</a></sup></li>
+<li>完整的电磁场在 4 维时空的时空代数形式下被表示为一个二重向量</li>
+</ul>
+<p>也就是说事实上, 我们正在处理两个不同几何类型的物体, 这表明离散麦克斯韦方程组也应该以某种方式继承这一点. Yee 算法, 或者说 <strong>有限差分时域算法</strong> 是目前在考虑几何结构方面最成功也是最简单的算法, 这种方法被应用在大部分的 PIC 模拟中 <span class='mohu'>尽管最近人们开始研究保结构有限元算法以及一些其他的方法</span>.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/Compute methods in plasma-20230627201409.png" alt="Compute methods in plasma-20230627201409" style="zoom:50%;" ></p>
+<center id='f2'><span style='font-weight:bold'>Fig 2. Illustration of the Yee-cell.</span></center>
+
+<p>Yee 网格对 Maxwell 方程的差分约化简直就像是魔法一样 <span class='heimu'>(OK, 其实我并不是很懂这个方法有多么牛逼, 原谅我还是太菜了, 但是原文就是这么说的!!!)</span>. 这些更新方案在时间上是交错的, 过程中使用了两种不同的离散旋度运算符:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{B}^{n+1 / 2} & =\mathbfit{B}^{n-1 / 2}-\Delta t \nabla_{E} \times \mathbfit{E}^{n} \\ \mathbfit{E}^{n+1} & =\mathbfit{E}^{n}+\Delta t / c^{2} \nabla_{F} \times \mathbfit{B}^{n+1 / 2}
+    \end{aligned}
+\end{equation}</script><p>这里 $\nabla _{F} \times $ 符号以及 $\nabla _{E} \times $ 符号都是离散的旋度算符:</p>
+<ul>
+<li>第一种算符作用于面(Face)中心的磁场并计算其旋度, 最终得到在网格(cell)边上的值;</li>
+<li>第二种算符作用于边(Edge)中心的电场并计算其旋度, 最终得到网格面上的值.</li>
+<li>这种网格方法也暗含了<span style='background: pink'>电流必须和电场在同一位置, 同时需要半个时间步长计算一次</span>.</li>
+</ul>
+<p>这种对偶性巧妙地反映了麦克斯韦方程组的基本几何形状. 时间上的错位反映了这样一个事实: 在四维时空中, 电磁场是时空中的一个二重向量. 我们也可以展示出这种离散方法严格地保持了 Maxwell 方程组中散度关系:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \nabla_{F} \cdot \mathbfit{B}^{n+1 / 2} & =0 \\ \nabla_{E} \cdot \mathbfit{E}^{n} & =0
+    \end{aligned}
+\end{equation}</script><p>对于等离子体来说, Maxwell 方程组还需要满足电流守恒的约束:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial \varrho_{c}}{\partial t} + \nabla \cdot \mathbfit{J} = 0
+    \end{aligned}
+\end{equation}</script><p>其中, $\varrho_{c}$ 是电荷密度, $\mathbfit{J}$ 是电流密度. 在 Yee 网格离散的形式下上式变成了:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\varrho_{c}^{n+1}-\varrho_{c}^{n}}{\Delta t}+\nabla_{E} \cdot \mathbfit{J}^{n+1 / 2}=0
+    \end{aligned}
+\end{equation}</script><p>这个过程中必须要确认从粒子到电流的计算不会出错以保证这个表达式是成立的, 更多的细节一下在 Esirkepov, Comp. Phys. Communications, 135 144-153 (2001)<sup><a href="#fn_6" id="reffn_6">6</a></sup> 这篇文章中找到.</p>
+<h2 id="总结与正在进行的工作"><a href="#总结与正在进行的工作" class="headerlink" title="总结与正在进行的工作"></a>总结与正在进行的工作</h2><ul>
+<li>计算等离子体物理学是困难的: 还有许多工作要做, 以便为各种等离子体应用创建工具; 在方案设计中必须考虑到微妙的间接性质.</li>
+<li>潜在高影响力领域: 需要限制可能的聚变装置的空间, 并帮助了解预期的燃烧等离子体状态.</li>
+</ul>
+<p>最后是 A. Hakim 教授的一些个人建议, 这里直接贴原文:</p>
+<blockquote>
+<ol>
+<li>Computational physics is a rapidly evolving field. Good field to be in!</li>
+<li>Strive for technical excellence. Do not settle for existing methods or tools and spend time in understanding deeply both the physics of the equations and the numerics used to solve them. Go beyond your classwork and thesis reasearch (make it a point to read arxiv physics.comp-ph and math.NA postings every day).</li>
+<li>Modern computational physics is moving to C and C++: please learn them. Use good software practices (write modular code, use version control, build systems, regression tests). Even for your thesis code!</li>
+<li>To become really good you must apprentice yourself to a genuine expert.</li>
+<li>If you become an expert at the (i) physics (ii) mathematics of the numerical methods (iii) programming and software techniques, you will be in a very strong position to contribute to development in many different fields. You will bring unique skills which few other people will be.</li>
+</ol>
+</blockquote>
+<hr>
+<blockquote id="fn_1">
+<sup>1</sup>. 有关Boris算法的更多详情可以参考: <a href="https://www.particleincell.com/2011/vxb-rotation/">Particle Push in Magnetic Field (Boris Method) (particleincell.com)</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. C K Birdsall &amp; A B Langdon., Plasma Physics via Computer Simulation (CRC Press)<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. Qin, H., Zhang, S., Xiao, J., et al. 2013, Physics of Plasmas, 20, 084503<a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. <a href="https://en.wikipedia.org/wiki/Bivector">https://en.wikipedia.org/wiki/Bivector</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <a href="https://en.wikipedia.org/wiki/Mathematical_descriptions_of_the_electromagnetic_field">https://en.wikipedia.org/wiki/Mathematical_descriptions_of_the_electromagnetic_field</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. Esirkepov, T. Zh. 2001, Computer Physics Communications, 135, 144<a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>等离子体物理</category>
+        <category>计算等离子体物理</category>
+      </categories>
+      <tags>
+        <tag>等离子体</tag>
+        <tag>计算等离子体物理</tag>
+        <tag>计算方法</tag>
+        <tag>计算机模拟</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TORIC 简单介绍</title>
+    <url>/2023/06/22/TORIC/</url>
+    <content><![CDATA[<center><div style='height:2mm;'></div><div>伍先树, 李景春<br>南方科技大学&ensp;地球与空间科学系<br>2023-06-20</div></center>
+
+<div class="note info flat"><p>TORIC 程序是一个计算模拟 ICRF(离子回旋频段) 甚至可以模拟低杂波的全波解程序, 由德国马普研究所下的等离子体研究所的 M, Brambilla 及其合作者共同开发完成，现在的接替 Brambilla 的主要开发者为Roberto Bilato. TORIC 可以被用来求解任意轴对称环几何位形下以及有限拉莫尔半径近似下的离子回旋波段的麦克斯韦波方程.</p>
+<p style="text-align:right">&mdash;&mdash;郑振 2021</p></div>
+<hr>
+<h2 id="TORIC-输入文件"><a href="#TORIC-输入文件" class="headerlink" title="TORIC 输入文件"></a>TORIC 输入文件</h2><p>运行 TORIC 程序需要名为 <code>torica.inp</code> 的 namelist 文件. 文件包含的内容很多, 分别涉及到不同的板块. 具体的细节可以在 <a href="https://users.euro-fusion.org/expert/transp/Toric/Manual/frame.htm">官方手册页面</a> 找到. 以下是用实际文件对重要参数(需要经常修改)做一些简单的说明:</p>
+<h3 id="toric-mode"><a href="#toric-mode" class="headerlink" title="toric_mode"></a>toric_mode</h3><p>设置程序的运行模式, 该部分内容由主程序 <code>t4_aamian.F</code> 读取, 对应不同模式的计算.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> &amp;toric_mode</span><br><span class="line">!</span><br><span class="line">!  Read by the program calling toric</span><br><span class="line">!</span><br><span class="line">     toricmode = &quot;equil&quot; # Producing an equilibrium file with i2mex</span><br><span class="line">!      toricmode = &quot;toric&quot; # Using TORIC to solve the wave equations.</span><br><span class="line">!     toricmode = &#x27;sumnph&#x27; # Superposing the results for several toroidal modes </span><br><span class="line">!     toricmode = &quot;ssfpql&quot; # The quasilinear Fokker-Planck solver SSFPQL</span><br><span class="line">!     toricmode = &quot;fppmod&quot;</span><br><span class="line">!     toricmode = &#x27;diagns&#x27; # Using TORIC in the diagnostic mode.</span><br><span class="line">!</span><br><span class="line">!  Accepted values: &quot;equil&quot;, &quot;toric&quot;, &quot;ssfpql&quot;, &quot;sumnph&quot;,</span><br><span class="line">!                   &quot;qldce&quot;, &quot;&quot;fppmod&quot;, &quot;diagns&quot;</span><br><span class="line">!</span><br><span class="line">  /</span><br></pre></td></tr></table></figure>
+<p>各模式主要的功能上面的代码注释中已经简单介绍了, 我们运行程序时一般只用前两种模式, <code>equigs</code> 模式用于准备 <code>toric</code> 模式下程序运行所需的平衡文件. 其余模式在 <code>toric</code> 模式下会按照需要依次运行(通过设置对应的参数而被调用).</p>
+<h3 id="toricainp"><a href="#toricainp" class="headerlink" title="toricainp"></a>toricainp</h3><p>用于存放控制 TORIC 运行的数据 (Parameters for resolution, antenna, output) 的地方, 通过 <code>hf_read</code> 读取:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> &amp;toricainp</span><br><span class="line">!</span><br><span class="line">!  Read from subroutine hfread, &quot;contained&quot; in t4_torica</span><br><span class="line">!</span><br><span class="line">       isol   = 1,</span><br><span class="line">!             mode of operation of the TORIC code</span><br><span class="line">!             =  0  Explorative(diagnostic) mode:                                </span><br><span class="line">!                      Magnetic configuration                        </span><br><span class="line">!                      Density &amp; temperature profiles,               </span><br><span class="line">!                      Dielectric properties vs X                    </span><br><span class="line">!                      Dielectric properties vs TH (IPLTHT = 1)      </span><br><span class="line">!             =  1  Run mode, Maxwellian plasmas</span><br><span class="line">!                      Construction and inversion of the stiffness   </span><br><span class="line">!                      matrix; results are printed, plotted, and     </span><br><span class="line">!                      written on disk if required.   </span><br><span class="line">!             =  2  Run mode, with non-maxwellian minority</span><br><span class="line">!                      In this case, the namelist /qlmininp/ must specify</span><br><span class="line">!                      the minority species and the file where the </span><br><span class="line">!                      data from the run of SSFPQL are to be read.</span><br><span class="line">!</span><br><span class="line">!                   Note: always check vacuum extrapolation with</span><br><span class="line">!                   isol = -1 before using a new configuration!</span><br><span class="line">       nvrb   =   3,</span><br><span class="line">! --------------------------------------------------------------------</span><br><span class="line">!  Definition of the variables and mesh for the run</span><br><span class="line">! --------------------------------------------------------------------</span><br><span class="line">!            Number of components of the electric field:</span><br><span class="line">!            NVRB = 2 - parallel field omitted (for comparison</span><br><span class="line">!                       with old codes omitting E_//.)</span><br><span class="line">!            NVRB = 3 - parallel field evaluated (normal option)</span><br><span class="line">       nelm   = 450,</span><br><span class="line">!            Number of radial finite elements</span><br><span class="line">       ntt    =  512,</span><br><span class="line">!            Number of points in the poloidal angle (theta) mesh:</span><br><span class="line">!            must be a power of 2 (FFT) and satisfy NTT &gt;= 2*NMOD+1</span><br><span class="line">       nmod   =  255,</span><br><span class="line">!            Number of modes in the solution  (preferably odd):</span><br><span class="line">!            NOTE: to optimize use of the information in the poloidal </span><br><span class="line">!            mesh the best choice is NMOD = NTT/2-1 (see below).</span><br><span class="line">!            A value of NMOD &lt;&lt; NTT/2-1 can lead to inaccuracies.</span><br><span class="line">!</span><br><span class="line">!           Example: With MASTCH=1 the largest job accepted by the </span><br><span class="line">!            IPP IBMaix or a normal laptop has (about): </span><br><span class="line">!                   NTT = 64, NMOD = 31, NELM = 450.</span><br><span class="line">!</span><br><span class="line">!           nelm = 200, ntt = 256, nmod = 127 can perform well</span><br><span class="line">!           on the TianHe cluster. </span><br><span class="line">! --------------------------------------------------------------------</span><br><span class="line">       nptvac =  50,</span><br><span class="line">       mxmvac =  15,</span><br><span class="line">!                         It is recommented not to exceed MXMVAC = 15</span><br><span class="line">! --------------------------------------------------------------------</span><br><span class="line">!  H.F. and antenna parameters</span><br><span class="line">! --------------------------------------------------------------------</span><br><span class="line">       freqcy = 16.0E6,</span><br><span class="line">!            Applied frequency, in hz.</span><br><span class="line">       nphi   =  18,</span><br><span class="line">!            Toroidal mode number.</span><br><span class="line">       antlen = 50,</span><br><span class="line">!            Length of the antenna in the poloidal direction (cm)</span><br><span class="line">       antlc  = 1.2,</span><br><span class="line">!            Effective propagation constant of the antenna.</span><br><span class="line">!             ANTLC &gt; 0 - the current ends abruptly at the feeders</span><br><span class="line">!             ANTLC &lt; 0 - the current goes to zero at the feeders</span><br><span class="line">!                         (works only with a large value of ntt).</span><br><span class="line">!             ANTLC = -999. - poloidally uniform excitation</span><br><span class="line">       theant = 0.,</span><br><span class="line">!            poloidal position of the central point of the antenna </span><br><span class="line">!             (degrees from the outer equatorial plane)</span><br><span class="line">! --------------------------------------------------------------------</span><br><span class="line">       iflr   = 1,</span><br><span class="line">       ibweld = 2,</span><br><span class="line"></span><br><span class="line">       ibpol  = 1,</span><br><span class="line">       iqtor  = 1,</span><br><span class="line">       icoll  = 0,</span><br><span class="line">       enhcol = 1.,</span><br><span class="line">!                        Must be very large (10^5) to have any effect</span><br><span class="line">       imdedg = 2,</span><br><span class="line">       iezvac = 1,</span><br><span class="line">       icosig = 0,</span><br><span class="line">!                        Use ICOSIG &lt;&gt; 0 only in exceptional cases!</span><br><span class="line">       iregax = 1,</span><br><span class="line">!                        IREGAX=1 and intchb &gt; 0 recommended when</span><br><span class="line">!                        IBW are propagative near the magnetic axis</span><br><span class="line">       mastch = 1,</span><br><span class="line">       lenwrd = 8,</span><br><span class="line">! ----------------------------------------------------------------------</span><br><span class="line">! Input of parameters for the control of the output:</span><br><span class="line">! ----------------------------------------------------------------------</span><br><span class="line">       iout   = 1,</span><br><span class="line">!             printed output control:</span><br><span class="line">!              = 0  normal output.</span><br><span class="line">!              = 1  detailed output.</span><br><span class="line">!              = 2  complete output: includes radial behaviour of the</span><br><span class="line">!                   Fourier coefficients of the electric field.</span><br><span class="line">       iwdisk = 1,</span><br><span class="line">!             output on disk (fort.9, only with ISOL=1)</span><br><span class="line">!              = 0  skipped</span><br><span class="line">!              = 1  done (specify file name in the JCL job)</span><br><span class="line">       idlout = 1,</span><br><span class="line">!             output for IDL plots </span><br><span class="line">!             IDLOUT = 0   skipped</span><br><span class="line">!             IDLOUT &gt; 0   executed (normal setting)</span><br><span class="line">       ipltht = 1,</span><br><span class="line">!            plot of dielectric tensor as function of theta</span><br><span class="line">!            on selected magnetic surfaces</span><br><span class="line">       io_ncdf = 1,</span><br><span class="line">!            The output for plots is made in netcdf format</span><br><span class="line">!            At present only available for ISOL = 1 or 2</span><br><span class="line">! ----------------------------------------------------------------------</span><br><span class="line">       zeff = 1.5,</span><br><span class="line">!                      If Zeff is &gt;= 1._r8 it will be used throughout</span><br><span class="line">!                                  &lt; 1._r8  it will be reevaluated.</span><br><span class="line">       iclres = 0</span><br><span class="line">!                      iclres = 1 adds collisions around isolated ion-ion </span><br><span class="line">!                                 resonances. Use with care!</span><br><span class="line">!                      dnures = Width (cm) / tnures = strength (a.u.)</span><br><span class="line">       dnures = 5.0</span><br><span class="line">       tnures = 10.0</span><br><span class="line">!</span><br><span class="line">       scratchpath = &#x27;/tmp/&#x27;</span><br><span class="line">       timing_on = .true.</span><br><span class="line">       pcblock = 4</span><br><span class="line"> /</span><br></pre></td></tr></table></figure>
+<p><span style='background: pink'>以上参数中被框起来作了详细说明的部分都是经常需要更改的参数.</span></p>
+<h3 id="equidata"><a href="#equidata" class="headerlink" title="equidata"></a>equidata</h3><p>设置控制平衡的参数(包括 equigs, profnt 等文件)的位置.</p>
+<p>首先是总体的控制参数, 其中比较重要的有: <code>igsmhd</code>, <code>dist_plawall(1/2/3/4)</code>, <code>idprof</code>, <code>inputpath</code>, <code>profnt_file</code> 以及 <code>equil_file</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> &amp;equidata</span><br><span class="line">!</span><br><span class="line">!  Read from subroutine t4_equi_master in module t4_mod_equil</span><br><span class="line">!</span><br><span class="line">      igsmhd = 1,</span><br><span class="line">!                               = 1: from file produced by i2mex</span><br><span class="line">!                               = 0: analytic</span><br><span class="line">!</span><br><span class="line">      intchb = 7</span><br><span class="line">!                               &lt;=0: spline interpolation</span><br><span class="line">!                               &gt;0: chebyshev interpolation</span><br><span class="line">!                                   of order m = min(12, max(5,intchb))</span><br><span class="line">      dist_plafars = 0.</span><br><span class="line">!                               Distance plasma-faraday shield (cm)</span><br><span class="line">!                               (counted from scrape-off edge)</span><br><span class="line">      dist_plaant = 5.0</span><br><span class="line">!                               Distance plasma-antenna (cm)</span><br><span class="line">!                               (idem, .ge. dist_plafars)</span><br><span class="line">      dist_plawall(1) = 12.0</span><br><span class="line">      dist_plawall(2) = 16.</span><br><span class="line">      dist_plawall(3) =  8.</span><br><span class="line">      dist_plawall(4) = 16.</span><br><span class="line">!                              Distance plasma-wall (cm)</span><br><span class="line">!                              (1-4) : outer, up, inner, down</span><br><span class="line">!                              (must be &gt; dist_plaant)</span><br><span class="line">      idprof = 0</span><br><span class="line">!                              =  1 : Profiles from external file</span><br><span class="line">!                              =  0 : analytic profiles</span><br><span class="line">!</span><br><span class="line">      inputpath   = &#x27;./&#x27;</span><br><span class="line">      profnt_file = &#x27;profnt_62585.02800&#x27;</span><br><span class="line">!            where the file of profile data.</span><br><span class="line">      equil_file  = &#x27;equigs_038204.data&#x27;</span><br><span class="line">!            where the equigs file prepared by toricmode = &quot;equil&quot;.</span><br><span class="line">!</span><br></pre></td></tr></table></figure>
+<p>如果上面的参数中设置了 <code>igsmhd = 0</code> 或者 <code>idprof = 0</code>, 那么还需要对应解析计算的参数:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">! ------------------------------------------------------------------------</span><br><span class="line">!  The following data are used only with a default analytic equilibrium</span><br><span class="line">!  (igsmhd = 0).</span><br><span class="line">!</span><br><span class="line">      rtor   = 167.0        ! Major radius (cm)</span><br><span class="line">      rplasm = 44.0         ! Plasma radius (cm)</span><br><span class="line">!</span><br><span class="line">      ashift = 5.0          ! Shafranov Shift</span><br><span class="line">      aellip = 1.00         ! Ellipticity on axis</span><br><span class="line">      sellip = 1.60         ! Ellipticity at separatrix</span><br><span class="line">      strian = -0.22        ! Triangularity at separatrix</span><br><span class="line">      iudsym = 1</span><br><span class="line">      azvert = 0.0</span><br><span class="line">      strigz = 0.0</span><br><span class="line">      sp_xs1 = 0.0</span><br><span class="line">!</span><br><span class="line">      bzero  = 1.97         ! Magnetic field at the geometric center</span><br><span class="line">      aicurr = 830.         ! Toroidal current (kA)</span><br><span class="line">      ppjte = 2.0</span><br><span class="line">      ppjti = 1.5</span><br><span class="line">!</span><br><span class="line">! -----------------------------------------------------------------------</span><br><span class="line">!  The following data are used only with analytic profiles (iprodf = 0)</span><br><span class="line">!</span><br><span class="line">      nspec  = 2</span><br><span class="line">!                               Number of ion species</span><br><span class="line">!                               Should not exceed parameter nspmx</span><br><span class="line">      mainsp = 1             ! Reference species (for charge neutrality)</span><br><span class="line"></span><br><span class="line">      atm(1) = 2.            ! Atomic mass</span><br><span class="line">      atm(2) = 3.</span><br><span class="line">!     atm(3) = 2. </span><br><span class="line">!     atm(4) = 16.</span><br><span class="line"></span><br><span class="line">      azi(1) = 1.            ! Atomic charge</span><br><span class="line">      azi(2) = 2.</span><br><span class="line">!     azi(3) = 1.</span><br><span class="line">!     azi(4) = 7.</span><br><span class="line"></span><br><span class="line">      aconc(2) = 0.22        ! Concentrations (n_i/n_e)</span><br><span class="line">!     aconc(3) = 0.02  </span><br><span class="line">!     aconc(4) = 0.0045</span><br><span class="line"></span><br><span class="line">      denec  = 5.0E13        ! Central electron density (cm^-3)</span><br><span class="line">      tempec = 4          ! Central electron temperature (keV)</span><br><span class="line"></span><br><span class="line">      tempic(1) = 3.5      ! Central ion temperature (keV)</span><br><span class="line">      tempic(2) = 3.5 </span><br><span class="line">!     tempic(3) = 8.0  </span><br><span class="line"></span><br><span class="line">      ppnei = 2.0            ! Inner power in the density profile</span><br><span class="line">      ppnee = 0.500          ! Outer power in the density profile</span><br><span class="line"></span><br><span class="line">      pptei = 2.0       ! Inner power in the electron temperature profile</span><br><span class="line">      pptee = 0.5       ! Outer power in the electron temperature profile</span><br><span class="line"></span><br><span class="line">      pptii(1) = 2.0    ! Inner power in the ion temperature profile</span><br><span class="line">      pptie(1) = 0.5    ! Outer power in the ion temperature profile</span><br><span class="line">      pptii(2) = 2.0  </span><br><span class="line">      pptie(2) = 0.5  </span><br><span class="line">!     pptii(3) = 4.0  </span><br><span class="line">!     pptie(3) = 1.5  </span><br><span class="line"></span><br><span class="line">      dnsepr = 0.5E13,    ! Density at the last closed surface</span><br><span class="line">      tesepr = 0.20,      ! Electron temperature at the last closed surface</span><br><span class="line">      tisepr(1) = 0.20,   ! Ion temperature at the last closed surface</span><br><span class="line">      tisepr(2) = 0.20,</span><br><span class="line">!     tisepr(3) = 10.,</span><br><span class="line"></span><br><span class="line">      so_thickness = 0., ! Scrape-off thickness (cm)</span><br><span class="line">      gldn   = 3.0,      ! Density gradient length in scrape-off</span><br><span class="line">      glte   = 3.,       ! Electron temperature gradient length in scrape-off</span><br><span class="line">      glti(1)   = 3.,    ! Ion temperature gradient length in scrape-off</span><br><span class="line">      glti(2)   = 3.,</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<h3 id="gfreadinp"><a href="#gfreadinp" class="headerlink" title="gfreadinp"></a>gfreadinp</h3><p>用于设置 gfile 文件的位置, 只在 <code>toricmode = &quot;equil&quot;</code> 时会被读取.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> &amp;gfreadinp</span><br><span class="line">!</span><br><span class="line">! Read from subroutine gfread in module t4_mod_toi2mex</span><br><span class="line">!</span><br><span class="line">    gfile= &#x27;H2DNv3_2g033332.00000&#x27;</span><br><span class="line">!</span><br><span class="line">    nmhd     = 165              ! number of radial psi points default=201</span><br><span class="line">    ntheta   = 129              ! number of &quot;theta&quot; points default = 129</span><br><span class="line"></span><br><span class="line">    i2mex_LAST_NORM_SURFACE_IS = 0.95</span><br><span class="line">!                               ! Name speaks for itself</span><br><span class="line">    ic1 = 2                     ! index of first (non-singular) surface</span><br><span class="line">    inc = -1                    ! index of last surface</span><br><span class="line">!                               ! (-1: makes it equal to npsi)</span><br><span class="line">    imom1 =  10                 ! Number of Fourier modes per mag. surface</span><br><span class="line"> /</span><br></pre></td></tr></table></figure>
+<p>一般来说只需要设置 gfile 文件相对于前文 <code>inputpath</code> 参数的相对路径即可, 另外一些自定义的参数可以在官方文件中查找对应的解释.</p>
+<h3 id="ssfpqlinp-qlmininp-tofppmodinp-diaginp"><a href="#ssfpqlinp-qlmininp-tofppmodinp-diaginp" class="headerlink" title="ssfpqlinp, qlmininp, tofppmodinp, diaginp"></a>ssfpqlinp, qlmininp, tofppmodinp, diaginp</h3><p>剩下的设置基本不需要更改, 具体的细节也可以在官方文档中找到. 只将以上部分的内容改成不同案例对应的参数已经足够正常的程序运行了.</p>
+<hr>
+<h2 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h2><p>接下来用 <span style='background: yellow'>和龙-2</span> 的平衡位形(<span style='background: #B6D1F9'>H2DNv3_2g033332.00000</span>)和典型的密度、温度剖面(<span style='background: #B6D1F9'>剖面1002-ti=1.5te.xlsx</span>)来计算一个实例.</p>
+<h3 id="用-i2mex-生成平衡文件"><a href="#用-i2mex-生成平衡文件" class="headerlink" title="用 i2mex 生成平衡文件"></a>用 i2mex 生成平衡文件</h3><p>第一步需要使用 i2mex 程序将通常的 gfile 文件转化为 TORIC 程序求解波动方程时需要的 equigs 文件. 这一步只需要在 torica.inp 文件中对应位置处设置:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">toricmode = &quot;equil&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gfile= &#x27;H2DNv3_2g033332.00000&#x27;</span><br></pre></td></tr></table></figure>
+<p>通过 <code>sbatch runth_Ptoric</code> 命令提交任务后等待程序运行, 之后会生成 <code>fort.22</code> 文件, 该文件就是 TORIC 运行所需的平衡文件, 下图是其和 gfile 文件的区别:</p>
+<center>
+<table><tr>
+<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulgfile.png" width="400" border=1/></td>
+<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulequigs.png" width="400" border=1/></td>
+</tr></table>
+</center>
+
+<center id='f1'><span style='font-weight:bold'>Fig 1. The left is "gfile" file and the right one is the "equigs" file used in TORIC</span></center>
+
+<p>这里如果我们直接将 <code>fort.22</code> 文件放进 <code>torica.inp</code> 对应的位置可能会引起报错, 最好先改成 <code>XXX.dat</code> 的文件名格式.</p>
+<h3 id="准备剖面文件"><a href="#准备剖面文件" class="headerlink" title="准备剖面文件"></a>准备剖面文件</h3><p>平衡文件准备好之后, 还需要按照 TORIC 读取剖面文件的方式准备剖面文件, 根据手册, 读取剖面文件的程序用以下格式(伪代码)进行:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">read(lun22,<span class="string">&#x27;(A10,4i4)&#x27;</span>)  var_name, nprodt, nspec, mainsp,</span><br><span class="line">    &amp;                            kdiff_itemp</span><br><span class="line"></span><br><span class="line">  var_name    (for legibility)</span><br><span class="line">  nprodt      <span class="keyword">number</span> of points <span class="keyword">in</span> the radial variable psi</span><br><span class="line">  nspec       <span class="keyword">number</span> of ion species</span><br><span class="line">  mainsp      species to be used to impose charge neutrality</span><br><span class="line">  kdiff_itemp Control of individual ion temperature profiles</span><br><span class="line">              = <span class="number">0</span> - <span class="built_in">All</span> ion species have the same temperature</span><br><span class="line">                    (the <span class="keyword">file</span> <span class="keyword">contains</span> <span class="keyword">only</span> one T_i profile)</span><br><span class="line">              = <span class="number">1</span> - Each ion species has a different temperature</span><br><span class="line">                    (the <span class="keyword">file</span> must contain NSPEC t_i profiles)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">do</span>  isp=<span class="number">1</span>,nspec</span><br><span class="line">           read(lun22,<span class="string">&#x27;(2i4)&#x27;</span>)  iatm, iazi</span><br><span class="line">           atm(isp) = iatm</span><br><span class="line">           azi(isp) = iazi</span><br><span class="line">        <span class="keyword">enddo</span></span><br><span class="line"></span><br><span class="line">  atm(i)      Atomic mass of soecies i</span><br><span class="line">  azi(i)      Atomic charge of species i</span><br><span class="line"></span><br><span class="line">        read(lun22,<span class="string">&#x27;(A10)&#x27;</span>)  var_name</span><br><span class="line">        read(lun22,<span class="string">&#x27;(5E16.9)&#x27;</span>)  tbpsi</span><br><span class="line"></span><br><span class="line">  tbpsi:      mesh points <span class="keyword">in</span> the radial variable psi</span><br><span class="line"></span><br><span class="line">        read(lun22,<span class="string">&#x27;(A10)&#x27;</span>)  var_name</span><br><span class="line">        read(lun22,<span class="string">&#x27;(5E16.9)&#x27;</span>)  tbne</span><br><span class="line"></span><br><span class="line">  tbne:       electron density profile (cm^-<span class="number">3</span>) on the mesh tbpsi</span><br><span class="line"></span><br><span class="line">        read(lun22,<span class="string">&#x27;(A10)&#x27;</span>)  var_name</span><br><span class="line">        read(lun22,<span class="string">&#x27;(5E16.9)&#x27;</span>)  tbte</span><br><span class="line"></span><br><span class="line">  tbte:     electron temperature (keV) on the mesh tbpsi</span><br><span class="line"></span><br><span class="line">        <span class="keyword">do</span> isp=<span class="number">1</span>,nspec</span><br><span class="line">           <span class="keyword">if</span>(isp .eq. mainsp)  <span class="keyword">cycle</span></span><br><span class="line">           read(lun22,<span class="string">&#x27;(A10)&#x27;</span>)  var_name</span><br><span class="line">           read(lun22,<span class="string">&#x27;(5E16.9)&#x27;</span>)  tbni(<span class="number">1</span>:nprodt,isp)</span><br><span class="line">        <span class="keyword">enddo</span></span><br><span class="line"></span><br><span class="line">  tbni(isp)   ion density profile (cm^-<span class="number">3</span>) on the mesh tbpsi</span><br><span class="line">              NOTE: the profile of MAINSP is evaluated by TORIC</span><br><span class="line">                    imposing charge neutrality</span><br><span class="line"></span><br><span class="line">        <span class="keyword">do</span> isp=<span class="number">1</span>,nsptmp</span><br><span class="line">           read(lun22,<span class="string">&#x27;(A10)&#x27;</span>)  var_name</span><br><span class="line">           read(lun22,<span class="string">&#x27;(5E16.9)&#x27;</span>)  tbti(<span class="number">1</span>:nprodt,isp)</span><br><span class="line">        <span class="keyword">enddo</span></span><br><span class="line"></span><br><span class="line">  tbti:     ion temperature (keV) on the mesh tbpsi</span><br><span class="line">            NOTE: TORIC sets nsptmp = <span class="number">1</span>     <span class="keyword">if</span> kdiff_itemp = <span class="number">0</span></span><br><span class="line">                             nsptmp = nspec <span class="keyword">if</span> kdiff_itemp = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><span style='background: pink'>值得注意的是, 文件的第一行在</span> <code>var_name</code> <span style='background: pink'>后应该还有五个参数而非四个, 如果按照手册中的四个参数进行剖面文件的准备将会报错</span>, 经过查看源代码 <code>t4_mod_profnt.F</code>, 确认了第一行的参数应该是:</p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">read(lun22,<span class="string">&#x27;(A10,5i4)&#x27;</span>)  var_name, nprodt, nspec, mainsp,</span><br><span class="line">    &amp;                            kdiff_idens, kdiff_itemp</span><br><span class="line"></span><br><span class="line">  var_name    (for legibility)</span><br><span class="line">  nprodt      <span class="keyword">number</span> of points <span class="keyword">in</span> the radial variable psi</span><br><span class="line">  nspec       <span class="keyword">number</span> of ion species</span><br><span class="line">  mainsp      species to be used to impose charge neutrality</span><br><span class="line">  kdiff_idens Control of individual ion density profiles</span><br><span class="line">  kdiff_itemp Control of individual ion temperature profiles</span><br></pre></td></tr></table></figure>
+<p>这里我们也简单的写了一个对应的 Python 脚本来进行剖面文件的准备:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">## 引入需要的函数库</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> fortranformat <span class="keyword">as</span> ff</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 读取 xlsx 文件</span></span><br><span class="line">path = <span class="string">&quot;profile.xlsx&quot;</span></span><br><span class="line">df1 = pd.read_excel(path, header=<span class="number">0</span>)</span><br><span class="line">psi = df1.iloc[:, [<span class="number">0</span>]].values</span><br><span class="line">ne = (df1.iloc[:, [<span class="number">2</span>]].values) * <span class="number">1e19</span> / <span class="number">1e6</span></span><br><span class="line">ni = df1.iloc[:, [<span class="number">3</span>]].values / <span class="number">1e6</span></span><br><span class="line">Te = df1.iloc[:, [<span class="number">4</span>]].values</span><br><span class="line">Ti = df1.iloc[:, [<span class="number">5</span>]].values</span><br><span class="line">i_charge = [<span class="number">1</span>, <span class="number">3</span>]</span><br><span class="line">i_mass = [<span class="number">1</span>, <span class="number">11</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入少子的情形</span></span><br><span class="line">i_X = [<span class="number">0.06</span>]</span><br><span class="line">n_minority = ne * np.array(i_X)</span><br><span class="line">n_main = (</span><br><span class="line">    ne - np.reshape(np.<span class="built_in">sum</span>(np.array(i_charge[<span class="number">1</span>:]) * n_minority, <span class="number">1</span>), (<span class="number">201</span>, <span class="number">1</span>))</span><br><span class="line">) / np.array(i_charge[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 写入文件</span></span><br><span class="line">pf = <span class="built_in">open</span>(<span class="string">&quot;profnt_ENN_test_0.06.dat&quot;</span>, <span class="string">&quot;w+&quot;</span>)</span><br><span class="line"><span class="comment"># first line: filename;number of point node;ion specise;main ions;temperature setup</span></span><br><span class="line">linewrite1 = ff.FortranRecordWriter(<span class="string">&quot;(A10,5i4)&quot;</span>)</span><br><span class="line">line1 = linewrite1.write([<span class="string">&quot;Prof_ENN&quot;</span>, <span class="number">201</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">pf.writelines(line1 + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># mass and charge of each ion</span></span><br><span class="line">linewrite2 = ff.FortranRecordWriter(<span class="string">&quot;(2i4)&quot;</span>)</span><br><span class="line">line2 = linewrite2.write([<span class="number">1</span>, <span class="number">1</span>, <span class="number">11</span>, <span class="number">3</span>])</span><br><span class="line">pf.writelines(line2 + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># linewrite_h = ff.FortranRecordWriter(&quot;(A10)&quot;)</span></span><br><span class="line"><span class="comment"># psi</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;Psi&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;Psi&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">number_writer = ff.FortranRecordWriter(<span class="string">&quot;(5E16.9)&quot;</span>)</span><br><span class="line">psiwrite = number_writer.write(psi)</span><br><span class="line">pf.writelines(psiwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># ne</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;ne [cm^-3]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;ne [cm^-3]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;ne [cm^-3]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">newrite = number_writer.write(ne)</span><br><span class="line">pf.writelines(newrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># Te</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;Te [keV]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;Te [keV]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;Te [keV]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">tewrite = number_writer.write(Te)</span><br><span class="line">pf.writelines(tewrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># ni</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;ni_D [cm^-3]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;nD [cm^-3]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;nD [cm^-3]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">niwrite = number_writer.write(<span class="built_in">list</span>(n_main))</span><br><span class="line">pf.writelines(niwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># Te</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;Te [keV]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;TD [keV]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;TD [keV]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">tiwrite = number_writer.write(Ti)</span><br><span class="line">pf.writelines(tiwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">pf.writelines(<span class="string">&quot;nH [cm^-3]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">niwrite = number_writer.write(<span class="built_in">list</span>(n_minority))</span><br><span class="line">pf.writelines(niwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># Te</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;Te [keV]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;TD [keV]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;TH [keV]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">tiwrite = number_writer.write(Ti)</span><br><span class="line">pf.writelines(tiwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">pf.close()</span><br></pre></td></tr></table></figure>
+<p>最终得到的文件形式如图所示:</p>
+<p><img alt="picture 3" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulprofnt.png" /></p>
+<center id='f2'><span style='font-weight:bold'>Fig 2. The preview of profile data used in TORIC</span></center>
+
+<p>这里我们采用 H(B11) 作为加热场景, 少子浓度设置为 6%.</p>
+<h3 id="设置输入文件-torica-inp"><a href="#设置输入文件-torica-inp" class="headerlink" title="设置输入文件 torica.inp"></a>设置输入文件 <code>torica.inp</code></h3><p>此处为了简单起见, 我们仅针对 <span style='background: yellow'>和龙-2</span> 的天线频率以及网格划分进行修改, 根据 <span style='background: yellow'>和龙-2</span> 的基本参数估算各离子的共振线, 得到得结果如图所示:</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-resonanceline.png" alt="picture 4"></p>
+<center id='f3'><span style='font-weight:bold'>Fig 3. The resonance line of different particles.</span></center>
+
+<p>可以看到对于 H(B11) 体系要保证在中心位置处吸收需要频率大概位于 50MHz(H 基频) 或者 30MHz(B11 谐频), 这里我们先选取 30MHz 作为天线的发射频率. 因此在上面的输入文件中我们只修改以下几个部分:</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">toricmode = <span class="string">&quot;toric&quot;</span>,</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">nvrb   =   3,</span><br><span class="line">nelm   = 450,</span><br><span class="line">ntt    =  256,</span><br><span class="line">nmod   =  127,</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">freqcy = 30.0E6,</span><br><span class="line">nphi   =  18,</span><br><span class="line">antlen = 50,</span><br><span class="line">antlc  = 1.2,</span><br><span class="line">theant = 0.,</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">inputpath   = &#x27;./&#x27;</span><br><span class="line">profnt_file = &#x27;profnt_ENN_test_0.06.dat&#x27;</span><br><span class="line">equil_file  = &#x27;equigs.dat&#x27;</span><br></pre></td></tr></table></figure>
+<p>其他参数保持原来的设置不变, 然后提交任务运行. 最终会生成三个文件: <code>fort.9</code>, <code>fort.10</code> 以及 <code>fort.21</code>. <code>fort.9</code> 是写入到文件中的程序输出(netCDF格式), <code>fort.10</code> 是文本格式的用于画图的数据文件, <code>fort.21</code> 是 netCDF 格式的画图数据文件.</p>
+<p>通过读取 <code>fort.21</code> 中的结果绘制图件, 我们可以得到以下的结果:</p>
+<p><img alt="picture 4" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulEplusandabsor.png" /><br><!-- <img alt="picture 4" src="images/manulEplusandabsor_main.png" />   --></p>
+<center id='f4'><span style='font-weight:bold'>Fig 4. The contour plot of the result.</span></center>
+
+<p><img alt="picture 5" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulabsor_profile.png" />  </p>
+<center id='f5'><span style='font-weight:bold'>Fig 5. Power absorption by different
+particles along the radius direction.</span></center>
+
+<p><img alt="picture 6" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcurrentdrive.png" />  </p>
+<center id='f6'><span style='font-weight:bold'>Fig 6. Current Density Induced by Waves.</span></center>
+
+<p>这里可以看到离子吸收并没有在中心位置, 结合图3考虑可能是波频率设置的不太恰当, 因为这里只是运行 TORIC 程序的一个简单示例, 就不对此展开深入的分析.</p>
+<hr>
+<h2 id="考虑离子尾部能量的情况"><a href="#考虑离子尾部能量的情况" class="headerlink" title="考虑离子尾部能量的情况"></a>考虑离子尾部能量的情况</h2><p>某些时候我们还需要考虑离子吸收能量之后形成超热尾部分布(suprathermal minority tails)的情况, 这需要在已经完成前述计算过程的基础上的通过调用 <code>SSFPQL</code> 模块求解准线性 Fokker-Planck 方程来估计离子的分布, 然后再一次迭代进 <code>TORIC</code> 主模块中计算.</p>
+<p>由于我们此前对 <span style='background: yellow'>和龙-2</span> 的计算中离子没有产生超热尾端的分布(<span class='heimu'>也有可能是计算过程中出现了失误</span>), 所以这里采用做程序 BENCHMARK 时所用的 <span style='background: yellow'>CFETR</span> (He3)-D-T 加热体系(Chengyi Song et al. 2021)来举例. 模拟使用的参数以及结果如图7~图9所示:</p>
+<center><img alt="picture 1" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetr_parameters.png" /></center>  
+<center id='f7'><span style='font-weight:bold'>Fig 7. The parameters of simulation for CFETR.</span></center>
+
+<p><img alt="picture 2" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetr_eplus.png"/></p>
+<center id='f8'><span style='font-weight:bold'>Fig 8. The contour plot of the results for CFETR.</span></center>  
+
+<center><img alt="picture 3" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetr_absor.png"/></center>  
+<center id='f9'><span style='font-weight:bold'>Fig 9. Power absorption by different particles along the radius direction for CFETR.</span></center>
+
+<h3 id="通过-SSFPQL-计算离子分布"><a href="#通过-SSFPQL-计算离子分布" class="headerlink" title="通过 SSFPQL 计算离子分布"></a>通过 <code>SSFPQL</code> 计算离子分布</h3><p>首先是在原有计算结果的基础上调用 <code>SSFPQL</code> 模块, 实际上该模块是通过读取前面讲到的 <code>fort.9</code> 文件(netCDF 格式的输出文件)来与 <code>TORIC</code> 主程序耦合, 这里我们需要在 <code>torica.inp</code> 中设置 <code>/ssfpqlinp/</code> 部分的参数, 在此案例中如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">! *********************************************************************</span><br><span class="line">!   Namelist entries needed by SSFPQL (quasilinear solver for the ions)</span><br><span class="line">! *********************************************************************</span><br><span class="line">!</span><br><span class="line">!     namelist /ssfpqlinp/</span><br><span class="line">!    &amp;    power, iex_sumnph, joutql, nrdpsi, legmod, idlout, iwrdql,</span><br><span class="line">!    &amp;    path_to_t4data, t4data_file, timing_on</span><br><span class="line">!</span><br><span class="line">! -------------------------------------------------------------------- !</span><br><span class="line"> &amp;ssfpqlinp</span><br><span class="line">!</span><br><span class="line">!  Read by subroutine t4_ssfpql in module t4_mod_ssfpql</span><br><span class="line">!</span><br><span class="line">      power = 3.6,</span><br><span class="line">!                             Total absorbed power (MW)</span><br><span class="line">      emxfac(1) = 200.,</span><br><span class="line">      emxfac(2) = 100.,</span><br><span class="line">!                             multipliers of T_i in the definition </span><br><span class="line">!                             of the max energy in the velocity mesh</span><br><span class="line">      iex_sumnph = 0,</span><br><span class="line">!                             Control of input from TORIC</span><br><span class="line">!                             = 0 - only one toroidal mode</span><br><span class="line">!                             = 1 - weighted superposition of several toroidal modes</span><br><span class="line">!                             (performed by t4_sumnph, with its own namelist)</span><br><span class="line">      joutql = 1,</span><br><span class="line">!                             Control of printed output:</span><br><span class="line">!                             = 0 - essential results (recommended)</span><br><span class="line">!                             = 1 - detailed results</span><br><span class="line">      nrdpsi = 46,</span><br><span class="line">!                             Number of radial points (uniform in psi) where</span><br><span class="line">!                             the qlfp equation for ions is to be solved.</span><br><span class="line">      legmod = 6,</span><br><span class="line">!                             number of Legendre polynomials in the ion</span><br><span class="line">!                             distribution functions</span><br><span class="line">!                             Recommended: 5 &lt;= legmod &lt;= 7</span><br><span class="line">      nptu   = 201,</span><br><span class="line"></span><br><span class="line">      idlout = 1,</span><br><span class="line">!                             Plots of distribution functions, power profiles, etc.</span><br><span class="line">!                             = 1 - done</span><br><span class="line">!                             = 0 - skipped.</span><br><span class="line">      iwdisk = 1,</span><br><span class="line">!                             1 - netCDF format</span><br><span class="line">!                             -1 - binary</span><br><span class="line">      path_to_t4data  = &#x27;./&#x27;</span><br><span class="line">!                             output of toricmode = &quot;toric&quot; (named &quot;fort.9&quot;)</span><br><span class="line">      t4data_file     = &#x27;fort.9&#x27;</span><br><span class="line">      iwrdql = 1,</span><br><span class="line">!                             Output for iteration by TORIC with nonMaxwellian</span><br><span class="line">!                             minority distribution.</span><br><span class="line">      timing_on = .true.</span><br><span class="line">!                             Control of time trace:</span><br><span class="line">!                             .true.  - time tracing on</span><br><span class="line">!                             .false. - time tracing off</span><br><span class="line"> /</span><br><span class="line">! -------------------------------------------------------------------- ! </span><br></pre></td></tr></table></figure>
+<p>同时需要把运行模式改成对应的设置, 即:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">toricmode = ssfpql,</span><br></pre></td></tr></table></figure>
+<p>提交任务后会得到两个文件, <code>fort.8</code> 以及 <code>fort.12</code>. 前者是后续程序运行的输入文件, 后者是任务输出文件, 两者都是文本格式, 可以直接打开. 因为要用到 <code>fort.8</code>, 一般要对其进行查看, 我们的案例中如图10所示:</p>
+<center>
+<table><tr>
+<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulfort8left.png" width="400" border=1/></td>
+<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulfort8right.png" width="400" border=1/></td>
+</tr></table>
+</center>
+<center id='f10'><span style='font-weight:bold'>Fig 10. The input file for 'isol = 2' to read the minority non-maxwellian profile.</span></center>
+
+<p><span style='background: pink'>需要注意的是,</span> fort.8 <span style='background: pink'>文件中起始位置通常是主要离子(文件开头的两个数字分别表示离子种类(nspec)和剖面网格, 主离子的离子种类为 1)的非麦克斯韦分布的剖面(左图), 而后续的</span> <code>QLMINH</code> <span style='background: pink'>模块需要少子(nspec = 2)的非麦克斯韦剖面, 因此需要删掉前面主离子的部分内容(右图)</span></p>
+<h3 id="再次运行-TORIC-主程序得到结果"><a href="#再次运行-TORIC-主程序得到结果" class="headerlink" title="再次运行 TORIC 主程序得到结果"></a>再次运行 TORIC 主程序得到结果</h3><p>得到少子的非麦克斯韦剖面后, 就可以再次以 <code>isol = 2</code> 的运行模式再次运行 TORIC 主程序得到结果, 此时还需要设置读取的少子剖面文件的位置, 对 <code>torica.inp</code> 做如下更改:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">      toricmode = &quot;toric&quot;,</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">          isol  = 2,</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">&amp;qlmininp</span><br><span class="line">!</span><br><span class="line">!  Read by subroutione t4_qlm_init in t4_mod_qlminh</span><br><span class="line">!</span><br><span class="line">      path_to_qldata = &#x27;./&#x27;</span><br><span class="line">      qlmin_file = &#x27;fort.8&#x27;</span><br><span class="line">!            The path of input (non-maxwellian profile for minority)</span><br><span class="line"> /</span><br></pre></td></tr></table></figure>
+<p>重新运行之后得到三个文件(<code>fort.9/10/21</code>), 并利用 <code>fort.21</code> 画图, 如图所示:</p>
+<center><img alt="picture 6" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetreplustail.png"/></center> 
+<center id='f11'><span style='font-weight:bold'>Fig 11. The contour plot of the results for CFETR when the minority superthermal tail has been considered.</span></center> 
+
+<center><img alt="picture 7" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetrabsortail.png"/></center>  
+<center id='f12'><span style='font-weight:bold'>Fig 12. Power absorption by different particles along the radius direction for CFETR when the minority superthermal tail has been considered.</span></center>
+
+<center><img alt="picture 8" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetrcdtail.png"/></center>  
+<center id='f13'><span style='font-weight:bold'>Fig 13. Current Driven by different waves along the radius direction for CFETR when the minority superthermal tail has been considered.</span></center>
+
+<p>由于只是作为演示, 这里的结果就不做具体分析.</p>
+<hr>
+<p>以上就是 TORIC 程序的一个简单介绍, 这个类似于文档的东西是给了解相关领域(托克马克磁约束聚变离子回旋加热)的人准备的, 实际上只是一个简化版本的程序操作手册, 给有需要的人提供参考<span class='mohu'>(互联网上实在是找不到类似的东西, 同时有项目需要写这么一份文档, 所以分享出来. 真正做这个领域, 需要这份文档的人应该比较少才对.)</span>.</p>
+]]></content>
+      <categories>
+        <category>科研</category>
+        <category>等离子体物理</category>
+        <category>模拟</category>
+      </categories>
+      <tags>
+        <tag>聚变</tag>
+        <tag>离子回旋加热</tag>
+        <tag>数值模拟</tag>
+        <tag>程序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>理想磁流体平衡</title>
+    <url>/2023/02/07/PPB-idelMHDequi/</url>
+    <content><![CDATA[<center><h1>理想磁流体平衡</h1></center>
+
+<div class="note info flat"><p>本文是王晓刚老师《等离子体物理基础》第二章内容的笔记整理，方便此后查阅</p>
+</div>
+<p>从物理上来看，一个系统总是趋于能量最低的平衡状态，此时的运动形式相对简单。一般来说，我们将磁流体的平衡指的是<strong>力学平衡（磁流体力学的平衡）</strong>，而非热力学平衡（速度分布的平衡，对应的是动理学理论的平衡）。这种平衡对于可控核聚变来说是非常重要的，我们需要将温度极高的等离子体通过外部力场约束在固定范围内以提供聚变产生的原材料，完成这一目标的首要条件就是做到磁流体平衡。</p>
+<h2 id="磁场的一般表示"><a href="#磁场的一般表示" class="headerlink" title="磁场的一般表示"></a>磁场的一般表示</h2><p>根据Maxwell方程组中的高斯定理我们知道：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \cdot \mathbfit{B} = \frac{\partial B_x}{\partial x}+\frac{\partial B_y}{\partial y}+\frac{\partial B_z}{\partial z} = 0
+    \end{aligned}
+\end{equation}</script><p>这就是说磁场的三个分量并非独立的，因此实际上磁场可以只用两个分量来表示。通过矢量恒等式：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \cdot (\vec{A} \times \vec{B}) = (\nabla \times \vec{A} ) \cdot \vec{B} - \vec{A} \cdot (\nabla \times \vec{B})
+    \end{aligned}
+\end{equation}</script><p>再者一个矢量可以写成标量的梯度形式，因此我们选择将描述磁场的两个分量表示成 $\nabla \alpha $, $ \nabla \beta$，有：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \cdot (\nabla \times \vec{A}) = 0 \implies \mathbfit{B} = \nabla \alpha \times \nabla \beta
+    \end{aligned}
+\end{equation}</script><p>考虑直角坐标系下的磁力线方程（磁场$\mathbfit{B}$与磁力线的方向是一致的）：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}x}{B_x} = \frac{\mathrm{d}y}{B_y} = \frac{\mathrm{\,d}z}{B_z}
+    \end{aligned}
+\end{equation}</script><p>上述方程可以提取出两个独立的方程：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}y}{\mathrm{d}x} = \frac{B_y}{B_x}, \frac{\mathrm{d}z}{\mathrm{d}x} = \frac{B_z}{B_x}
+    \end{aligned}
+\end{equation}</script><p>这两个方程的解分别对应了两个三维空间中的曲面，曲面的交线（两个曲面方向导数的叉乘 $\mathbfit{B} = \nabla \alpha \times \nabla \beta$ ，这就正好对应了前面提到的描述磁场只需要两个独立的变量，即曲面 $C_{\alpha}, C_{\beta}$ ）即是磁力线。</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-EBC5A2913971E69F7D1376D20F6F7EF4.jpg" alt = "PPB-idelMHDequi-f1" width = "300"></p>
+<center id='f1'><span style='font-weight:bold'>Fig 1 上述过程的几何描述</span></center>
+
+<p>这两个曲面的选择可以是任意的，所以同一个磁场可能对应多种不同的选择进行描述。因此，我们进一步可以把磁场写成：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \mathbfit{B} = F(\psi) \nabla \zeta + \nabla \psi \times \nabla \zeta
+    \end{aligned}
+    \label{eq:bfield}
+\end{equation}</script><p>这样就变成了一个正交曲线坐标系($\nabla \psi, \nabla \zeta, \nabla \chi = \nabla \psi \times \nabla \zeta$)所表示的磁场, 于是我们可以把磁力线方程写成:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}l}{B} = \frac{\mathrm{d}\psi}{\mathbfit{B} \cdot \nabla \psi} = \frac{\mathrm{d}\chi}{\mathbfit{B} \cdot \nabla \chi} = \frac{\mathrm{d}\zeta}{\mathbfit{B} \cdot \nabla \zeta}
+    \end{aligned}
+\end{equation}</script><p>的形式. 如果我们选取聚变中常用的”托卡马克环坐标系($\psi(r), \theta, z$)”, 则有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}l}{B}  = \left(\frac{\mathrm{d}\psi}{B_r \mathrm{\,d}\psi/\mathrm{\,d}r} = \right) \frac{\mathrm{d}r}{B_r} = \frac{r \mathrm{d}\theta}{B_{\theta}} = \frac{\mathrm{d}z}{B_z}
+    \end{aligned}
+\end{equation}</script><h2 id="磁约束等离子体的力学平衡"><a href="#磁约束等离子体的力学平衡" class="headerlink" title="磁约束等离子体的力学平衡"></a>磁约束等离子体的力学平衡</h2><p>所谓力学平衡就是说等离子体的运动状态不随时间改变, 即 $\partial/\partial t = 0$. 我们通常所说的等离子体平衡就是指这种力学平衡(在运动状态不变的情况下, $\mathbfit{u} \not = 0$ 称为”稳态平衡”, $\mathbfit{u} = 0$ 称为”静态平衡”).</p>
+<p>根据理想磁流体方程:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        n m_i \left(\frac{\partial \mathbfit{u}}{\partial t} + \mathbfit{u} \cdot \nabla \mathbfit{u}\right) = -\nabla p + \frac{(\nabla \times \mathbfit{B}) \times \mathbfit{B}}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>等离子体平衡时有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \rho_m (\mathbfit{u} \cdot \nabla \mathbfit{u}) = - \nabla p + \frac{(\nabla \times \mathbfit{B}) \times \mathbfit{B}}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>如果是静态平衡则变成:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla p = \frac{(\nabla \times \mathbfit{B}) \times \mathbfit{B}}{4\pi} = \frac{\mathbfit{J} \times \mathbfit{B}}{c}\ (\text{忽略位移电流项})
+    \end{aligned}
+    \label{eq:1}
+\end{equation}</script><p>这个时候我们看到这种两个叉乘在一起的一般都会利用矢量恒等式进行化简, 回去翻翻矢量恒等式的列表, 发现有 $\nabla (\mathbfit{A} \cdot \mathbfit{B}) = \mathbfit{A} \times (\nabla \times \mathbfit{B}) + \mathbfit{B} \times (\nabla \times \mathbfit{A}) + \mathbfit{A} \cdot \nabla \mathbfit{B} + \mathbfit{B} \cdot \nabla \mathbfit{A}$. 把这里的磁场带进去就有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        (\nabla \times \mathbfit{B}) \times \mathbfit{B} = - \frac{\nabla B^2}{2} + \mathbfit{B} \cdot \nabla \mathbfit{B}
+    \end{aligned}
+\end{equation}</script><p>结合公式 $\eqref{eq:1}$ 于是我们可以得到在静态平衡下</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \left(p + \frac{B^2}{8\pi}\right) = \frac{\mathbfit{B} \cdot \nabla \mathbfit{B}}{4\pi} = \hat{b} \nabla_{\parallel} \left(\frac{B^2}{8\pi}\right) + \pmb{\kappa} \frac{B^2}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>其中, 磁场单位矢量 $\hat{b} \equiv \mathbfit{B}/B$, 平行磁场的梯度 $\nabla_{\parallel} \equiv \hat{b} \cdot \nabla$, $\pmb{\kappa} \equiv \hat{b} \cdot \nabla \hat{b} = \nabla_{\parallel} \hat{b}$. 根据矢量与张量的点乘运算</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        &\mathbf{A} \cdot \mathbfit{A} = \sum_{ij} T_{ij}\mathbfit{e}_i\mathbfit{e}_j \cdot \sum_{l} f_l\mathbfit{e}_l = \sum_{ijl} T_{ij}f_{l}\mathbfit{e}_{i} \delta_{jl} = \sum _{ij} T_{ij} f_{j} e_{i}, \\
+        &\mathbfit{A} \cdot \mathbf{A} = \sum _{ij} f_{i} T_{ij} e_{j}
+    \end{aligned}
+\end{equation}</script><p>所有带有平行分量的张量都会消失, 所以很明显 $\pmb{\kappa}$ 是垂直磁场方向的. 于是上式还可以写成是分量的形式:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla_{\perp} \left(p + \frac{B^2}{8\pi}\right) = \pmb{\kappa} \frac{B^{2}}{4\pi},\ \nabla_{\parallel} p = 0
+    \end{aligned}
+    \label{eq:15}
+\end{equation}</script><h2 id="磁面和磁通函数"><a href="#磁面和磁通函数" class="headerlink" title="磁面和磁通函数"></a>磁面和磁通函数</h2><p>对于任意变量都可以写成 $f = f(x,y)$ 形式的平板模型(slab model), 我们可以将 $\ref{eq:bfield}$ 取 $\zeta = -z, \psi = \psi(x,y)$ 来表示磁场:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \mathbfit{B} = -F(\psi) \hat{z} + \hat{z} \times \nabla \psi \equiv B_z(\psi) \hat{z} + \hat{z} \times \nabla \psi
+    \end{aligned}
+    \label{eq:B2}
+\end{equation}</script><p>这里我们可以看到, $z$ 方向是和 $\psi$ 有关的量, 同时垂直与 $z$ 方向的矢量取到的是 $\nabla \psi$, 这样很明显可以看出 $\psi = \psi(x, y)$ 是磁矢势的 $z$ 方向分量, 我们可以将其称为<strong>磁通函数</strong>. </p>
+<div class="note info flat"><p>关于为什么要这样取值, 我们考虑磁场表示形式公式 $\ref{eq:bfield}$, $\psi$ 和 $\zeta$ 所表示的定义于 $(x, y, z)$ 坐标上的两个曲面是相互垂直的, 平板模型中一个曲面定义在 $(x, y)$ 坐标上, 另一个必然定义于 $z$ 坐标. 而 $\zeta$ 在两项中都是梯度项 $\nabla \zeta$, 这样自然是将 $\zeta$ 取成和 $z$ 相关, 至于正负号的选择就直接带进去试一试, 然后取简单的那一种形式就OK了. <span class='mohu'>个人理解, 仅供参考!</span></p>
+</div>
+<p>然后我们再回到原本的”正交磁力线坐标”, 即 $(x, y, z) \to (\psi, \chi, z)$. 这里 $\chi$ 坐标满足 $\nabla \chi \parallel \hat{z} \times \nabla \psi$ (之前说过 $\psi, \chi, \zeta = -z$ 之间是相互垂直的). 那么很显然地必然会有磁场的分量在 $\nabla \chi$ 方向上, 即 $\mathbfit{B}_{\chi}$. 换句话说, 在 $(x, y)$ 平面内必然会有磁力线在 $\psi(x, y) = C(\text{常数})$ 的曲线上(三维空间中这条曲线沿着 $z$ 方向延伸成一个曲面, 实际上就是类似于等势面, 只不过只是磁势的一个分量的等势). 这样, 在两条曲线 $\psi = \psi_{1}, \psi = \psi_{2}$ 上随便找两个点连起来, 穿过这条连线(同样在三维空间中是一个曲面)的磁力线根数被定义为<strong>极向磁通量</strong>:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint_{\psi_{1} \to \psi_{2}} \mathbfit{B}_{x} \cdot \mathrm{\,d}\mathbfit{S}_{\psi, z} = \Psi_{\psi, \chi}
+    \end{aligned}
+\end{equation}</script><p>固定的 $\psi_{1}, \psi_{2}$ 之间的任意连线的极向磁通量一定相等. 这样我们在 $\psi_{1}$ 上选取 $x_{1}$, 在 $\psi_{2}$ 上选取 $x_{2}$, 完成对 $z$ 方向的积分后可以得到:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint _{\psi_{1} \to \psi_{2}} \mathbfit{B}_{x} \cdot \mathrm{\,d}\mathbfit{S}_{\psi, z} &= \underbrace{L_{z} \int_{x_{1}}^{x_{2}} B_y \mathrm{\,d}x = L_{z} \int_{x_{1}}^{x_{2}} \frac{\partial \psi}{\partial y} \mathrm{\,d}x}_{\text{因为}\psi\text{是磁势的}\hat{z}\text{分量}} \\
+        &= L_{z} \int _{\psi_{1}}^{\psi_{2}} \mathrm{\,d}\psi = L_{z} (\psi_{2}-\psi_{1})
+    \end{aligned}
+\end{equation}</script><p>很显然我们可以得出结论: 磁通函数 $\psi(x, y)$ 是 $\hat{z}$ 方向上单位长度上的极向磁通量.</p>
+<p>根据Maxwell方程组以及之前得到的理想磁流体平衡方程, 结合磁场表示式 $\ref{eq:B2}$ 还可以得到:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \mathbfit{J} &= \frac{c}{4\pi} \nabla \times \mathbfit{B} = \frac{c}{4\pi} \left(\frac{\mathrm{d}F}{\mathrm{d}\psi} \hat{z} \times \nabla \psi + \hat{z} \nabla ^{2} \psi\right), \\
+        \nabla p &= \frac{\mathbfit{J} \times \mathbfit{B}}{c} = -\left(\nabla ^{2} \psi + F \frac{\mathrm{d}F}{\mathrm{d}\psi}\right) \frac{\nabla \psi}{4\pi}
+    \end{aligned}
+\end{equation}</script><p>可以看到, $\nabla p$ 仅仅只与 $\psi$ 有关, 上述方程的解应该有着 $p = p(\psi)$ 的形式, 那么在 $p = \text{常数}$ 的”面”上, 我们有磁通函数 $\psi = \text{常数}$ 的结论. 所以我们可以将这个曲面称为 <strong>“磁面”</strong>.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-510bfbf51e28127ee5780c63602a27a.jpg" alt="PPB-idelMHDequi-磁通量" width = "300"></p>
+<center id='f2'><span style='font-weight:bold'>Fig 2. 上述过程的图像表示</span></center>
+
+<p>利用 $p = p(\psi)$, 上述的方程可以进一步化简:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        &\frac{4\pi \nabla p(\psi)}{\nabla \psi} = -\nabla ^{2} \psi - F(\psi) \frac{\mathrm{d}F(\psi)}{\mathrm{d}\psi} \\
+        &\implies \nabla ^{2} \psi = -4\pi \left(\frac{\nabla p(\psi)}{\nabla \psi} + F(\psi)\frac{\mathrm{d}F(\psi)}{4\pi \mathrm{d}\psi}\right) \\
+        &\because \nabla p(\psi) = \frac{\mathrm{d}p}{\mathrm{d}\psi} \nabla \psi, F(\psi)\frac{\mathrm{d}F(\psi)}{\mathrm{d}\psi} = \frac{\mathrm{d}}{\mathrm{d}\psi} \frac{F(\psi)^{2}}{2} \\ 
+        &\implies \nabla ^{2} \psi = -4\pi \frac{\mathrm{d}}{\mathrm{d}\psi} \left(p(\psi) + \frac{F(\psi)^{2}}{8\pi}\right) \\
+    \end{aligned}
+\end{equation}</script><p>再加上 $F(\psi)$ 是磁场的 $-z$ 分量(式 $\ref{eq:B2}$), 有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla ^{2} \psi = -4\pi \frac{\mathrm{d}}{\mathrm{d}\psi} \left[p + \frac{B_{z}^{2}}{8\pi}\right]
+    \end{aligned}
+\end{equation}</script><p>我们称这个方程为 <strong>磁面方程</strong>, 其适用于各种坐标系.</p>
+<p>事实上, 从式 $\ref{eq:15}$ 中我们可以得到: 沿着一条磁力线有 $p = \text{常数}$. 如果这个磁力线卷曲成一个曲面, 曲面上处处都有同一个 $p$, 曲面的法线由 $\nabla p = \nabla _{\perp} p$ 给出. 同时, 根据静态平衡的方程我们可以有: $\mathbfit{B} \perp \nabla p, \mathbfit{J} \perp \nabla p$, 所以电流也在这个表面上, 也就是磁面上.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-f3.jpg" alt="PPB-idelMHDequi-f3" width = "300"></p>
+<center id='f3'><span style='font-weight:bold'>Fig 3. 磁面, 压强梯度以及电流分布</span></center>
+
+<h2 id="磁冻结"><a href="#磁冻结" class="headerlink" title="磁冻结"></a>磁冻结</h2><p>在流体力学中存在涡旋方程: $\partial \mathbfit{\omega}/\partial t = \nabla \times (\mathbfit{u} \times \mathbfit{\omega})$, 同时我们可以证明”涡旋”是冻结在流体中的, 即涡旋是和流体一起运动的. 在理想磁流体模型中, 磁场满足的磁感应方程具有和涡旋方程一致的形式: $\partial \mathbfit{B}/\partial t = \nabla \times (\mathbfit{u} \times \mathbfit{B})$. 我们可以合理的做出推测磁力线也是”冻结”在等离子当中的.</p>
+<details class="toggle" style="border: 1px solid bg"><summary class="toggle-button" style="background-color: bg;color: color">王晓刚老师书中磁冻结效应的推导(没怎么看明白)</summary><div class="toggle-content"><p>将磁场的一般表示形式带入到磁感应方程中可以得到, 方程左边：</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\partial \mathbfit{B}}{\partial t} = \nabla \frac{\partial \alpha}{\partial t} \times \nabla \beta + \nabla \alpha \times \nabla \frac{\partial \beta}{\partial t} = \nabla \times \left(\frac{\partial \alpha}{\partial t} \nabla \beta - \frac{\partial \beta}{\partial t}\nabla \alpha\right)
+    \end{aligned}
+\end{equation}</script><p>方程右边: </p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \times (\mathbfit{u} \times \mathbfit{B}) &= \nabla \times \left[\mathbfit{u} \times \left(\nabla \alpha \times \nabla \beta\right)\right] \\
+        &= \nabla \times \left[\nabla \alpha (\mathbfit{u} \cdot \nabla \beta) - \nabla \beta (\mathbfit{u} \cdot \nabla \alpha)\right]
+    \end{aligned}
+\end{equation}</script><p>其中 $\mathbfit{u} \cdot \nabla \alpha(\beta)$ 得到一个标量, 再乘上 $\alpha$, 上式实际上是对一个标量的梯度做叉乘, 最终的结果为 0(很容易证明, 基础的高等数学场论知识). 于是有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \nabla \times \left(\frac{\mathrm{d} \alpha}{\mathrm{d} t} \nabla \beta - \frac{\mathrm{d}  \beta}{\mathrm{d} t} \nabla \alpha\right) = 0
+    \end{aligned}
+\end{equation}</script><p>也就是说:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d} \alpha}{\mathrm{d} t} \nabla \beta - \frac{\mathrm{d}  \beta}{\mathrm{d} t} \nabla \alpha = \nabla \Psi
+    \end{aligned}
+\end{equation}</script><p><span class='mohu'>因为对一个标量的梯度求旋度必然等于零.</span></p>
+<p>这里我们选择合适的度规, 使得 $\nabla \Psi = 0$. 此时由于 $\nabla \beta$ 以及 $\nabla \alpha$ 不会为零, 则必然会有:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d} \alpha}{\mathrm{d} t} = \frac{\mathrm{d} \beta}{\mathrm{d} t} = 0
+    \end{aligned}
+\end{equation}</script><p>这也就表明确定磁力线的两组曲面 $\alpha(x, y, z) = C_\alpha, \beta(x, y, z) = C_{\beta}$ 都是随着流体元运动的守恒量, 因此其交线——磁力线也随着流体元运动不变.</p>
+</div></details>
+<p>由于上述的这个方式对于我们这种物理小白来说实在是不太友好, 所以我们这里考虑另外一种磁冻结效应的证明方式:</p>
+<p>根据 $\partial \mathbfit{B}/\partial t = \nabla \times (\mathbfit{u} \times \mathbfit{B})$, 我们知道:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\partial \mathbfit{B}}{\partial t} - \nabla \times (\mathbfit{u} \times \mathbfit{B}) = 0
+    \end{aligned}
+\end{equation}</script><p>同时, 磁通量可以通过磁场的面积分(即通过的磁力线的多少)得到, 也就是: $\Phi = \iint_{S} \mathbfit{B} \cdot  \mathrm{\,d}\mathbfit{S}$, 于是我们考虑对 $(27)$ 式的两边做一个面积分:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint_{S} \frac{\partial \mathbfit{B}}{\partial t} \cdot \mathrm{\,d}\mathbfit{S} = \frac{\partial \iint_{S} \mathbfit{B} \cdot \mathrm{\,d}\mathbfit{S}}{\partial t} = \frac{\partial \Phi}{\partial t}
+    \end{aligned}
+\end{equation}</script><script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \iint_{S} \nabla \times (\mathbfit{u} \times \mathbfit{B}) \cdot \mathrm{\,d}S = -\oint _{\partial S} (\mathbfit{B} \times \mathbfit{u}) \cdot \mathrm{\,d}\mathbfit{l} = -\oint _{\partial S} \mathbfit{B} \cdot  \mathbfit{u} \times  \mathrm{\,d}\mathbfit{l}
+    \end{aligned}
+\end{equation}</script><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-F76F245C16BE2A5CDE7D336666709101.png" alt="磁冻结示意图" width = "500"></p>
+<center id='f4'><span style='font-weight:bold'>Fig 4. 磁冻结示意图</span></center>
+
+<p>根据上图我们可以知道 $(29)$ 式实际上是磁流体流动引起的磁通量变化, 加上 $(28)$ 式表示的原本的磁通量就是理想磁流体中总的磁通量随时间的变化. 即:</p>
+<script type="math/tex; mode=display">\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}\Phi}{\mathrm{d}t} &= \frac{\partial \Phi}{\partial t} + \oint _{\partial S} \mathbfit{B} \cdot  \mathbfit{u} \times  \mathrm{\,d}\mathbfit{l} \\
+        &=\iint _{S} \frac{\partial \mathbfit{B}}{\partial t} - \nabla \times (\mathbfit{u} \times \mathbfit{B}) \cdot \mathrm{\,d}S \\ &= 0
+    \end{aligned}
+\end{equation}</script><p>这就证明了一个固定的流体元的磁通量是随时间不变的, 也就是磁场冻结在流体中.</p>
+<p>从微观角度来看, 一般来说磁冻结意味着带电粒子沿着磁力线作回旋运动. 然而系统中存在的各种物理量的梯度会导致粒子在不同的磁力线之间作横越磁力线的漂移运动, 那么磁冻结的图像应该怎么理解就是一个需要仔细讨论的问题. 从静态平衡的方程出发:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \nabla _{\perp p} = \frac{\mathbfit{J}_{\perp} \times \mathbfit{B}}{c}
+    \end{aligned}
+\end{equation}</script><p>或者是:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{J}_{\perp} = - \frac{c \nabla _{\perp p} \times \mathbfit{B}}{B^{2}}
+    \end{aligned}
+\end{equation}</script><p>也就是说, 等离子体电流是由静态平衡下的压强梯度漂移导致的. 很明显这个电流的存在会减弱原本的磁场, 因此被称为<strong>抗磁漂移</strong>. 前面的讨论我们已经知道电流是在磁面上存在的, 所以带电粒子实际上是在磁面上被 “冻结” 的. 而磁面是磁力线卷曲而成的曲面, 所以我们也可以说带电粒子实际上还是被冻结在同一条磁力线上.</p>
+<p>要说的是, 磁流体近似下的电流是由压强梯度引起的, 而各种梯度运动的本质都是 Larmor 半径效应引起的, 所以磁流体电流的物理图像是 Larmor 半径的最低阶近似.</p>
+<h2 id="Z-箍缩-theta-箍缩"><a href="#Z-箍缩-theta-箍缩" class="headerlink" title="Z - 箍缩, $\theta$ - 箍缩"></a>Z - 箍缩, $\theta$ - 箍缩</h2><p>磁约束平衡问题是理想磁流体平衡的一个重要的应用研究, 下面针对几个简单的几何位型作一些介绍, 比如类似单个直线导体中的电流或者螺线管线圈中电流产生的磁场对等离子体的约束.</p>
+<h3 id="Z-箍缩"><a href="#Z-箍缩" class="headerlink" title="Z - 箍缩"></a>Z - 箍缩</h3><p>首先是第一种情况, 电流沿着柱对称几何的轴向(z 方向), 产生的磁场可以表示为 $\mathbfit{B} = \hat{\theta}B_{\theta}(r)$, 即图5所示. 根据之前的平衡方程我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        &\frac{\mathrm{d}}{\mathrm{d}r}\left(p + \frac{B_{\theta}^{2}}{8\pi}\right) = -\frac{B_{\theta}^{2}}{4 \pi r} \\
+        &\frac{\mathrm{d}p}{\mathrm{d}r} = -\frac{1}{8 \pi r^{2}}\frac{\mathrm{d}}{\mathrm{d}r}(r^{2} B_{\theta}^{2})
+    \end{aligned}
+\end{equation}</script><p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-20230908170735.png" alt="Z - 箍缩" width = "500"></p>
+<center id='f5'><span style='font-weight:bold'>Fig 5. Z - 箍缩</span></center>
+
+<p>这样, 我们就可以更具需要的等离子体压强分布计算应该采用什么样的电流分布, 或者根据已有的电流分布计算会得到什么样的等离子体压强分布.</p>
+<p>在这种位型下, $B_{z} = 0$, 这意味着等离子体是不稳定的(后面会讨论). 在强电工程技术的研究中会需要利用这种不稳定性来设计具有”自然”的快速响应性质的过载保护开关. 惯性约束聚变中, 也可以采用这种方案: 在非常细的丝状导线上同非常强的电流使导线融化成等离子体, 电流产生的洛伦兹力 $\mathbfit{J} \times \mathbfit{B}$ 会朝着中心来”箍缩”这些等离子体, 从而产生高能量粒子和 X 射线引发聚变. 这种装置作为强 X 射线源以及强脉冲聚变中子源也有着广泛的应用前景.</p>
+<h3 id="theta-箍缩"><a href="#theta-箍缩" class="headerlink" title="$\theta$ 箍缩"></a>$\theta$ 箍缩</h3><p>如果电流方向在 $\theta$ 方向, 则产生的磁场为 $\mathbfit{B} = \hat{z}B_{z}(r)$, 如图6所示.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-20230908190542.png" alt="θ - 箍缩" width="300"></p>
+<center id='f6'><span style='font-weight:bold'>Fig 6. θ - 箍缩</span></center>
+
+<p>同样的, 我们可以利用平衡方程得到以下的关系:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \left(p + \frac{B^{2}}{8 \pi}\right)_{r < a} = \frac{B^{2}(a)}{8 \pi}
+    \end{aligned}
+\end{equation}</script><p>$r = a$ 表示等离子体的边界, 同样的我们需要从电流分布计算压强分布, 或者根据压强分布计算所需的电流分布. 同时, 在这种位型下 $B_{\theta} = 0$, 等离子体”非常安全(稳定)”, 其稳定性我们也放到下一节中论述. 这也意味着该位型下没有轴向的约束(单粒子运动中平行于磁场方向是不会受到力的), 磁镜和环形约束可以用来解决这一问题.</p>
+<h3 id="磁镜"><a href="#磁镜" class="headerlink" title="磁镜"></a>磁镜</h3><p>将 $\theta$ - 箍缩中等离子体柱两端的磁场 $B_{z}$, 我们就可以得到一个”磁镜”位型, 如图7所示.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-20230908195732.png" alt="磁镜" width="300"></p>
+<center id='f7'><span style='font-weight:bold'>Fig 7. 磁镜</span></center>
+
+<p>这种位型通常被称为”线性装置”, 曾经是磁约束等离子体研究的最重要装置. 伴随磁镜装置的还有一个很重要的概念, “绝热不变量”. 磁镜装置的第一个不变量是”磁矩不变量”, 即带电粒子在围绕磁力线做高频回旋运动时, 在长时间尺度上我们可以认为粒子单位质量的回旋运动产生的磁矩</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mu = \frac{v_{\perp}^2}{2 B}
+    \end{aligned}
+\end{equation}</script><p>是一个近似的守恒量, 沿着磁力线 $l$, 粒子单位质量的动能可以写成:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \varepsilon = \mu B(l) + \frac{1}{2} v_{\parallel}^{2}
+    \end{aligned}
+\end{equation}</script><p>这可以看成带电粒子沿着磁力线在”磁势阱” $\mu B(l)$ 中的运动. 在磁场的极小值 $B_{\min }$ 两侧如果有一个极大值 $B_{\max }$, 那么对于 $\varepsilon \leq \mu B(l)$ 的粒子会被磁势阱捕获, 从而在两个极大值之间”弹跳(bounce)”. 对于更长的时间, 这个弹跳的周期运动会给我们第二个绝热不变量:”弹跳不变量”. 再加上磁场曲率的存在, 带电粒子会在跨越磁力线的方向上存在漂移, 这个运动近似是一个围绕磁镜圆形截面的周期运动. 在非常长的时间尺度下, 我们将得到有关漂移的第三个绝热不变量. 一般来说, 磁约束等离子体中很少用到后面一种不变量. 另外, 地球磁场的偶极磁场也可以近似地看成是一个磁镜系统, 并且这三种绝热不变量在地球磁层等离子体中的研究是非常重要的. 由于磁势阱的存在, 这种磁约束位型下, 带电粒子的速度空间存在”损失锥(loss cone)”不稳定性, 这将大大影响等离子体约束的时间.</p>
+<h3 id="环形约束和托卡马克"><a href="#环形约束和托卡马克" class="headerlink" title="环形约束和托卡马克"></a>环形约束和托卡马克</h3><p>为了解决轴向上没有约束的问题, 我们将 $\theta$ - 约束中的环形线圈围成一个圆环(图8绿色部分), 但此时由 $B_{z}$ 弯成的环向场在环内侧比环外侧强, 导致指向环内测的磁场梯度. 根据单粒子运动的结论, 这会导致垂直于这个梯度方向的漂移. 因此, 为了消除这个漂移, 我们需要在原本的场上叠加一个极向场(图8的中心螺管线). 这就是托卡马克装置的设计思路.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-tokamak.png" alt="托卡马克(绿色的是环形线圈)" width="300"></p>
+<center id='f8'><span style='font-weight:bold'>Fig 8. 托卡马克(绿色的是环形线圈)</span></center>
+
+<p>很显然的, 环向场要比极向场强得多, 极向场的引入使得磁面拓扑呈环状, 每条磁力线都会经历环的内侧和外侧, 而因为向环内的磁场梯度的存在, 使得一条磁力线上会有环内侧的强场区和环外侧的弱场区, 这构成了一个”磁镜”位型, 这种特殊的磁镜效应对粒子的捕获是托卡马克等离子体的一个非常重要的性质. 这种环形约束的平衡是一种二维平衡, 接下来就讨论二维平衡位型满足的条件.</p>
+<h2 id="一维平衡-螺旋箍缩"><a href="#一维平衡-螺旋箍缩" class="headerlink" title="一维平衡, 螺旋箍缩"></a>一维平衡, 螺旋箍缩</h2><h3 id="一维圆柱等离子体的平衡"><a href="#一维圆柱等离子体的平衡" class="headerlink" title="一维圆柱等离子体的平衡"></a>一维圆柱等离子体的平衡</h3><p>我们知道轴对称的柱状等离子体($\theta$ - 箍缩)的物理量具有 $f = f(r)$ 的形式, 并且 $B_{r} = 0$. 因此, 磁面方程可以写成 $r = r_{0}$ 的形式. 根据静态平衡方程我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}r} \left(p + \frac{B^{2}}{8 \pi}\right) = \frac{B^{2}}{4 \pi} \kappa(r) = -\frac{B_{\theta}^{2}}{4 \pi r} \left(\text{因为圆的曲率为} -\frac{1}{r}\right)
+    \end{aligned}
+\end{equation}</script><p>如果既有环向场($\theta$), 又有极向场($z$), 也就是说磁场可以被写成: $\mathbfit{B} = \hat{\theta} B_{\theta}(r) + \hat{z} B_{z}(r)$, 那么静态平衡得到的结果将会变成:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}r} \left(p + \frac{B_{\theta}^{2}}{8 \pi} + \frac{B_{z}^{2}}{8 \pi}\right) = \frac{B_{\theta}^{2}}{4 \pi r}
+    \end{aligned}
+\end{equation}</script><p>由于这种位型的磁力线和电流都是螺旋形的, 所以我们一般称之为”螺旋箍缩”. 在这种平衡下, $\nabla \cdot \mathbfit{B} = 0$ 显然是满足的(因为没有 $B_{r}$, 即没有向外发射的无法闭合的磁力线). 因此我们需要通过一个方程(式 38)来决定三个未知函数($p, B_{\theta}, B_{z}$), 其中轴向(z 方向)和环向(θ 方向)自由度由周期条件来确定; 另外一个则可以用 r 的两个边界条件($r = 0$ 和 $r = a$)来确定.</p>
+<h3 id="安全因子"><a href="#安全因子" class="headerlink" title="安全因子"></a>安全因子</h3><p>现在我们来看磁场的两个分量是如何绕成磁面的, 在这样的螺旋形磁场位型中, 一根磁力线需要同时经过大小两个半径(主半径 R 以及小半径 r)的圆(图9所示, 红色为小圆, 蓝色为大圆, 这两个圆分别对应着极向和环向的磁场, 大小半径的概念在托卡马克核聚变的研究中也经常使用).</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-螺旋箍缩.png" alt="螺旋箍缩" width="500"></p>
+<center id='f9'><span style='font-weight:bold'>Fig 9. 螺旋箍缩</span></center>
+
+<p>根据最开始的托卡马克坐标(θ, r, z)磁力线的方程, 我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \frac{r \mathrm{d}\theta}{\mathrm{d}z} &= \frac{B_{\theta}}{B_{z}} \\
+        \Rightarrow \frac{r \mathrm{d}\theta}{\mathrm{d}z} &= \frac{B_{\theta} 2 \pi R}{B_{z} 2 \pi R} \\
+        \Rightarrow \frac{2 \pi R \mathrm{\,d}\theta}{\mathrm{\,d}z} &= \frac{B_{\theta} 2 \pi R}{B_{z} r} \\
+        \Rightarrow \frac{\mathrm{\,d}z}{2 \pi R} &= \frac{B_{z} r}{B_{\theta} 2 \pi R \mathrm{\,d}\theta}
+    \end{aligned}
+\end{equation}</script><p>这里我们一个叫”安全因子(safety factor)”的量, 也就是:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        q(r) \equiv \frac{r B_{z}(r)}{R B_{\theta}(r)}
+    \end{aligned}
+\end{equation}</script><p>其中由于 $B_{\theta}$ 以及 $B_{z}$ 都会随着 r 变化, 所以安全因子也会随着 r 进行变化. 有了安全因子的定义之后我们可以得到: </p>
+<script type="math/tex; mode=display">(\Delta z)_{\Delta \theta = 2 \pi} = q(r) 2 \pi R</script><p>这也就意味着实际上安全因子表示磁力线在 $\hat{\theta}$ 方向上转完一整圈时在 $\hat{z}$ 方向上转过的圈数(也可以说是走过的周期数). 在下一节中我们可以看到安全因子和等离子体平衡的稳定性有关系, 这也是安全因子这个名字的原因. 在 z - 箍缩中, 由于 $B_{z} = 0$, 安全因子为 0, 等离子体是不安全的, 也就是说不稳定的. 而在 θ - 箍缩下, $B_{\theta} = 0$, $q \to  \infty$, 等离子体是很安全的, 也就是说是”绝对稳定”的.</p>
+<p>另外, 由于 $q(r)$ 是连续变化的, 因此对于 $q(r)$ 我们可以取到无穷多分段连续的无理数, 也可以取到无穷多个”分立”的有理数(也就是有理数在数轴上的分布是分立的). 当我们取到有理数 $q(r) = m/n$ 的磁面(有理磁面)时, 磁力线环绕大圆 m 圈, 绕小圆 n 圈后会回到最开始的地方首尾相接, 这也就意味着此时的磁力线是无法铺满整个磁面的. 实际上就是有理磁面上的磁力线总是在重复之前的轨迹, 一条磁力线是没法遍历磁面上所有的点, 但无理磁面上的磁力线因为不会回到原来的起点, 不会重复之前走过的路, 所以会在磁面上遍历所有的位置. 从测度上来说, 有理磁面上的磁力线所占据的区域测度为零, 物理上来说这个磁面是”软”的, 容易出现不稳定性. 因此相对来说, 无理磁面具有很好的物理性质. 关于这个问题, 王晓钢老师的<a href="https://blog.sciencenet.cn/blog-39346-286012.html">博客</a>有更详细的解释(<span class='mohu'>实际上也差不多, 哈哈哈哈哈</span>).</p>
+<h2 id="Grad-Shafranov-方程"><a href="#Grad-Shafranov-方程" class="headerlink" title="Grad - Shafranov 方程"></a>Grad - Shafranov 方程</h2><p>接下来考虑更复杂的环形约束等离子体的二维平衡分布及其性质, 二维平衡满足的方程为 Grad - Shafranov 方程, 用来研究托卡马克等离子体, 这里我们先进一步引入托卡马克坐标系.</p>
+<h3 id="托卡马克-Tokamak-坐标系"><a href="#托卡马克-Tokamak-坐标系" class="headerlink" title="托卡马克(Tokamak)坐标系"></a>托卡马克(Tokamak)坐标系</h3><p>一般由于托卡马克甜甜圈形状的特征我们可以采用柱坐标($R, \zeta, Z$)或者环坐标($r, \theta, z$)来描述托卡马克位型, 其中 $\hat{z}$ 为弧长的方向.</p>
+<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/PPB-idelMHDequi-托卡马克坐标系.png" alt="托卡马克坐标系" width="400"></p>
+<center id='f10'><span style='font-weight:bold'>Fig 10. 托卡马克坐标系</span></center>
+
+<p>我们可以很轻松地给出这两个坐标系之间的关系:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        R &= R_{0} + r \cos \theta \\
+        \zeta &= -\frac{z}{R_{0}} \\
+        Z &= r \sin \theta
+    \end{aligned}
+\end{equation}</script><p>很显然的, 这样的平衡是轴对称的, 也就是 $\mathrm{d}/\mathrm{d}\zeta = 0$. 取磁通量 $\psi = \psi(R, Z)$, 根据磁场的表达式 $\ref{eq:bfield}$, $\ref{eq:B2}$ (用 $\hat{\zeta}/R$ 取代 $\hat{z}$),我们可以得到:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathbfit{B} &= \frac{F(\psi)}{R} \hat{\zeta} - \frac{\hat{\zeta}}{R} \times \nabla \psi \\
+        &= \mathbfit{B}_{\zeta} - \frac{\hat{\zeta}}{R} \times \nabla \psi
+    \end{aligned}
+\end{equation}</script>]]></content>
+      <categories>
+        <category>笔记</category>
+        <category>等离子体物理</category>
+      </categories>
+      <tags>
+        <tag>等离子体物理</tag>
+        <tag>磁流体力学</tag>
+        <tag>磁约束核聚变</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>理论物理速成——经典力学 I</title>
     <url>/2022/12/06/classical-mechanics-1/</url>
     <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/classical-mechanics-1-cover.jpg" alt="classical-mechanics-1-cover"></p>
@@ -199,7 +1080,7 @@
   </entry>
   <entry>
     <title>磁流体力学方程组的推导</title>
-    <url>/2022/10/13/MHD-E/</url>
+    <url>/2022/10/13/PPB-MHD-E/</url>
     <content><![CDATA[<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/MHD-E-20221013234420.png" alt="科学网一三流体磁重联模型大尺度磁岛融合、激波、尾涡结果1-朱伯情的博文"></p>
 <div class="note primary flat"><p>本文基于王晓钢老师的《等离子体物理》第一章的内容对等离子体流体描述的基本方程组进行大致推导，作为本人的学习笔记方便后续学习，也供相关领域的同学交流学习。</p>
 </div>
@@ -3300,8 +4181,8 @@ r_{j k, z}^{(S \max )}=\frac{f_{j k, z}^{(S \max )}}{\bar{L}_{j, z} \sum_{k \neq
       </categories>
       <tags>
         <tag>GMS</tag>
-        <tag>地下水</tag>
         <tag>数值模拟</tag>
+        <tag>地下水</tag>
       </tags>
   </entry>
   <entry>
