@@ -1516,17 +1516,39 @@ img:not([src]) {
   text-decoration: none !important;
 }
 blockquote {
-  margin: 0 0 20px;
-  padding: 12px 15px;
-  border-left: 3px solid #49b1f5;
-  background-color: var(--blockquote-bg);
-  color: var(--blockquote-color);
+  position: relative;
+  padding: 24px 16px 12px;
+  margin: 24px 0 36px;
+  font-size: 1em;
+  font-style: normal;
+  line-height: 1.6;
+  color: #8c8c8c;
+  text-indent: 0;
+  border: none;
+  border-left: 2px solid #f22f27;
 }
-blockquote footer cite:before {
+blockquote blockquote {
+  padding-right: 0;
+}
+blockquote a {
+  color: #ff887a;
+}
+blockquote::before {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  font-family: Arial, serif;
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1em;
+  color: #f22f27;
+  content: '“';
+}
+blockquote::before footer cite:before {
   padding: 0 5px;
   content: '—';
 }
-blockquote > :last-child {
+blockquote::before > :last-child {
   margin-bottom: 0 !important;
 }
 :root {
@@ -6298,15 +6320,36 @@ blockquote.pullquote.right {
 .mohu:hover {
   filter: blur(0px);
 }
+/* --- 引用块 --- */
 blockquote {
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
-  background: #fff;
-  color: #000;
-  margin: 25px 25px 15px;
-  padding: 5px 10px 0;
+  position: relative;
+  padding: 24px 16px 12px;
+  margin: 24px 0 36px;
+  font-size: 1em;
+  font-style: normal;
+  line-height: 1.6;
+  color: #8c8c8c;
+  text-indent: 0;
+  border: none;
+  border-left: 2px solid #f22f27;
+}
+blockquote blockquote {
+  padding-right: 0;
+}
+blockquote a {
+  color: #ff887a;
+}
+/* “ 装饰 */
+blockquote::before {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  font-family: Arial, serif;
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1em;
+  color: #f22f27;
+  content: '“';
 }
 /* 三线表 */
 .table-wrap > table {
