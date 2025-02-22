@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Install visit for wsl to deal with the EPOCH output file</title>
+    <url>/2024/10/25/wsl-install-visit/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>vscode 配置过程记录</title>
+    <url>/2024/10/12/vscode-setting-by-me/</url>
+    <content><![CDATA[<h1 id="终端美化"><a href="#终端美化" class="headerlink" title="终端美化"></a>终端美化</h1><div class="note info flat"><p>vscode 原本的终端平平无奇，总觉得不是很顺眼，因此想着用 <a href="https://ohmyposh.dev/"><code>oh-my-posh</code></a> 进行美化一下。</p>
+<p>主要参考连接：<a href="https://medium.com/@weiyun0912/%E7%BE%8E%E5%8C%96%E4%BD%A0%E7%9A%84-windows-terminal-oh-my-posh-7f150d1497dc">美化你的 Windows Terminal (oh-my-posh)</a></p>
+</div>
+<p>首先下载 <code>oh-my-posh</code> 软件，这里我们可以直接使用 Windows 的下载工具 <code>Winget</code> 在命令行中下载。</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">winget install JanDeDobbeleer.OhMyPosh <span class="literal">-s</span> winget</span><br></pre></td></tr></table></figure>
+<p>下载之后可以通过 <code>oh-my-posh</code> 查看是否安装成功，<span class='mohu'>如果出现相关的命令，而没有报错的话就代表安装成功了</span></p>
+<p>如果已经安装成功，可以直接用下面的命令来应用<a href="https://ohmyposh.dev/docs/themes">官网</a>已经存在的主题：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">oh</span><span class="literal">-my</span><span class="literal">-posh</span> init pwsh -<span class="literal">-config</span> <span class="string">&quot;<span class="variable">$env:POSH_THEMES_PATH</span>\jandedobbeleer.omp.json&quot;</span> | <span class="built_in">Invoke-Expression</span></span><br></pre></td></tr></table></figure>
+<p>这里的 <code>jandedobbeleer</code> 就是主题的名字，你也可以换成其他的主题名字。</p>
+<p><img src="./image.png" alt="powershell效果图"></p>
+<p><a href="https://glitchbone.github.io/vscode-base16-term/#/atelier-forest-light">https://glitchbone.github.io/vscode-base16-term/#/atelier-forest-light</a></p>
+]]></content>
+      <categories>
+        <category>工作</category>
+        <category>工具配置</category>
+        <category>编辑器</category>
+      </categories>
+      <tags>
+        <tag>vscode</tag>
+        <tag>环境配置</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TRANSP 软件使用学习</title>
     <url>/2023/11/08/transp/</url>
     <content><![CDATA[<h1 id="TRANSP-软件使用学习"><a href="#TRANSP-软件使用学习" class="headerlink" title="TRANSP 软件使用学习"></a>TRANSP 软件使用学习</h1><h2 id="关于-TRANSP-软件的简单介绍"><a href="#关于-TRANSP-软件的简单介绍" class="headerlink" title="关于 TRANSP 软件的简单介绍"></a>关于 TRANSP 软件的简单介绍</h2><p><a href="https://transp.pppl.gov/">TRANSP</a> 是美国普林斯顿大学等离子体物理实验室（PPPL）开发的一款为了进行托卡马克实验数据分析的程序，是目前世界范围内应用最广泛的托卡马克实验数据分析程序之一。能够进行托卡马克非圆截面磁位型下 1½ 维度的输运与约束分析，以及托卡马克数据的诊断模拟。(这一段就是到处抄来的，反正大差不差，主要就是用来干这些事情的，不了解的人估计也不会用到这些软件)。</p>
@@ -467,8 +497,8 @@ t = \frac{q \mathbfit{B}}{m} \frac{\Delta t}{2} \\ s= \frac{2 t}{1+\left|t\right
 <p>通过 <code>sbatch runth_Ptoric</code> 命令提交任务后等待程序运行, 之后会生成 <code>fort.22</code> 文件, 该文件就是 TORIC 运行所需的平衡文件, 下图是其和 gfile 文件的区别:</p>
 <center>
 <table><tr>
-<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulgfile.png" width="400" border=1/></td>
-<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulequigs.png" width="400" border=1/></td>
+<td><img src="https://image.tabirstrees.top/images/2025/02/22/20250222161430848.png" width="400" border=1/></td>
+<td><img src="https://image.tabirstrees.top/images/2025/02/22/20250222161519050.png" width="400" border=1/></td>
 </tr></table>
 </center>
 
@@ -482,39 +512,39 @@ t = \frac{q \mathbfit{B}}{m} \frac{\Delta t}{2} \\ s= \frac{2 t}{1+\left|t\right
 <p>这里我们也简单的写了一个对应的 Python 脚本来进行剖面文件的准备:</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">## 引入需要的函数库</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> fortranformat <span class="keyword">as</span> ff</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 读取 xlsx 文件</span></span><br><span class="line">path = <span class="string">&quot;profile.xlsx&quot;</span></span><br><span class="line">df1 = pd.read_excel(path, header=<span class="number">0</span>)</span><br><span class="line">psi = df1.iloc[:, [<span class="number">0</span>]].values</span><br><span class="line">ne = (df1.iloc[:, [<span class="number">2</span>]].values) * <span class="number">1e19</span> / <span class="number">1e6</span></span><br><span class="line">ni = df1.iloc[:, [<span class="number">3</span>]].values / <span class="number">1e6</span></span><br><span class="line">Te = df1.iloc[:, [<span class="number">4</span>]].values</span><br><span class="line">Ti = df1.iloc[:, [<span class="number">5</span>]].values</span><br><span class="line">i_charge = [<span class="number">1</span>, <span class="number">3</span>]</span><br><span class="line">i_mass = [<span class="number">1</span>, <span class="number">11</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入少子的情形</span></span><br><span class="line">i_X = [<span class="number">0.06</span>]</span><br><span class="line">n_minority = ne * np.array(i_X)</span><br><span class="line">n_main = (</span><br><span class="line">    ne - np.reshape(np.<span class="built_in">sum</span>(np.array(i_charge[<span class="number">1</span>:]) * n_minority, <span class="number">1</span>), (<span class="number">201</span>, <span class="number">1</span>))</span><br><span class="line">) / np.array(i_charge[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 写入文件</span></span><br><span class="line">pf = <span class="built_in">open</span>(<span class="string">&quot;profnt_ENN_test_0.06.dat&quot;</span>, <span class="string">&quot;w+&quot;</span>)</span><br><span class="line"><span class="comment"># first line: filename;number of point node;ion specise;main ions;temperature setup</span></span><br><span class="line">linewrite1 = ff.FortranRecordWriter(<span class="string">&quot;(A10,5i4)&quot;</span>)</span><br><span class="line">line1 = linewrite1.write([<span class="string">&quot;Prof_ENN&quot;</span>, <span class="number">201</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">pf.writelines(line1 + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># mass and charge of each ion</span></span><br><span class="line">linewrite2 = ff.FortranRecordWriter(<span class="string">&quot;(2i4)&quot;</span>)</span><br><span class="line">line2 = linewrite2.write([<span class="number">1</span>, <span class="number">1</span>, <span class="number">11</span>, <span class="number">3</span>])</span><br><span class="line">pf.writelines(line2 + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># linewrite_h = ff.FortranRecordWriter(&quot;(A10)&quot;)</span></span><br><span class="line"><span class="comment"># psi</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;Psi&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;Psi&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">number_writer = ff.FortranRecordWriter(<span class="string">&quot;(5E16.9)&quot;</span>)</span><br><span class="line">psiwrite = number_writer.write(psi)</span><br><span class="line">pf.writelines(psiwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># ne</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;ne [cm^-3]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;ne [cm^-3]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;ne [cm^-3]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">newrite = number_writer.write(ne)</span><br><span class="line">pf.writelines(newrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># Te</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;Te [keV]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;Te [keV]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;Te [keV]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">tewrite = number_writer.write(Te)</span><br><span class="line">pf.writelines(tewrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># ni</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;ni_D [cm^-3]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;nD [cm^-3]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;nD [cm^-3]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">niwrite = number_writer.write(<span class="built_in">list</span>(n_main))</span><br><span class="line">pf.writelines(niwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># Te</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;Te [keV]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;TD [keV]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;TD [keV]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">tiwrite = number_writer.write(Ti)</span><br><span class="line">pf.writelines(tiwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">pf.writelines(<span class="string">&quot;nH [cm^-3]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">niwrite = number_writer.write(<span class="built_in">list</span>(n_minority))</span><br><span class="line">pf.writelines(niwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="comment"># Te</span></span><br><span class="line"><span class="comment"># pf.writelines(&quot;Te [keV]\n&quot;)</span></span><br><span class="line"><span class="comment"># pf.writelines(linewrite_h.write([&quot;TD [keV]&quot;]) + &quot;\n&quot;)</span></span><br><span class="line">pf.writelines(<span class="string">&quot;TH [keV]&quot;</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">tiwrite = number_writer.write(Ti)</span><br><span class="line">pf.writelines(tiwrite + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">pf.close()</span><br></pre></td></tr></table></figure>
 <p>最终得到的文件形式如图所示:</p>
-<p><img alt="picture 3" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulprofnt.png" /></p>
+<p><img alt="picture 3" src="https://image.tabirstrees.top/images/2025/02/22/20250222161641831.png"/></p>
 <center id='f2'><span style='font-weight:bold'>Fig 2. The preview of profile data used in TORIC</span></center>
 
 <p>这里我们采用 H(B11) 作为加热场景, 少子浓度设置为 6%.</p>
 <h3 id="设置输入文件-torica-inp"><a href="#设置输入文件-torica-inp" class="headerlink" title="设置输入文件 torica.inp"></a>设置输入文件 <code>torica.inp</code></h3><p>此处为了简单起见, 我们仅针对 <span style='background: yellow'>和龙-2</span> 的天线频率以及网格划分进行修改, 根据 <span style='background: yellow'>和龙-2</span> 的基本参数估算各离子的共振线, 得到得结果如图所示:</p>
-<p><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-resonanceline.png" alt="picture 4"></p>
+<p><img src="https://image.tabirstrees.top/images/2025/02/22/20250222162300591.png" alt="picture 4"></p>
 <center id='f3'><span style='font-weight:bold'>Fig 3. The resonance line of different particles.</span></center>
 
 <p>可以看到对于 H(B11) 体系要保证在中心位置处吸收需要频率大概位于 50MHz(H 基频) 或者 30MHz(B11 谐频), 这里我们先选取 30MHz 作为天线的发射频率. 因此在上面的输入文件中我们只修改以下几个部分:</p>
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">toricmode = <span class="string">&quot;toric&quot;</span>,</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">nvrb   =   3,</span><br><span class="line">nelm   = 450,</span><br><span class="line">ntt    =  256,</span><br><span class="line">nmod   =  127,</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">freqcy = 30.0E6,</span><br><span class="line">nphi   =  18,</span><br><span class="line">antlen = 50,</span><br><span class="line">antlc  = 1.2,</span><br><span class="line">theant = 0.,</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">      .</span><br><span class="line">inputpath   = &#x27;./&#x27;</span><br><span class="line">profnt_file = &#x27;profnt_ENN_test_0.06.dat&#x27;</span><br><span class="line">equil_file  = &#x27;equigs.dat&#x27;</span><br></pre></td></tr></table></figure>
 <p>其他参数保持原来的设置不变, 然后提交任务运行. 最终会生成三个文件: <code>fort.9</code>, <code>fort.10</code> 以及 <code>fort.21</code>. <code>fort.9</code> 是写入到文件中的程序输出(netCDF格式), <code>fort.10</code> 是文本格式的用于画图的数据文件, <code>fort.21</code> 是 netCDF 格式的画图数据文件.</p>
 <p>通过读取 <code>fort.21</code> 中的结果绘制图件, 我们可以得到以下的结果:</p>
-<p><img alt="picture 4" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulEplusandabsor.png" /><br><!-- <img alt="picture 4" src="images/manulEplusandabsor_main.png" />   --></p>
+<p><img alt="picture 4" src="https://image.tabirstrees.top/images/2025/02/22/20250222164700655.png" /><br><!-- <img alt="picture 4" src="images/manulEplusandabsor_main.png" />   --></p>
 <center id='f4'><span style='font-weight:bold'>Fig 4. The contour plot of the result.</span></center>
 
-<p><img alt="picture 5" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulabsor_profile.png" />  </p>
+<p><img alt="picture 5" src="https://image.tabirstrees.top/images/2025/02/22/20250222165855947.png" />  </p>
 <center id='f5'><span style='font-weight:bold'>Fig 5. Power absorption by different
 particles along the radius direction.</span></center>
 
-<p><img alt="picture 6" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcurrentdrive.png" />  </p>
+<p><img alt="picture 6" src="https://image.tabirstrees.top/images/2025/02/22/20250222165947053.png" />  </p>
 <center id='f6'><span style='font-weight:bold'>Fig 6. Current Density Induced by Waves.</span></center>
 
 <p>这里可以看到离子吸收并没有在中心位置, 结合图3考虑可能是波频率设置的不太恰当, 因为这里只是运行 TORIC 程序的一个简单示例, 就不对此展开深入的分析.</p>
 <hr>
 <h2 id="考虑离子尾部能量的情况"><a href="#考虑离子尾部能量的情况" class="headerlink" title="考虑离子尾部能量的情况"></a>考虑离子尾部能量的情况</h2><p>某些时候我们还需要考虑离子吸收能量之后形成超热尾部分布(suprathermal minority tails)的情况, 这需要在已经完成前述计算过程的基础上的通过调用 <code>SSFPQL</code> 模块求解准线性 Fokker-Planck 方程来估计离子的分布, 然后再一次迭代进 <code>TORIC</code> 主模块中计算.</p>
 <p>由于我们此前对 <span style='background: yellow'>和龙-2</span> 的计算中离子没有产生超热尾端的分布(<span class='heimu'>也有可能是计算过程中出现了失误</span>), 所以这里采用做程序 BENCHMARK 时所用的 <span style='background: yellow'>CFETR</span> (He3)-D-T 加热体系(Chengyi Song et al. 2021)来举例. 模拟使用的参数以及结果如图7~图9所示:</p>
-<center><img alt="picture 1" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetr_parameters.png" /></center>  
+<center><img alt="picture 1" src="https://image.tabirstrees.top/images/2025/02/22/20250222170239706.png" /></center>  
 <center id='f7'><span style='font-weight:bold'>Fig 7. The parameters of simulation for CFETR.</span></center>
 
-<p><img alt="picture 2" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetr_eplus.png"/></p>
+<p><img alt="picture 2" src="https://image.tabirstrees.top/images/2025/02/22/20250222170757395.png"/></p>
 <center id='f8'><span style='font-weight:bold'>Fig 8. The contour plot of the results for CFETR.</span></center>  
 
-<center><img alt="picture 3" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetr_absor.png"/></center>  
+<center><img alt="picture 3" src="https://image.tabirstrees.top/images/2025/02/22/20250222170937314.png"/></center>  
 <center id='f9'><span style='font-weight:bold'>Fig 9. Power absorption by different particles along the radius direction for CFETR.</span></center>
 
 <h3 id="通过-SSFPQL-计算离子分布"><a href="#通过-SSFPQL-计算离子分布" class="headerlink" title="通过 SSFPQL 计算离子分布"></a>通过 <code>SSFPQL</code> 计算离子分布</h3><p>首先是在原有计算结果的基础上调用 <code>SSFPQL</code> 模块, 实际上该模块是通过读取前面讲到的 <code>fort.9</code> 文件(netCDF 格式的输出文件)来与 <code>TORIC</code> 主程序耦合, 这里我们需要在 <code>torica.inp</code> 中设置 <code>/ssfpqlinp/</code> 部分的参数, 在此案例中如下:</p>
@@ -524,8 +554,8 @@ particles along the radius direction.</span></center>
 <p>提交任务后会得到两个文件, <code>fort.8</code> 以及 <code>fort.12</code>. 前者是后续程序运行的输入文件, 后者是任务输出文件, 两者都是文本格式, 可以直接打开. 因为要用到 <code>fort.8</code>, 一般要对其进行查看, 我们的案例中如图10所示:</p>
 <center>
 <table><tr>
-<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulfort8left.png" width="400" border=1/></td>
-<td><img src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulfort8right.png" width="400" border=1/></td>
+<td><img src="https://image.tabirstrees.top/images/2025/02/22/20250222171007327.png" width="400" border=1/></td>
+<td><img src="https://image.tabirstrees.top/images/2025/02/22/20250222171025853.png" width="400" border=1/></td>
 </tr></table>
 </center>
 <center id='f10'><span style='font-weight:bold'>Fig 10. The input file for 'isol = 2' to read the minority non-maxwellian profile.</span></center>
@@ -534,13 +564,13 @@ particles along the radius direction.</span></center>
 <h3 id="再次运行-TORIC-主程序得到结果"><a href="#再次运行-TORIC-主程序得到结果" class="headerlink" title="再次运行 TORIC 主程序得到结果"></a>再次运行 TORIC 主程序得到结果</h3><p>得到少子的非麦克斯韦剖面后, 就可以再次以 <code>isol = 2</code> 的运行模式再次运行 TORIC 主程序得到结果, 此时还需要设置读取的少子剖面文件的位置, 对 <code>torica.inp</code> 做如下更改:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">      toricmode = &quot;toric&quot;,</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">          isol  = 2,</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">            .</span><br><span class="line">&amp;qlmininp</span><br><span class="line">!</span><br><span class="line">!  Read by subroutione t4_qlm_init in t4_mod_qlminh</span><br><span class="line">!</span><br><span class="line">      path_to_qldata = &#x27;./&#x27;</span><br><span class="line">      qlmin_file = &#x27;fort.8&#x27;</span><br><span class="line">!            The path of input (non-maxwellian profile for minority)</span><br><span class="line"> /</span><br></pre></td></tr></table></figure>
 <p>重新运行之后得到三个文件(<code>fort.9/10/21</code>), 并利用 <code>fort.21</code> 画图, 如图所示:</p>
-<center><img alt="picture 6" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetreplustail.png"/></center> 
+<center><img alt="picture 6" src="https://image.tabirstrees.top/images/2025/02/22/20250222171114778.png"/></center> 
 <center id='f11'><span style='font-weight:bold'>Fig 11. The contour plot of the results for CFETR when the minority superthermal tail has been considered.</span></center> 
 
-<center><img alt="picture 7" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetrabsortail.png"/></center>  
+<center><img alt="picture 7" src="https://image.tabirstrees.top/images/2025/02/22/20250222171137116.png"/></center>  
 <center id='f12'><span style='font-weight:bold'>Fig 12. Power absorption by different particles along the radius direction for CFETR when the minority superthermal tail has been considered.</span></center>
 
-<center><img alt="picture 8" src="https://hexo-1301133429.cos.ap-chengdu.myqcloud.com/post/TORIC-manulcfetrcdtail.png"/></center>  
+<center><img alt="picture 8" src="https://image.tabirstrees.top/images/2025/02/22/20250222171154509.png"/></center>  
 <center id='f13'><span style='font-weight:bold'>Fig 13. Current Driven by different waves along the radius direction for CFETR when the minority superthermal tail has been considered.</span></center>
 
 <p>由于只是作为演示, 这里的结果就不做具体分析.</p>
@@ -3322,8 +3352,8 @@ m_{i+1}=m_i−4\pi 𝑅_{i}^2 \rho_i \\
         <tag>等离子体</tag>
         <tag>论文摘要</tag>
         <tag>空间物理</tag>
-        <tag>Arxiv</tag>
         <tag>JGR</tag>
+        <tag>Arxiv</tag>
       </tags>
   </entry>
   <entry>
@@ -3362,8 +3392,8 @@ m_{i+1}=m_i−4\pi 𝑅_{i}^2 \rho_i \\
         <tag>等离子体</tag>
         <tag>论文摘要</tag>
         <tag>空间物理</tag>
-        <tag>太阳物理</tag>
         <tag>Arxiv</tag>
+        <tag>太阳物理</tag>
       </tags>
   </entry>
   <entry>
