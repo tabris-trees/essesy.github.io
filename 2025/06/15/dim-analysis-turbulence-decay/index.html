@@ -1,0 +1,540 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>The dimension analysis of turbulence decay (湍流衰减的量纲分析) | 异站</title><meta name="author" content="Tabris Trees Severus"><meta name="copyright" content="Tabris Trees Severus"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="利用简单的数学推导螺旋或者非螺旋湍流的磁能衰减律">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The dimension analysis of turbulence decay (湍流衰减的量纲分析)">
+<meta property="og:url" content="http://tabirstrees.top/2025/06/15/dim-analysis-turbulence-decay/index.html">
+<meta property="og:site_name" content="异站">
+<meta property="og:description" content="利用简单的数学推导螺旋或者非螺旋湍流的磁能衰减律">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.tabirstrees.top/images/2025/08/01/magnetic-turbulence.png">
+<meta property="article:published_time" content="2025-06-15T01:57:22.000Z">
+<meta property="article:modified_time" content="2025-08-01T07:29:04.016Z">
+<meta property="article:author" content="Tabris Trees Severus">
+<meta property="article:tag" content="等离子体">
+<meta property="article:tag" content="磁流体力学">
+<meta property="article:tag" content="湍流">
+<meta property="article:tag" content="幂律谱">
+<meta property="article:tag" content="磁螺旋度">
+<meta property="article:tag" content="Turbulence">
+<meta property="article:tag" content="Helicity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.tabirstrees.top/images/2025/08/01/magnetic-turbulence.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The dimension analysis of turbulence decay (湍流衰减的量纲分析)",
+  "url": "http://tabirstrees.top/2025/06/15/dim-analysis-turbulence-decay/",
+  "image": "https://image.tabirstrees.top/images/2025/08/01/magnetic-turbulence.png",
+  "datePublished": "2025-06-15T01:57:22.000Z",
+  "dateModified": "2025-08-01T07:29:04.016Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Tabris Trees Severus",
+      "url": "https://www.tabirstrees.top"
+    }
+  ]
+}</script><link rel="shortcut icon" href="https://image.tabirstrees.top/images/2025/02/22/tabirstrees.png"><link rel="canonical" href="http://tabirstrees.top/2025/06/15/dim-analysis-turbulence-decay/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-166333226-1"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'UA-166333226-1')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'UA-166333226-1', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'The dimension analysis of turbulence decay (湍流衰减的量纲分析)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tabris-trees/blogdepot/fonts.css"><link rel="stylesheet" href="/css/styles.css"><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(https://image.tabirstrees.top/images/2025/07/27/578d27eb53eacd7e936ccc54d865fca6.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "/images/placeholder.gif" data-lazy-src="https://image.tabirstrees.top/images/2025/07/28/f0b536d8b179a68d95e49740ad445252.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享(构建中...)</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.travellings.cn/go.html"><i class="fa-fw fas fa-subway"></i><span> 开往</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://image.tabirstrees.top/images/2025/08/01/magnetic-turbulence.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">异站</span></a><a class="nav-page-title" href="/"><span class="site-name">The dimension analysis of turbulence decay (湍流衰减的量纲分析)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享(构建中...)</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.travellings.cn/go.html"><i class="fa-fw fas fa-subway"></i><span> 开往</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">The dimension analysis of turbulence decay (湍流衰减的量纲分析)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-06-15T01:57:22.000Z" title="发表于 2025-06-15 09:57:22">2025-06-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-01T07:29:04.016Z" title="更新于 2025-08-01 15:29:04">2025-08-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%91%E7%A0%94/">科研</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%91%E7%A0%94/%E9%9D%9E-%E8%9E%BA%E6%97%8B%E6%B9%8D%E6%B5%81%E8%A1%B0%E5%87%8F/">(非)螺旋湍流衰减</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:200,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2025-08-01 15:29:04&quot;}" hidden></div><h2 id="Dimensional-analysis-in-Fluid-Mechanism-From-Kolmogorov"><a href="#Dimensional-analysis-in-Fluid-Mechanism-From-Kolmogorov" class="headerlink" title="Dimensional analysis in Fluid Mechanism From Kolmogorov"></a>Dimensional analysis in Fluid Mechanism From Kolmogorov</h2><p>In 1941, Kolmogorov published his famous paper includes the famous Kolmogorov power-law for turbulence energy spectrum $E(k, \epsilon, v) = C \epsilon^{2/3} k^{-5/3}$, which can be obtained by some simple dimensional analysis.</p>
+<p>Here we derive it step-by-step.</p>
+<p>First, we have already known the dimensions of quantities we need:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        E(k) &\sim E/k \sim \mathrm{L^{3} \cdot T^{-2}}, \\ \epsilon &\sim E/s = \mathrm{L^2 \cdot T^{-3}}, \\ k &\sim 1/L = \mathrm{L^{-1}}.
+    \end{aligned}
+\end{equation}</script><p>Then, we can establish the relationship of those dimensions with $E(k, \epsilon, v) = C \epsilon^{2/3} k^{-5/3}$ :</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        E(k, \epsilon, v) \sim C \epsilon^{\alpha} k^{\beta} &= C \left(\mathrm{L^2 \cdot T^{-3}}\right)^{\alpha} \cdot \left(\mathrm{L^{-1}}\right)^{\beta} \\ &= C L^{(2 \alpha - \beta)} \cdot T^{-3 \alpha} \sim \mathrm{L^{3} \cdot T^{-2}},
+    \end{aligned}
+\end{equation}</script><p>then we can solve out that: $\alpha = 2/3$, and $\beta = 2 \times (2/3) - 3 = -5/3$. Here we get the classic <strong>-5/3</strong> power law in Fluid Mechanics. The main idea is we know energy spectrum is depending on energy dissipation rate and wave vector, so we can express $E(k)$ with $\epsilon$ and $k$, then the dimension analysis can be successfully carried on.</p>
+<h2 id="Dimensional-analysis-in-helical-or-non-helical-turbulence"><a href="#Dimensional-analysis-in-helical-or-non-helical-turbulence" class="headerlink" title="Dimensional analysis in helical or non-helical turbulence"></a>Dimensional analysis in helical or non-helical turbulence</h2><p>Turbulence in astrophysical environment in usually magnetic, the magnetic field line will be twist and kink with each other, so we need a topological quantity named <strong>magnetic helicity</strong> to evaluate the degree of twist and kink. The conception of helicity is also can be seen in pure Fluid Mechanics (<strong>kinetic helicity</strong>), which is representing the quantity that:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        H_{v} = \int _{V} \mathcal{\vec{w}} \cdot \vec{v} = \int _{V} \left(\nabla \times \vec{v}\right) \cdot \vec{v}.
+    \end{aligned}
+\end{equation}</script><p>In MagneticHydroDynamic(MHD), the magnetic helicity computed as:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathcal{H} = \int _{V} \vec{A} \cdot \vec{B}.
+    \end{aligned}
+\end{equation}</script><p>Similar as the conception in pure Fluid, you can rewrite the magnetic field $\vec{B}$ as $\nabla \times \vec{A}$, but it’s not important if you don’t concern the potential, which maybe more essentially fundamental in physics(😆😆😆).</p>
+<p>All you need to know is the total helicity($\mathcal{H}$) or mean magnetic helicity density($I_{\mathrm{M}} = \mathcal{H}/V$) can be regard as conserved, and it will govern the evolution of turbulence, either kinetic one or magnetic one, in helical turbulence.</p>
+<p>The problem here concerns how the magnetic energy and the characteristic scale($\mathcal{E}_{\mathrm{M}}$ and $\xi_{\mathrm{M}}$) at which it is stored evolve over time. So, we can express the energy and energy characteristic scale in helical turbulence as:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathcal{E}_{\mathrm{M}}(t) &= \int E_{\mathrm{M}}(k, t) \mathrm{\,d}k = F_{\mathcal{E}_{\mathrm{M}}}(I_{\mathrm{M}}, t), \\ \xi_{\mathrm{M}}(t)&=\int k^{-1} E_{\mathrm{M}}(k, t) \mathrm{\,d} k / \mathcal{E}_{\mathrm{M}} = F_{\xi_{\mathrm{M}}}(I_{\mathrm{M}}, t).
+    \end{aligned}
+\end{equation}</script><p>where $E_{\mathrm{M}}$ is the magnetic energy spectrum $Sp(B)$.</p>
+<p>And then, we repeat the operation above handled pure FM, for magnetic energy, we have:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        B &\sim v_{A} \sim L \cdot T^{-1}, \\ A &\sim \int _{V} B \sim L \cdot T^{-1} \cdot L^{1} = L^{2} \cdot T^{-1}, \\ \mathcal{E}_{\mathrm{M}} &\sim B^{2} \sim v_{A}^{2} \sim L^{2} \cdot T^{-2}, \\  I_{\mathrm{M}} &\sim \left(\int _{V} A \cdot B\right)/V \sim L^{2} \cdot T^{-1} \cdot L \cdot T^{-1} \cdot L^{3} \cdot L^{-3} = L^{3} \cdot T^{-2}.
+    \end{aligned}
+\end{equation}</script><p>where $B \sim v_{A}$ is because of the definition of Alfv&eacute;n velocity: $v_{A} = \sqrt{B^{2}/\mu_{0}\rho} \sim B$. Then, we can write down the relationship of:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathcal{E}_{\mathrm{M}} &\sim L^{2} \cdot T^{-2} \sim C \left(L^{3} \cdot T^{-2}\right)^{\alpha} \cdot \left(T\right)^{\beta}.
+    \end{aligned}
+\end{equation}</script><p>$\alpha$ and $\beta$ can be solved with $\alpha = 2/3$, $\beta = -2/3$. AKA, $\mathcal{E}_{\mathrm{M}} \propto t^{-2/3}$ can be obtained.</p>
+<p>The same process can be taken to characteristic length of magnetic energy:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \xi_{\mathrm{M}} &\sim L~(\text{because it is a length}), \\
+    &\sim C \left(L^{3} \cdot T^{-2}\right)^{\alpha} \cdot \left(T\right)^{\beta}.
+    \end{aligned}
+\end{equation}</script><p>With some algebra, we have $\alpha = 1/3$ and $\beta = -2/3$. If you write them as $\mathcal{E}_{\mathrm{M}} \propto t^{-p}$ and $\xi_{\mathrm{M}} \propto t^{q}$, then we have $p=q=2/3$, that is the form in Axel’s paper[1].</p>
+<p>Magnetic helicity will be inefficient while there is no mean helicity, so we call it non-helical case, Hosking’s integral is needed to control the turbulence evolving. You can find it from the several papers by Hosking[2-4]. Here we give the definition of this integral as:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        I_{\mathrm{H}} = \int h(x) h(x+r) \mathrm{\,d}^{3}x
+    \end{aligned},
+\end{equation}</script><p>where $h = A \cdot B$ is the magnetic helicity density. Then we can give the dimension of $I_{\mathrm{H}}$:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        h &\sim A \cdot B \sim L^{3} \cdot T^{-2}, \\  
+        I_{\mathrm{H}} &\sim h \cdot h \cdot x^{3} \sim L^{9} \cdot T^{-4}.
+    \end{aligned}
+\end{equation}</script><p>Relationship of:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \mathcal{E}_{\mathrm{M}_{\mathrm{non-helical}}} &\sim L^{2} \cdot T^{-2} \sim C \left(L^{9} \cdot T^{-4}\right)^{\alpha} \cdot \left(T\right)^{\beta}, \\
+        \xi_{\mathrm{M}_{\mathrm{non-helical}}} &\sim L \sim C \left(L^{9} \cdot T^{-4}\right)^{m} \cdot \left(T\right)^{n}.
+    \end{aligned}
+\end{equation}</script><p>It can be easily solved that:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{aligned}
+        \alpha &= 2/9,~\beta = -10/9, \\
+        m &= 1/9, n = 4/9.
+    \end{aligned}
+\end{equation}</script><p>That is to say, for non-helical case, we have $\mathcal{E}_{\mathrm{M}} \propto t^{-p}$ and $\xi_{\mathrm{M}} \propto t^{q}$ with $p = 10/9,~q=4/9$.</p>
+<p>Further, if we can know the initial state of helicity and magnetic energy for a magnetic turbulence like <strong>cosmic primordial magnetic field</strong> (it is the same as we know magnetic field initially), we can estimate the residual magnetic field in later time (nowadays cluster’s magnetic field) with the above power law for time.</p>
+<hr>
+<ol>
+<li>Brandenburg, A., Yi, L. &amp; Wu, X. Inverse cascade from helical and nonhelical decaying columnar magnetic fields. Preprint at <a target="_blank" rel="noopener" href="https://doi.org/10.48550/arXiv.2501.12200">https://doi.org/10.48550/arXiv.2501.12200</a> (2025).</li>
+<li>Hosking, D. N. &amp; Schekochihin, A. A. Emergence of long-range correlations and thermal spectra in forced turbulence. Journal of Fluid Mechanics 973, A13 (2023).</li>
+<li>Hosking, D. N. &amp; Schekochihin, A. A. Cosmic-void observations reconciled with primordial magnetogenesis. Nat Commun 14, 7523 (2023).</li>
+<li>Hosking, D. N. &amp; Schekochihin, A. A. Reconnection-Controlled Decay of Magnetohydrodynamic Turbulence and the Role of Invariants. Phys. Rev. X 11, 041005 (2021).</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://www.tabirstrees.top">Tabris Trees Severus</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://tabirstrees.top/2025/06/15/dim-analysis-turbulence-decay/">http://tabirstrees.top/2025/06/15/dim-analysis-turbulence-decay/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://tabirstrees.top" target="_blank">异站</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AD%89%E7%A6%BB%E5%AD%90%E4%BD%93/">等离子体</a><a class="post-meta__tags" href="/tags/%E7%A3%81%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6/">磁流体力学</a><a class="post-meta__tags" href="/tags/%E6%B9%8D%E6%B5%81/">湍流</a><a class="post-meta__tags" href="/tags/%E5%B9%82%E5%BE%8B%E8%B0%B1/">幂律谱</a><a class="post-meta__tags" href="/tags/%E7%A3%81%E8%9E%BA%E6%97%8B%E5%BA%A6/">磁螺旋度</a><a class="post-meta__tags" href="/tags/Turbulence/">Turbulence</a><a class="post-meta__tags" href="/tags/Helicity/">Helicity</a></div><div class="post-share"><div class="social-share" data-image="https://image.tabirstrees.top/images/2025/08/01/magnetic-turbulence.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/03/12/pencil-mannul/" title="PENCIL 代码自用手册 —— 1"><img class="cover" src= "/images/placeholder.gif" data-lazy-src="https://image.tabirstrees.top/images/2025/03/12/pencil-code.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">PENCIL 代码自用手册 —— 1</div></div><div class="info-2"><div class="info-item-1">对PENCIL代码的安装和使用做一个简单的总结, 方便后续查看</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2023/06/27/CPP-PPPL1/" title="CPP-PPPL 暑期学校课程 1 计算等离子体物理简介"><img class="cover" src= "/images/placeholder.gif" data-lazy-src="https://image.tabirstrees.top/images/2025/02/22/20250222183345445.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2025-02-22</div><div class="info-item-2">CPP-PPPL 暑期学校课程 1 计算等离子体物理简介</div></div><div class="info-2"><div class="info-item-1">这是对2021年 PPPL(Princeton Plasma Physics Laboratory) 暑期学校教授等离子体计算方法的课件进行学习整理之后的笔记.</div></div></div></a><a class="pagination-related" href="/2022/04/15/plasmahomework3/" title="理想磁流体力学与霍尔磁流体力学下平行传播电磁波的色散关系推导"><img class="cover" src= "/images/placeholder.gif" data-lazy-src="https://image.tabirstrees.top/images/2025/02/22/20250222193827442.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2025-03-12</div><div class="info-item-2">理想磁流体力学与霍尔磁流体力学下平行传播电磁波的色散关系推导</div></div><div class="info-2"><div class="info-item-1">磁流体力学推导等离子体物理波动色散关系</div></div></div></a><a class="pagination-related" href="/2022/03/18/wpinteraction/" title="Alfven 波 Kappa 离子非共振加热各向异性研究"><img class="cover" src= "/images/placeholder.gif" data-lazy-src="https://pic4.zhimg.com/v2-3a14944ec6b1f6ebf7240431892a544f_r.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2025-03-12</div><div class="info-item-2">Alfven 波 Kappa 离子非共振加热各向异性研究</div></div><div class="info-2"><div class="info-item-1">准线性理论推导阿尔芬波非共振加热过程中的温度各向异性(￣y▽￣)╭ Ohohoho.....</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "/images/placeholder.gif" data-lazy-src="https://image.tabirstrees.top/images/2025/07/28/f0b536d8b179a68d95e49740ad445252.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Tabris Trees Severus</div><div class="author-info-description">晴耕雨读</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/tabris-trees" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tabristrees@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">装死中😇</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dimensional-analysis-in-Fluid-Mechanism-From-Kolmogorov"><span class="toc-number">1.</span> <span class="toc-text">Dimensional analysis in Fluid Mechanism From Kolmogorov</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dimensional-analysis-in-helical-or-non-helical-turbulence"><span class="toc-number">2.</span> <span class="toc-text">Dimensional analysis in helical or non-helical turbulence</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(https://image.tabirstrees.top/images/2025/08/01/magnetic-turbulence.png);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2025 By Tabris Trees Severus</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 5.4.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.3</a></span></div><div class="footer_custom_text">灵槎准拟泛银河，剩摘天星几个</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const applyThemeDefaultsConfig = theme => {
+    if (theme === 'dark-mode') {
+      Chart.defaults.color = "rgba(255, 255, 255, 0.8)"
+      Chart.defaults.borderColor = "rgba(255, 255, 255, 0.2)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    } else {
+      Chart.defaults.color = "rgba(0, 0, 0, 0.8)"
+      Chart.defaults.borderColor = "rgba(0, 0, 0, 0.1)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    }
+  }
+
+  // Recursively traverse the config object and automatically apply theme-specific color schemes
+  const applyThemeConfig = (obj, theme) => {
+    if (typeof obj !== 'object' || obj === null) return
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      // If the property is an object and has theme-specific options, apply them
+      if (typeof value === 'object' && value !== null) {
+        if (value[theme]) {
+          obj[key] = value[theme] // Apply the value for the current theme
+        } else {
+          // Recursively process child objects
+          applyThemeConfig(value, theme)
+        }
+      }
+    })
+  }
+
+  const runChartJS = ele => {
+    window.loadChartJS = true
+
+    Array.from(ele).forEach((item, index) => {
+      const chartSrc = item.firstElementChild
+      const chartID = item.getAttribute('data-chartjs-id') || ('chartjs-' + index) // Use custom ID or default ID
+      const width = item.getAttribute('data-width')
+      const existingCanvas = document.getElementById(chartID)
+
+      // If a canvas already exists, remove it to avoid rendering duplicates
+      if (existingCanvas) {
+          existingCanvas.parentNode.remove()
+      }
+
+      const chartDefinition = chartSrc.textContent
+      const canvas = document.createElement('canvas')
+      canvas.id = chartID
+
+      const div = document.createElement('div')
+      div.className = 'chartjs-wrap'
+
+      if (width) {
+        div.style.width = width
+      }
+
+      div.appendChild(canvas)
+      chartSrc.insertAdjacentElement('afterend', div)
+
+      const ctx = document.getElementById(chartID).getContext('2d')
+
+      const config = JSON.parse(chartDefinition)
+
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark-mode' : 'light-mode'
+
+      // Set default styles (initial setup)
+      applyThemeDefaultsConfig(theme)
+
+      // Automatically traverse the config and apply dual-mode color schemes
+      applyThemeConfig(config, theme)
+
+      new Chart(ctx, config)
+    })
+  }
+
+  const loadChartJS = () => {
+    const chartJSEle = document.querySelectorAll('#article-container .chartjs-container')
+    if (chartJSEle.length === 0) return
+
+    window.loadChartJS ? runChartJS(chartJSEle) : btf.getScript('https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js').then(() => runChartJS(chartJSEle))
+  }
+
+  // Listen for theme change events
+  btf.addGlobalFn('themeChange', loadChartJS, 'chartjs')
+  btf.addGlobalFn('encrypt', loadChartJS, 'chartjs')
+
+  window.pjax ? loadChartJS() : document.addEventListener('DOMContentLoaded', loadChartJS)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = "window.location.pathname"
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.tabirstrees.top/',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo.tabirstrees.top/',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    GLOBAL_CONFIG_SITE.pageType === 'post' && getCount()
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: true,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search..." type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
